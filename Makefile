@@ -1,42 +1,53 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/04/18 19:29:32 by abaiao-r         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+# Compiler settings
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -g -lreadline #-fsanitize=address 
 
+# Directories
+SRCDIR = ./src
+OBJDIR = ./objs
+
+# Source Files
+
+SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/commands.c
+OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+
+# Targets
 NAME = minishell
 
-SRC = 	print_prompt.c \
-		main.c 
+all: 	$(NAME)
 
-CFLAGS = -Wall -Wextra -Werror -g
+bonus:	all
 
-CC= cc 
-
-RM = rm -rf 
-
-LIBFT_DIR = libft/
-LIBFT_INCLUDE = libft
-
-all: $(NAME)
-	
-$(NAME): $(OBJS)
-			$(MAKE) -C $(LIBFT_DIR) bonus
-			$(CC) $(CFLAGS) $(SRC) libft/libft.a -o $(NAME) -fsanitize=address -lreadline
-clean:	
-			$(RM) $(OBJS)
-			$(MAKE) -C $(LIBFT_DIR) clean
+clean:
+		rm -f $(OBJDIR)/*.o
 
 fclean:	clean
-				$(RM) $(NAME)
-				$(MAKE) -C $(LIBFT_DIR) fclean
+		rm -f $(NAME)
 
-re: fclean all
-				
-.PHONY: all clean fclean re bonus
+run:	all
+		./$(NAME)
+
+re:		fclean all
+
+lldb:	all
+		lldb -- ./$(NAME)
+
+gdb:	all
+		gdb --args $(NAME)
+
+valgrind: 	all
+			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+
+$(NAME): $(OBJS)
+		$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
+
+%.o: %.c
+	$(CC) -Wall -Wextra -Werror -O3 -c $< -o $@
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: all clean fclean bonus run
