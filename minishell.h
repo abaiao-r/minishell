@@ -3,38 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/18 18:57:34 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/04/20 12:10:00 by quackson          #+#    #+#             */
+/*   Updated: 2023/04/21 15:01:45 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft/libft.h"
-# include <dirent.h>
-# include <fcntl.h>
-# include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <signal.h>
-# include <stddef.h>
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/ioctl.h>
-# include <sys/wait.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <unistd.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
-typedef struct s_prompt
-{
-	t_list	*cmds;
-	char	**envp;
-	pid_t	pid;
-}	t_prompt;
-
-void	print_prompt(void);
+char	*ft_strncpy(char *s1, char *s2, int n);
+int		count_words(char *str);
+char	**ft_split(char *str, int *wc);
+void	free_parsed(char **parsed);
+void	exe_command(char **parsed);
+void	exe_cmd(char **input, int num_tokens);
+char	*ft__strchr(const char *s, int c);
+char	*ft_strcpy(char *dest, const char *src);
+char	*ft_strchr(const char *s, int c);
+size_t	ft_strlen(const char *s);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif
