@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 10:35:09 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/21 15:13:10 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:44:50 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int main(void)
 		parsed = ft_split(input, &num_tokens);
 		if (!parsed)
 			continue ;
-		if (num_tokens >= 0)
+		/* if (num_tokens >= 0)
 		{
 			for (int i = 0; i < num_tokens; i++) {
 				printf("-> %s\n", parsed[i]);
 			}
-		}
+		} */
 		exe_cmd(parsed, num_tokens);
 		//exe_command(parsed);
 		free(input);
