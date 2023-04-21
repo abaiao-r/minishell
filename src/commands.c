@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/20 19:29:55 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:02:33 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,28 @@ char	**get_cmd(char **input, char c)
     waitpid(pid1, NULL, 0);
     waitpid(pid2, NULL, 0);
 } */
+
+void	exe_cmd(char **input, int num_tokens)
+{
+	if (!input || !*input || num_tokens <= 0)
+		return ;
+	if (ft_strcmp(input[0], "echo") == 0)
+		printf("ECHO\n");
+	else if (ft_strcmp(input[0], "cd") == 0)
+		printf("CD\n");
+	else if (ft_strcmp(input[0], "pwd") == 0)
+		printf("PWD\n");
+	else if (ft_strcmp(input[0], "export") == 0)
+		printf("EXPORT\n");
+	else if (ft_strcmp(input[0], "unset") == 0)
+		printf("UNSET\n");
+	else if (ft_strcmp(input[0], "env") == 0)
+		printf("ENV\n");
+	else if (ft_strcmp(input[0], "exit") == 0)
+		printf("EXIT\n");
+	else
+		printf("%s: command not found\n", input[0]);
+}
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */
 void	exe_command(char **input)

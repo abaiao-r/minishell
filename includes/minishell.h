@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:10:00 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/20 15:58:43 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:01:45 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ int		count_words(char *str);
 char	**ft_split(char *str, int *wc);
 void	free_parsed(char **parsed);
 void	exe_command(char **parsed);
+void	exe_cmd(char **input, int num_tokens);
 char	*ft__strchr(const char *s, int c);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

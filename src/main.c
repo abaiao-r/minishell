@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 10:35:09 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/20 19:26:58 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:13:10 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int main(void)
 {
 	char	*input;
 	char	**parsed;
-	int	 	num_args;
+	int	 	num_tokens;
 
 	while (1)
 	{
@@ -24,19 +24,20 @@ int main(void)
 		if (input == NULL)
 			break ;
 		add_history(input);
-		num_args = 0;
-		parsed = ft_split(input, &num_args);
+		num_tokens = 0;
+		parsed = ft_split(input, &num_tokens);
 		if (!parsed)
 			continue ;
-		if (num_args >= 0)
+		if (num_tokens >= 0)
 		{
-			for (int i = 0; i < num_args; i++) {
+			for (int i = 0; i < num_tokens; i++) {
 				printf("-> %s\n", parsed[i]);
 			}
 		}
-		exe_command(parsed);
+		exe_cmd(parsed, num_tokens);
+		//exe_command(parsed);
 		free(input);
-		free(parsed);
+		//free(parsed);
 		//free(args);
 	}
 	printf("Goodbye!\n");
