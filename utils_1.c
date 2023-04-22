@@ -1,25 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt_init.c                                      :+:      :+:    :+:   */
+/*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/18 15:16:53 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/18 16:21:18 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
+/*   Updated: 2023/04/21 16:55:25 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_prompt prompt_init(char **av, char **envp)
+char	*ft_strcpy(char *dest, const char *src)
 {
-    t_prompt *prompt;
-    char *str;
+	char	*d;
 
-    str = NULL;
-    prompt->cmds = NULL;
-    prompt->envp = 
+	d = dest;
+	while (*src)
+	{
+		*d++ = *src++;
+	}
+	*d = '\0';
+	return (dest);
+}
 
-    return(prompt);
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return ((const unsigned char) s1[i] - (const unsigned char) s2[i]);
+}
+
+void	free_parsed(char **parsed)
+{
+	int	i;
+
+	i = 0;
+	while (!parsed[i])
+	{
+		free(parsed[i]);
+		i++;
+	}
+	free(parsed);
 }

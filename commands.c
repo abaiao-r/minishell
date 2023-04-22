@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/21 15:24:45 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/21 16:22:37 by quackson         ###   ########.fr       */
+/*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
+/*   Updated: 2023/04/22 13:45:51 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 void	echo_aux(char **args, int num_args, int flag)
 {

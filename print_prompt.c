@@ -6,17 +6,20 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:37:02 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/18 18:54:54 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/21 19:43:48 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_prompt(void)
+char	*print_prompt(void)
 {
 	char	*cwd;
+	char	*input;
 
 	cwd = getcwd(NULL, 0);
-	printf("%s $ ", cwd);
+	printf("%s", cwd);
+	input = readline(" minishell> ");
 	free(cwd);
+	return (input);
 }

@@ -1,33 +1,51 @@
-# Compiler settings
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -lreadline #-fsanitize=address 
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
+#    Updated: 2023/04/22 14:11:29 by andrefranci      ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-# Directories
-SRCDIR = ./src
-OBJDIR = ./objs
-
-# Source Files
-
-SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c $(SRCDIR)/commands.c
-OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-
-# Targets
 NAME = minishell
 
-all: 	$(NAME)
+SRC = 	commands.c \
+		command_utils.c \
+		print_prompt.c \
+		utils_1.c \
+		utils_2.c \
+		main.c 
 
-bonus:	all
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+LDFLAGS =  -L/usr/lib -lreadline
 
-clean:
-		rm -f $(OBJDIR)/*.o
+CC= cc 
+
+RM = rm -rf 
+
+LIBFT_DIR = libft/
+LIBFT_INCLUDE = libft
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+			$(MAKE) -C $(LIBFT_DIR) bonus
+			$(CC) $(CFLAGS) $(LDFLAGS) $(SRC) libft/libft.a -o $(NAME) 
+clean:	
+			$(RM) $(OBJS)
+			$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean:	clean
-		rm -f $(NAME)
+				$(RM) $(NAME)
+				$(MAKE) -C $(LIBFT_DIR) fclean
+
+re: fclean all
 
 run:	all
 		./$(NAME)
-
-re:		fclean all
 
 lldb:	all
 		lldb -- ./$(NAME)
@@ -38,16 +56,4 @@ gdb:	all
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
-$(NAME): $(OBJS)
-		$(CC) $(OBJS) $(CFLAGS) -o $(NAME)
-
-%.o: %.c
-	$(CC) -Wall -Wextra -Werror -O3 -c $< -o $@
-
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-.PHONY: all clean fclean bonus run
+.PHONY: all clean fclean re bonus run

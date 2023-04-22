@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/21 16:11:54 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/22 13:45:35 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 /* Para ele aceitar o comando pedido, precisa de ir pesquisar no caminho do bash
 se esse comando existe e se tem permissao para utiliza-lo

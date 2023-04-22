@@ -3,37 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/20 10:35:09 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/21 15:44:50 by quackson         ###   ########.fr       */
+/*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/04/22 13:17:01 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-int main(void)
+int	main(void)
 {
 	char	*input;
 	char	**parsed;
-	int	 	num_tokens;
+	int		num_tokens;
+	int		i;
 
 	while (1)
 	{
-		input = readline("minishell> ");
+		input = print_prompt();
 		if (input == NULL)
+		{
+			printf("\n");
 			break ;
+		}
 		add_history(input);
-		num_tokens = 0;
-		parsed = ft_split(input, &num_tokens);
+		num_tokens = count_words(input);
+		parsed = ft_split_default(input);
 		if (!parsed)
 			continue ;
-		/* if (num_tokens >= 0)
+		if (num_tokens >= 0)
 		{
-			for (int i = 0; i < num_tokens; i++) {
+			i = 0;
+			while (i < num_tokens)
+			{
 				printf("-> %s\n", parsed[i]);
+				i++;
 			}
-		} */
+		}
 		exe_cmd(parsed, num_tokens);
 		//exe_command(parsed);
 		free(input);
