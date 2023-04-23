@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/23 23:43:22 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/04/23 23:44:34 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main(void)
 		add_history(input);
 		i = 0;
 		num_tokens = count_words(input);
-		parsed = ft_split_1(input);
+		parsed = ft_split_default(input);
 		if (!parsed)
 			continue ;
 		printf("num_tokens: %d\n", num_tokens);

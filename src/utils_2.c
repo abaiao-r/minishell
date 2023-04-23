@@ -11,11 +11,10 @@ char	*ft_strncpy(char *s1, char *s2, size_t n)
 		s1[i] = s2[i];
 		i++;
 	}
-		s1[i] = '\0';
+	s1[i] = '\0';
 	return (s1);
 }
 
-int	count_words(char *str)
 int	count_words(char *str)
 {
 	int	i;
