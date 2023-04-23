@@ -88,7 +88,7 @@ char	**ft_split_default(char *str)
 	return (split);
 }
 
-char	**ft_split_1(char *str, int *wc)
+char	**ft_split_1(char *str)
 {
 	int		i;
 	int		j;
@@ -98,8 +98,7 @@ char	**ft_split_1(char *str, int *wc)
 	i = 0;
 	j = 0;
 	k = 0;
-	*(wc) = count_words(str);
-	out = (char **)malloc(sizeof(char *) * (*(wc) + 1));
+	out = (char **)malloc(sizeof(char *) * (count_words(str) + 1));
 	while (str[i])
 	{
 		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))

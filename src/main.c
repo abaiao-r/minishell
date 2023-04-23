@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/23 21:14:58 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/23 22:59:16 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ int	main(void)
 			printf("\n");
 			break ;
 		}
-		printf("%s\n", input);
 		add_history(input);
 		i = 0;
 		num_tokens = count_words(input);
-		parsed = ft_split_default(input);
+		parsed = ft_split_1(input);
 		if (!parsed)
 			continue ;
 		printf("num_tokens: %d\n", num_tokens);
@@ -47,7 +46,7 @@ int	main(void)
 		exe_cmd(parsed, num_tokens);
 		//exe_command(parsed);
 		free(input);
-		//free(parsed);
+		free(parsed);
 		//free(args);
 	}
 	printf("Goodbye!\n");
