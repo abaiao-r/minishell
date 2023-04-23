@@ -3,49 +3,46 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+         #
+#    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/04/22 14:11:29 by andrefranci      ###   ########.fr        #
+#    Updated: 2023/04/23 20:45:07 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
+# Compiler settings
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -g -lreadline# -fsanitize=address 
 
-SRC = 	commands.c \
-		command_utils.c \
-		print_prompt.c \
-		utils_1.c \
-		utils_2.c \
-		main.c 
+# Directories
+SRCDIR = ./src
+OBJDIR = ./objs
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
-LDFLAGS =  -L/usr/lib -lreadline
+# Source Files
 
-CC= cc 
-
-RM = rm -rf 
+SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c
+OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 LIBFT_DIR = libft/
 LIBFT_INCLUDE = libft
 
-all: $(NAME)
+# Targets
+NAME = minishell
 
-$(NAME): $(OBJS)
-			$(MAKE) -C $(LIBFT_DIR) bonus
-			$(CC) $(CFLAGS) $(LDFLAGS) $(SRC) libft/libft.a -o $(NAME) 
-clean:	
-			$(RM) $(OBJS)
-			$(MAKE) -C $(LIBFT_DIR) clean
+all: 	$(NAME)
+
+bonus:	all
+
+clean:
+		rm -f $(OBJDIR)/*.o
 
 fclean:	clean
-				$(RM) $(NAME)
-				$(MAKE) -C $(LIBFT_DIR) fclean
-
-re: fclean all
+		rm -f $(NAME)
 
 run:	all
 		./$(NAME)
+
+re:		fclean all
 
 lldb:	all
 		lldb -- ./$(NAME)
@@ -56,4 +53,17 @@ gdb:	all
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
-.PHONY: all clean fclean re bonus run
+$(NAME): 	$(OBJS)
+			$(MAKE) -C $(LIBFT_DIR) bonus
+			$(CC) $(OBJS) $(CFLAGS) libft/libft.a -o $(NAME)
+
+%.o: %.c
+	$(CC) -Wall -Wextra -Werror -O3 -c $< -o $@
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: all clean fclean bonus run
