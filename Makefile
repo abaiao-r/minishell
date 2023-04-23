@@ -6,7 +6,7 @@
 #    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/04/23 20:45:07 by quackson         ###   ########.fr        #
+#    Updated: 2023/04/23 22:46:49 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,10 +45,10 @@ run:	all
 re:		fclean all
 
 lldb:	all
-		lldb -- ./$(NAME)
+		lldb ./$(NAME)
 
 gdb:	all
-		gdb --args $(NAME)
+		gdb $(NAME)
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
@@ -58,7 +58,7 @@ $(NAME): 	$(OBJS)
 			$(CC) $(OBJS) $(CFLAGS) libft/libft.a -o $(NAME)
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -O3 -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -c $< -o $@
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)

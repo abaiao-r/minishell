@@ -16,6 +16,7 @@ char	*ft_strncpy(char *s1, char *s2, size_t n)
 }
 
 int	count_words(char *str)
+int	count_words(char *str)
 {
 	int	i;
 	int	wc;
