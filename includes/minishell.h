@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/23 21:50:54 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/04/23 23:14:27 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,30 +34,29 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-
 /* commands.c */
-void		echo_aux(char **args, int num_args, int flag);
-void		echo(char **input, int num_tokens);
-void		pwd(void);
-void		change_dir(char **input, int num_tokens);
+void	echo_aux(char **args, int num_args, int flag);
+void	echo(char **input, int num_tokens);
+void	pwd(void);
+void	change_dir(char **input, int num_tokens);
 
 /* command_utils.c */
-char		*find_executable(char *cmd);
-char		**get_cmd(char **input, char c);
-void		exe_cmd(char **input, int num_tokens);
-void		exe_command(char **parsed);
+char	*find_executable(char *cmd);
+char	**get_cmd(char **input, char c);
+void	exe_cmd(char **input, int num_tokens);
+void	exe_command(char **parsed);
 
 /* print_prompt.c */
-char		*print_prompt(void);
+char	*print_prompt(void);
 
 /* utils_1.c */
-char		*ft_strcpy(char *dest, const char *src);
-int			ft_strcmp(const char *s1, const char *s2);
-void		free_parsed(char **parsed);
+char	*ft_strcpy(char *dest, const char *src);
+int		ft_strcmp(const char *s1, const char *s2);
+void	free_parsed(char **parsed);
 
 /* utils_2.c */
-int			ft_count_words(char *str);
-char		*ft_strncpy(char *s1, char *s2, int n);
-char		**ft_split_default(char *str);
+int		count_words(char *str);
+char	*ft_strncpy(char *s1, char *s2, size_t n);
+char	**ft_split_default(char *str);
 
 #endif

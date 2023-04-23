@@ -1,9 +1,9 @@
 
 #include "../includes/minishell.h"
 
-char	*ft_strncpy(char *s1, char *s2, int n)
+char	*ft_strncpy(char *s1, char *s2, size_t n)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < n && s2[i])
@@ -11,15 +11,11 @@ char	*ft_strncpy(char *s1, char *s2, int n)
 		s1[i] = s2[i];
 		i++;
 	}
-	while (i < n)
-	{
 		s1[i] = '\0';
-		i++;
-	}
 	return (s1);
 }
 
-int	ft_count_words(char *str)
+int	count_words(char *str)
 {
 	int	i;
 	int	wc;
@@ -38,7 +34,7 @@ int	ft_count_words(char *str)
 	return (wc);
 }
 
-/* static int	ft_find_word(char *str, int i)
+static int	ft_find_word(char *str, int i)
 {
 	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
 		i++;
@@ -50,44 +46,36 @@ static int	ft_find_end(char *str, int i)
 	while (str[i] && (str[i] != ' ' && str[i] != '\t' && str[i] != '\n'))
 		i++;
 	return (i);
-} */
-
+}
 
 char	**ft_split_default(char *str)
 {
 	int		i;
 	int		j;
-	char	**split;
-	int		count_words;
-	int		start;
-	int		end;
+	int		k;
+	int		wc;
+	char	**out;
 
-	count_words = ft_count_words(str);
-	split = (char **)malloc(sizeof(char *) * (count_words + 1));
 	i = 0;
-	start = -1;
 	j = 0;
-	while (str[i] == ' ' || str[i] == '\t')
-		i++;
+	k = 0;
+	wc = count_words(str);
+	out = (char **)malloc(sizeof(char *) * (wc + 1));
 	while (str[i])
 	{
-		if (!(str[i] == ' ' || str[i] == '\t') && (start == -1))
+		j = ft_find_word(str, i);
+		i = ft_find_end(str, j);
+		if (i > j)
 		{
-			start = i;
+			out[k] = NULL;
+			out[k] = (char *)malloc(sizeof(char) * ((i - j) + 1));
+			ft_strncpy(out[k++], &str[j], i - j);
 		}
-		if ((!(str[i] == ' ' || str[i] == '\t')) && (str[i + 1] == ' ' || str[i + 1] == '\t' || str[i + 1] == '\0'))
-		{
-			end = i;
-			split[j] = (char *)malloc(sizeof(char) * (end - start + 2));
-			ft_strncpy(split[j], &str[start], end - start + 1);
-            start = -1;
-            j++;
-		}
-		i++;
 	}
-	split[j] = '\0';
-	return (split);
+	out[k] = NULL;
+	return (out);
 }
+
 /* main para testar o ft_split_default */
 /* int	main(void)
 {
@@ -97,7 +85,7 @@ char	**ft_split_default(char *str)
 
 	i = 0;
 	split = ft_split_default(str);
-	while (i < ft_Scount_words(str))
+	while (i < count_words(str))
 	{
 		printf("%s\n", split[i]);
 		free(split[i]);
