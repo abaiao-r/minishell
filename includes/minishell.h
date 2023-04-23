@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/23 20:52:44 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/23 21:50:54 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,8 @@ int			ft_strcmp(const char *s1, const char *s2);
 void		free_parsed(char **parsed);
 
 /* utils_2.c */
-int			count_words(char *str);
+int			ft_count_words(char *str);
 char		*ft_strncpy(char *s1, char *s2, int n);
 char		**ft_split_default(char *str);
-char	**ft_split_1(char *str, int *wc);
-char	**split(const char* str);
 
 #endif
