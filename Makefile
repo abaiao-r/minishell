@@ -6,7 +6,7 @@
 #    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/04/23 22:46:49 by quackson         ###   ########.fr        #
+#    Updated: 2023/04/24 01:03:13 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ OBJDIR = ./objs
 
 # Source Files
 
-SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c
+SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c \
+	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 LIBFT_DIR = libft/
@@ -34,10 +35,12 @@ all: 	$(NAME)
 bonus:	all
 
 clean:
-		rm -f $(OBJDIR)/*.o
+		rm -rf $(OBJDIR)
+		cd libft && make clean
 
 fclean:	clean
 		rm -f $(NAME)
+		cd libft && make fclean
 
 run:	all
 		./$(NAME)
@@ -45,10 +48,10 @@ run:	all
 re:		fclean all
 
 lldb:	all
-		lldb ./$(NAME)
+		lldb -- ./$(NAME)
 
 gdb:	all
-		gdb $(NAME)
+		gdb --args $(NAME)
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
@@ -58,7 +61,7 @@ $(NAME): 	$(OBJS)
 			$(CC) $(OBJS) $(CFLAGS) libft/libft.a -o $(NAME)
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -O3 -c $< -o $@
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)

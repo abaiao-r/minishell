@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/23 23:42:48 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/04/24 00:36:46 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # define NO_FLAG 0
 # define FLAG 1
 # define PWD_SIZE 1024
+# define EXIT 0
+# define NO_EXIT 1
 
 # include "../libft/libft.h"
 # include <dirent.h>
@@ -34,29 +36,33 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+
 /* commands.c */
-void	echo_aux(char **args, int num_args, int flag);
-void	echo(char **input, int num_tokens);
-void	pwd(void);
-void	change_dir(char **input, int num_tokens);
+void		echo_aux(char **args, int num_args, int flag);
+int			echo(char **input, int num_tokens);
+int			pwd(void);
+int			change_dir(char **input, int num_tokens);
 
 /* command_utils.c */
-char	*find_executable(char *cmd);
-char	**get_cmd(char **input, char c);
-void	exe_cmd(char **input, int num_tokens);
-void	exe_command(char **parsed);
+char		*find_executable(char *cmd);
+char		**get_cmd(char **input, char c);
+int			exe_cmd(char **input, int num_tokens);
+void		exe_command(char **parsed);
 
 /* print_prompt.c */
-char	*print_prompt(void);
+char		*print_prompt(void);
 
 /* utils_1.c */
-char	*ft_strcpy(char *dest, const char *src);
-int		ft_strcmp(const char *s1, const char *s2);
-void	free_parsed(char **parsed);
+char		*ft_strcpy(char *dest, const char *src);
+int			ft_strcmp(const char *s1, const char *s2);
+void		free_parsed(char **parsed);
 
 /* utils_2.c */
-int		count_words(char *str);
-char	*ft_strncpy(char *s1, char *s2, size_t n);
-char	**ft_split_default(char *str);
+int			count_words(char *str);
+char		*ft_strncpy(char *s1, char *s2, int n);
+char		**ft_split_1(char *str);
+
+int			show_env(void);
+
 
 #endif

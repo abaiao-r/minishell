@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/23 23:44:34 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/04/24 00:24:15 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ int	main(void)
 	char	**parsed;
 	int		num_tokens;
 	int		i;
+	int		status;
 
+	status = 0;
 	while (1)
 	{
 		input = print_prompt();
@@ -30,7 +32,7 @@ int	main(void)
 		add_history(input);
 		i = 0;
 		num_tokens = count_words(input);
-		parsed = ft_split_default(input);
+		parsed = ft_split_1(input);
 		if (!parsed)
 			continue ;
 		printf("num_tokens: %d\n", num_tokens);
@@ -39,15 +41,15 @@ int	main(void)
 			i = 0;
 			while (i < num_tokens)
 			{
-				printf("-> %s--------\n", parsed[i]);
+				printf("-> %s\n", parsed[i]);
 				i++;
 			}
 		}
-		exe_cmd(parsed, num_tokens);
-		//exe_command(parsed);
+		status = exe_cmd(parsed, num_tokens);
 		free(input);
 		free(parsed);
-		//free(args);
+		if (status == EXIT)
+			break ;
 	}
 	printf("Goodbye!\n");
 	return (0);

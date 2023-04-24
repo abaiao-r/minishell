@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/23 12:23:13 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/24 00:25:07 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	echo_aux(char **args, int num_args, int flag)
 		printf("\n");
 }
 
-void	echo(char **input, int num_tokens)
+int	echo(char **input, int num_tokens)
 {
 	if (num_tokens == 1)
 		printf("\n");
@@ -36,39 +36,42 @@ void	echo(char **input, int num_tokens)
 		echo_aux(input + 1, num_tokens - 1, NO_FLAG);
 	else if (num_tokens > 2 && ft_strcmp(input[1], "-n") == 0)
 		echo_aux(input + 2, num_tokens - 2, FLAG);
+	return (NO_EXIT);
 }
 
-void	pwd(void)
+int	pwd(void)
 {
 	char	cwd[PWD_SIZE];
 
 	if (getcwd(cwd, sizeof(cwd)))
 		printf("%s\n", cwd);
 	else
-	{
 		perror("pwd error");
-		return ;
-	}
-	return ;
+	return (NO_EXIT);
 }
 
-void	change_dir(char **input, int num_tokens)
+int	change_dir(char **input, int num_tokens)
 {
 	char	*dir_path;
 	char	*home_path;
 
 	if (num_tokens > 2)
-		return ;
-	home_path = getenv("HOME"); // get the path of the user's home directory
+	{
+		printf("bash: cd: too many arguments\n");
+		return (NO_EXIT);
+	}
+	home_path = getenv("HOME");
 	if (home_path == NULL)
 	{
 		printf("Could not get home directory path\n");
-		return ;
+		return (NO_EXIT);
 	}
-	if (num_tokens == 1 || (num_tokens == 2 && ft_strcmp(input[1], "~") == 0
-			&& ft_strcmp(input[1], "~/")))
+	if (num_tokens == 1 || (num_tokens == 2 && (ft_strcmp(input[1], "~") == 0
+				|| ft_strcmp(input[1], "~/") == 0)))
 		dir_path = home_path;
 	else
 		dir_path = input[1];
-	chdir(dir_path);
+	if (chdir(dir_path) != 0)
+		printf("bash: cd: %s: No such file or directory\n", dir_path);
+	return (NO_EXIT);
 }

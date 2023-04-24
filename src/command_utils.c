@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/23 12:22:25 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/24 00:38:35 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,32 +138,35 @@ char	**get_cmd(char **input, char c)
     waitpid(pid2, NULL, 0);
 } */
 
-void	exe_cmd(char **input, int num_tokens)
+int	exe_cmd(char **input, int num_tokens)
 {
 	if (!input || !*input || num_tokens <= 0)
-		return ;
+		return (1);
 	if (ft_strcmp(input[0], "echo") == 0)
-	{
-		echo(input, num_tokens);
-	}
+		return (echo(input, num_tokens));
 	else if (ft_strcmp(input[0], "cd") == 0)
-	{
-		change_dir(input, num_tokens);
-	}
+		return (change_dir(input, num_tokens));
 	else if (ft_strcmp(input[0], "pwd") == 0)
-	{
-		pwd();
-	}
+		return (pwd());
 	else if (ft_strcmp(input[0], "export") == 0)
+	{
 		printf("EXPORT\n");
+		return (NO_EXIT);
+	}
 	else if (ft_strcmp(input[0], "unset") == 0)
+	{
 		printf("UNSET\n");
+		return (NO_EXIT);
+	}
 	else if (ft_strcmp(input[0], "env") == 0)
-		printf("ENV\n");
+		return (show_env());
 	else if (ft_strcmp(input[0], "exit") == 0)
-		printf("EXIT\n");
+		return (EXIT);
 	else
+	{
 		printf("%s: command not found\n", input[0]);
+		return (NO_EXIT);
+	}
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */
