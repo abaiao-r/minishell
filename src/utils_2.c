@@ -1,10 +1,11 @@
 
 #include "../includes/minishell.h"
 
-char *ft_strncpy(char *s1, char *s2, int n)
+char	*ft_strncpy(char *s1, char *s2, int n)
 {
-	int i = -1;
+	int	i;
 
+	i = -1;
 	while (++i < n && s2[i])
 		s1[i] = s2[i];
 	s1[i] = '\0';
@@ -70,7 +71,6 @@ char	**ft_split_default(char *str)
 	out[k] = NULL;
 	return (out);
 }
-
 
 /* main para testar o ft_split_default */
 /* int	main(void)
