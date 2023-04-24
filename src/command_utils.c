@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/24 14:50:44 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:15:11 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,11 +161,13 @@ int	exe_cmd(char **input, int num_tokens)
 		return (show_env());
 	else if (ft_strcmp(input[0], "exit") == 0)
 		return (EXIT);
-	else
+	else if (num_tokens == 1 && !ft_strncmp(input[0], "./", 2) && input[0][2])
 	{
-		printf("%s: command not found\n", input[0]);
-		return (NO_EXIT);
+		printf("entrei\n");
+		return (exe_executable(input[0]));
 	}
+	else
+		return (show_cmd_error(input[0]));
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */

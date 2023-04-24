@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/24 14:52:20 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/24 20:37:25 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			exe_cmd(char **input, int num_tokens);
 void		exe_command(char **parsed);
 
 /* print_prompt.c */
-char		*print_prompt(void);
+void	print_prompt(void);
 
 /* utils_1.c */
 char		*ft_strcpy(char *dest, const char *src);
@@ -61,8 +61,9 @@ void		free_parsed(char **parsed);
 int			count_words(char *str);
 char		*ft_strncpy(char *s1, char *s2, int n);
 char		**ft_split_default(char *str);
+int			show_cmd_error(char *str);
 
 int			show_env(void);
-
+int			exe_executable(char *input);
 
 #endif

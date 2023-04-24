@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
+/*   Updated: 2023/04/24 18:02:35 by quackson         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
@@ -31,37 +42,24 @@ int	count_words(char *str)
 	return (wc);
 }
 
-static int	ft_find_word(char *str, int i)
-{
-	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
-		i++;
-	return (i);
-}
-
-static int	ft_find_end(char *str, int i)
-{
-	while (str[i] && (str[i] != ' ' && str[i] != '\t' && str[i] != '\n'))
-		i++;
-	return (i);
-}
-
 char	**ft_split_default(char *str)
 {
 	int		i;
 	int		j;
 	int		k;
-	int		wc;
 	char	**out;
 
 	i = 0;
 	j = 0;
 	k = 0;
-	wc = count_words(str);
-	out = (char **)malloc(sizeof(char *) * (wc + 1));
+	out = (char **)malloc(sizeof(char *) * (count_words(str) + 1));
 	while (str[i])
 	{
-		j = ft_find_word(str, i);
-		i = ft_find_end(str, j);
+		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+			i++;
+		j = i;
+		while (str[i] && (str[i] != ' ' && str[i] != '\t' && str[i] != '\n'))
+			i++;
 		if (i > j)
 		{
 			out[k] = (char *)malloc(sizeof(char) * ((i - j) + 1));
@@ -70,6 +68,12 @@ char	**ft_split_default(char *str)
 	}
 	out[k] = NULL;
 	return (out);
+}
+
+int	show_cmd_error(char *str)
+{
+	printf("%s: command not found\n", str);
+	return (NO_EXIT);
 }
 
 /* main para testar o ft_split_default */

@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/23 12:23:02 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:56:49 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ void	free_parsed(char **parsed)
 		free(parsed[i]);
 		i++;
 	}
+	free(parsed[i]);
 	free(parsed);
 }
