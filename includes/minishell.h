@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/24 00:36:46 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/24 14:52:20 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void		free_parsed(char **parsed);
 /* utils_2.c */
 int			count_words(char *str);
 char		*ft_strncpy(char *s1, char *s2, int n);
-char		**ft_split_1(char *str);
+char		**ft_split_default(char *str);
 
 int			show_env(void);
 

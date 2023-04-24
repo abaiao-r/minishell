@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
+#    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/04/24 01:03:13 by quackson         ###   ########.fr        #
+#    Updated: 2023/04/24 14:45:17 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler settings
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -lreadline# -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address 
 
 # Directories
 SRCDIR = ./src
@@ -58,10 +58,10 @@ valgrind: 	all
 
 $(NAME): 	$(OBJS)
 			$(MAKE) -C $(LIBFT_DIR) bonus
-			$(CC) $(OBJS) $(CFLAGS) libft/libft.a -o $(NAME)
+			$(CC) $(OBJS) $(CFLAGS) -lreadline libft/libft.a -o  $(NAME) 
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -O3 -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -c $< -o $@ 
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
