@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/28 19:38:44 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/28 20:54:18 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void				exe_command(char **parsed);
 /* env.c */
 void				add_env_node(char *var_name, char *var_value, t_env **head);
 t_env				*parse_env(char **environ);
-void				print_env(t_env *head);
-void				free_env_list(t_env *head);
 int					show_env(char **env);
 
 /* env.utils.c */
 void				ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env				*ft_lstlast_env(t_env *lst);
+void				print_env(t_env *head);
+void				free_env_list(t_env *head);
 
 /* print_prompt.c */
 void				print_prompt(void);
