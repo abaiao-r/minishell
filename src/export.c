@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands_2.c                                       :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/24 16:46:39 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/24 18:12:13 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/04/28 21:58:38 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/04/28 22:09:05 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@ int	export_error(char *input)
 	printf("export: not an identifier: %s\n", input);
 }
 
-int	export(char **input, int num_tokens)
+int	export(char **input, int num_tokens, char **env)
 {
 	int i;
 	int output;
+	
 
 	i = 0;
 	output = 0;
@@ -33,8 +34,8 @@ int	export(char **input, int num_tokens)
 		else if (str_alnum(input[i]))
 			output = export_error(input[i]);
 		else if (ft_strchr(input[i], '='))
-			ft_putenv(input[i]);
+			ft_putenv(input, env);
 		i++;
 	}
-	return (output);
+	return (NO_EXIT);
 }
