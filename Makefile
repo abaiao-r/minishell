@@ -6,7 +6,7 @@
 #    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/04/24 14:45:17 by abaiao-r         ###   ########.fr        #
+#    Updated: 2023/04/28 16:40:56 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ OBJDIR = ./objs
 # Source Files
 
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c \
-	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c
+	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c $(SRCDIR)/exe.c \
+	   $(SRCDIR)/env_utils.c
+
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 LIBFT_DIR = libft/
@@ -69,4 +71,4 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY: all clean fclean bonus run
+.PHONY: all clean fclean bonus re run

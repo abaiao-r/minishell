@@ -1,26 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/11 13:21:22 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/28 16:38:24 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/04/28 16:36:35 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/04/28 16:42:17 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+t_env	*ft_lstlast_env(t_env *lst)
 {
-	t_list	*last;
+	if (!lst)
+	{
+		return (0);
+	}
+	while (lst != NULL)
+	{
+		if (!lst->next)
+		{
+			return (lst);
+		}
+		lst = lst->next;
+	}
+	return (lst);
+}
+
+void	ft_lstadd_back_env(t_env **lst, t_env *new)
+{
+	t_env	*last;
 
 	if (lst)
 	{
 		if (*lst)
 		{
-			last = ft_lstlast(*lst);
+			last = ft_lstlast_env(*lst);
 			last->next = new;
 		}
 		else
@@ -30,18 +47,3 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	}
 	return ;
 }
-/* int main(void)
-{
-	t_list *teste;
-	t_list *add;
-	t_list *temp;
-	
-	teste -> content = "abc";
-	add -> content = "def";
-	ft_lstadd_back(&teste, add);
-	while (teste)
-	{
-		printf("%s\n", (char *)teste -> content);
-		teste = teste -> next;
-	}
-} */
