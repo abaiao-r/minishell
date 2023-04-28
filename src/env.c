@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 00:32:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/28 21:04:42 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/28 21:12:57 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	add_env_node(char *var_name, char *var_value, t_env **environment)
 /* create_env_node: creates a new environment node from a string
  in the format VAR_NAME=VAR_VALUE and adds it to the end of the 
 environment list. */
-static void	create_env_node(char *env_var_str, t_env **environment)
+void	create_env_node(char *env_var_str, t_env **environment)
 {
 	char	*eq_pos;
 	char	*var_name;

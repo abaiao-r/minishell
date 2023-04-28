@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/28 20:54:18 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/28 21:13:25 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void				exe_command(char **parsed);
 
 /* env.c */
 void				add_env_node(char *var_name, char *var_value, t_env **head);
+void				create_env_node(char *env_var_str, t_env **environment);
 t_env				*parse_env(char **environ);
 int					show_env(char **env);
 
