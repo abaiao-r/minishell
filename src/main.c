@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/28 17:37:25 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:35:09 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ void	sigint_handler(int signum)
 	print_prompt();
 }
 
-int	main(void)
+int	main(int ac, char **av, char **env)
 {
 	char	*input;
 	char	**parsed;
 	int		num_tokens;
 	//int		i;
 	int		status;
-
+	(void) ac;
+	(void) av;
+	
 	signal(SIGINT, sigint_handler);
 	status = 0;
 	while (1)
@@ -52,7 +54,7 @@ int	main(void)
 				i++;
 			}
 		} */
-		status = exe_cmd(parsed, num_tokens);
+		status = exe_cmd(parsed, num_tokens, env);
 		free(input);
 		free_parsed(parsed);
 		if (status == EXIT)

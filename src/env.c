@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 00:32:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/28 16:48:53 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:39:07 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,11 @@ void	free_env_list(t_env *head)
 	}
 }
 
-int	show_env(void)
+int	show_env(char **env)
 {
-	extern char	**environ;
 	t_env		*head;
 
-	head = parse_env(environ);
+	head = parse_env(env);
 	print_env(head);
 	free_env_list(head);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/24 18:15:11 by quackson         ###   ########.fr       */
+/*   Updated: 2023/04/28 19:38:19 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ char	**get_cmd(char **input, char c)
     waitpid(pid2, NULL, 0);
 } */
 
-int	exe_cmd(char **input, int num_tokens)
+int	exe_cmd(char **input, int num_tokens, char **env)
 {
 	if (!input || !*input || num_tokens <= 0)
 		return (1);
@@ -158,7 +158,7 @@ int	exe_cmd(char **input, int num_tokens)
 		return (NO_EXIT);
 	}
 	else if (ft_strcmp(input[0], "env") == 0)
-		return (show_env());
+		return (show_env(env));
 	else if (ft_strcmp(input[0], "exit") == 0)
 		return (EXIT);
 	else if (num_tokens == 1 && !ft_strncmp(input[0], "./", 2) && input[0][2])
