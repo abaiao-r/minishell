@@ -139,6 +139,7 @@ char	**get_cmd(char **input, char c)
 
 int	exe_cmd(char **input, int num_tokens, char **env)
 {
+	(void) env;
 	if (!input || !*input || num_tokens <= 0)
 		return (1);
 	if (ft_strcmp(input[0], "echo") == 0)
@@ -147,8 +148,8 @@ int	exe_cmd(char **input, int num_tokens, char **env)
 		return (change_dir(input, num_tokens));
 	else if (ft_strcmp(input[0], "pwd") == 0)
 		return (pwd());
-	/* else if (ft_strcmp(input[0], "export") == 0)
-		return (export(input, env)); */
+	else if (ft_strcmp(input[0], "export") == 0)
+		return (export(input, num_tokens, env));
 	else if (ft_strcmp(input[0], "unset") == 0)
 	{
 		printf("UNSET\n");

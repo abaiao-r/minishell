@@ -22,7 +22,7 @@ OBJDIR = ./objs
 
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c \
 	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c $(SRCDIR)/exe.c \
-	   $(SRCDIR)/env_utils.c
+	   $(SRCDIR)/env_utils.c $(SRCDIR)/export.c
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
@@ -50,10 +50,10 @@ run:	all
 re:		fclean all
 
 lldb:	all
-		lldb -- ./$(NAME)
+		lldb ./$(NAME)
 
 gdb:	all
-		gdb --args $(NAME)
+		gdb $(NAME)
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)

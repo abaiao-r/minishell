@@ -61,6 +61,7 @@ void				add_env_node(char *var_name, char *var_value, t_env **head);
 void				create_env_node(char *env_var_str, t_env **environment);
 t_env				*parse_env(char **environ);
 int					show_env(char **env);
+int	old_show_env(void);
 
 /* env.utils.c */
 void				ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -81,6 +82,9 @@ int					count_words(char *str);
 char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
+
+/* export.c */
+int					export(char **input, int num_tokens, char **env);
 
 int					exe_executable(char *input);
 
