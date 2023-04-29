@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/28 22:00:48 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/29 09:50:18 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ int	exe_cmd(char **input, int num_tokens, char **env)
 		return (change_dir(input, num_tokens));
 	else if (ft_strcmp(input[0], "pwd") == 0)
 		return (pwd());
-	else if (ft_strcmp(input[0], "export") == 0)
-		return (export(input, env));
+	/* else if (ft_strcmp(input[0], "export") == 0)
+		return (export(input, env)); */
 	else if (ft_strcmp(input[0], "unset") == 0)
 	{
 		printf("UNSET\n");
