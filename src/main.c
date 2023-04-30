@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/28 19:35:09 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/30 23:56:11 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void	sigint_handler(int signum)
 	(void) signum;
 	printf("\n");
 	rl_on_new_line();
-	rl_replace_line("", 0);
-	print_prompt();
+	//rl_replace_line("", 0);
+	rl_redisplay();
+	//print_prompt();
 }
 
 int	main(int ac, char **av, char **env)
@@ -36,8 +37,7 @@ int	main(int ac, char **av, char **env)
 	status = 0;
 	while (1)
 	{
-		print_prompt();
-		input = readline("$ ");
+		input = print_prompt();
 		add_history(input);
 		//i = 0;
 		num_tokens = count_words(input);
@@ -60,6 +60,6 @@ int	main(int ac, char **av, char **env)
 		if (status == EXIT)
 			break ;
 	}
-	//printf("Goodbye!");
+	rl_clear_history();
 	return (0);
 }

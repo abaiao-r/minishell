@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/28 21:13:25 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/04/30 23:52:38 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void				print_env(t_env *head);
 void				free_env_list(t_env *head);
 
 /* print_prompt.c */
-void				print_prompt(void);
+char*				print_prompt(void);
 
 /* utils_1.c */
 char				*ft_strcpy(char *dest, const char *src);
