@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/01 00:47:12 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/01 12:50:43 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define PWD_SIZE 1024
 # define EXIT 0
 # define NO_EXIT 1
+# define PROMPT_SIZE 1024
 
 # include "../libft/libft.h"
 # include <dirent.h>
@@ -71,7 +72,7 @@ void				print_env(t_env *head);
 void				free_env_list(t_env *head);
 
 /* print_prompt.c */
-char	*			print_prompt(void);
+char				*print_prompt(void);
 
 /* utils_1.c */
 char				*ft_strcpy(char *dest, const char *src);

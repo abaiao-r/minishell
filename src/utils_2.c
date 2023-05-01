@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/01 12:45:48 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/01 13:17:34 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,33 @@ int	count_quotes(char *str)
 
 int	is_valid_input(char *input)
 {
+	char	stack[1024];
+	int		stack_size;
+	int		i;
+
+	i = 0;
+	stack_size = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'' || input[i] == '\"')
+		{
+			if (stack_size != 0 && stack[stack_size - 1] == input[i])
+				stack_size--;
+			else
+			{
+				stack_size++;
+				stack[stack_size - 1] = input[i];
+			}
+		}
+		i++;
+	}
+	if (stack_size != 0)
+		return (show_quotes_error());
+	return (has_special_chars(input));
+}
+
+/* int	is_valid_input(char *input)
+{
 	int	l;
 	int	r;
 
@@ -134,7 +161,7 @@ int	is_valid_input(char *input)
 		}
 	}
 	return (has_special_chars(input));
-}
+} */
 
 /* main para testar o ft_split_default */
 /* int	main(void)
