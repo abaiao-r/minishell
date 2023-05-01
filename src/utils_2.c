@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/24 18:02:35 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/01 00:12:54 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,25 @@ int	show_cmd_error(char *str)
 {
 	printf("%s: command not found\n", str);
 	return (NO_EXIT);
+}
+
+int	show_special_char_error(char c)
+{
+	printf("bash: syntax error near unexpected token \'%c\'\n", c);
+	return (0);
+}
+
+int	is_valid_input(char *input)
+{
+	if (!input)
+		return (0);
+	while (*input)
+	{
+		if (*input == '\\' || *input == ';')
+			return (show_special_char_error(*input));
+		input++;
+	}
+	return (1);
 }
 
 /* main para testar o ft_split_default */

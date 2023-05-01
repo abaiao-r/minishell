@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/29 09:50:18 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/01 01:04:22 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,39 +137,66 @@ char	**get_cmd(char **input, char c)
     waitpid(pid2, NULL, 0);
 } */
 
-int	exe_cmd(char **input, int num_tokens, char **env)
+int	exe_shell_cmd(char *cmd)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		// child process
+		execve("/bin/bash", (char *[]){"/bin/bash", "-c", cmd, NULL}, NULL);
+		// if execve returns, an error occurred
+		perror("execve");
+		exit(EXIT_FAILURE);
+	}
+	else if (pid < 0)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		// parent process
+		do {
+			waitpid(pid, &status, WUNTRACED);
+		}
+		while (!WIFEXITED(status) && !WIFSIGNALED(status));
+	}
+	return (NO_EXIT);
+}
+
+int	exe_cmd(char **parsed, char *input, int num_tokens, char **env)
 {
 	(void) env;
-	if (!input || !*input || num_tokens <= 0)
+	if (!parsed || !*parsed || num_tokens <= 0)
 		return (1);
-	if (ft_strcmp(input[0], "echo") == 0)
-		return (echo(input, num_tokens));
-	else if (ft_strcmp(input[0], "cd") == 0)
-		return (change_dir(input, num_tokens));
-	else if (ft_strcmp(input[0], "pwd") == 0)
+	if (ft_strcmp(parsed[0], "echo") == 0)
+		return (echo(parsed, num_tokens));
+	else if (ft_strcmp(parsed[0], "cd") == 0)
+		return (change_dir(parsed, num_tokens));
+	else if (ft_strcmp(parsed[0], "pwd") == 0)
 		return (pwd());
-	else if (ft_strcmp(input[0], "export") == 0)
-		return (export(input, num_tokens, env));
-	else if (ft_strcmp(input[0], "unset") == 0)
+	else if (ft_strcmp(parsed[0], "export") == 0)
+		return (export(parsed, num_tokens, env));
+	else if (ft_strcmp(parsed[0], "unset") == 0)
 	{
 		printf("UNSET\n");
 		return (NO_EXIT);
 	}
-	else if (ft_strcmp(input[0], "env") == 0)
+	else if (ft_strcmp(parsed[0], "env") == 0)
 		return (show_env(env));
-	else if (ft_strcmp(input[0], "exit") == 0)
+	else if (ft_strcmp(parsed[0], "exit") == 0)
 		return (EXIT);
-	else if (num_tokens == 1 && !ft_strncmp(input[0], "./", 2) && input[0][2])
-	{
-		printf("entrei\n");
-		return (exe_executable(input[0]));
-	}
+	else if (!ft_strncmp(parsed[0], "/", 1))
+		return (exe_shell_cmd(input));
 	else
-		return (show_cmd_error(input[0]));
+		return (show_cmd_error(parsed[0]));
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */
-void	exe_command(char **input)
+void	exe_executable(char **input)
 {
 	pid_t	pid;
 	int		status;

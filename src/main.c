@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/30 23:56:11 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/01 00:47:49 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **env)
 	int		status;
 	(void) ac;
 	(void) av;
-	
+
 	signal(SIGINT, sigint_handler);
 	status = 0;
 	while (1)
@@ -40,6 +40,8 @@ int	main(int ac, char **av, char **env)
 		input = print_prompt();
 		add_history(input);
 		//i = 0;
+		if (!is_valid_input(input))
+			continue ;
 		num_tokens = count_words(input);
 		parsed = ft_split_default(input);
 		if (!parsed)
@@ -54,7 +56,7 @@ int	main(int ac, char **av, char **env)
 				i++;
 			}
 		} */
-		status = exe_cmd(parsed, num_tokens, env);
+		status = exe_cmd(parsed, input, num_tokens, env);
 		free(input);
 		free_parsed(parsed);
 		if (status == EXIT)

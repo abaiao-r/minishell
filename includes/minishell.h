@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/30 23:52:38 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/01 00:47:12 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int					change_dir(char **input, int num_tokens);
 /* command_utils.c */
 char				*find_executable(char *cmd);
 char				**get_cmd(char **input, char c);
-int					exe_cmd(char **input, int num_tokens, char **env);
+int					exe_cmd(char **parsed, char *input, int num_tokens,
+						char **env);
 void				exe_command(char **parsed);
 
 /* env.c */
@@ -61,7 +62,7 @@ void				add_env_node(char *var_name, char *var_value, t_env **head);
 void				create_env_node(char *env_var_str, t_env **environment);
 t_env				*parse_env(char **environ);
 int					show_env(char **env);
-int	old_show_env(void);
+int					old_show_env(void);
 
 /* env.utils.c */
 void				ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -70,7 +71,7 @@ void				print_env(t_env *head);
 void				free_env_list(t_env *head);
 
 /* print_prompt.c */
-char*				print_prompt(void);
+char	*			print_prompt(void);
 
 /* utils_1.c */
 char				*ft_strcpy(char *dest, const char *src);
@@ -82,10 +83,11 @@ int					count_words(char *str);
 char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
+int					is_valid_input(char *input);
 
 /* export.c */
 int					export(char **input, int num_tokens, char **env);
 
-int					exe_executable(char *input);
+void				exe_executable(char **input);
 
 #endif

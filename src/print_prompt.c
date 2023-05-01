@@ -6,13 +6,13 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:37:02 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/30 23:53:25 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/01 00:04:51 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char*	print_prompt(void)
+char	*print_prompt(void)
 {
 	char	*cwd;
 	char	*username;
