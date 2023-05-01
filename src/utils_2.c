@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/01 00:12:54 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/01 12:45:48 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,58 @@ int	show_special_char_error(char c)
 	return (0);
 }
 
-int	is_valid_input(char *input)
+int	show_quotes_error(void)
 {
-	if (!input)
-		return (0);
-	while (*input)
+	printf("Error: unclosed quotes\n");
+	return (0);
+}
+
+int	has_special_chars(char *str)
+{
+	while (*str)
 	{
-		if (*input == '\\' || *input == ';')
-			return (show_special_char_error(*input));
-		input++;
+		if (*str == ';' || *str == '\\')
+			return (show_special_char_error(*str));
+		str++;
 	}
 	return (1);
+}
+
+int	count_quotes(char *str)
+{
+	int	count;
+
+	count = 0;
+	while (*str)
+	{
+		if (*str == '\'' || *str == '\"')
+			count++;
+		str++;
+	}
+	return (count);
+}
+
+int	is_valid_input(char *input)
+{
+	int	l;
+	int	r;
+
+	l = 0;
+	r = ft_strlen(input) - 1;
+	if (count_quotes(input) % 2 != 0)
+		return (show_quotes_error());
+	while (l < r)
+	{
+		while (!(input[l] == '\'' || input[l] == '\"') && l < r)
+			l++;
+		while (!(input[r] == '\'' || input[r] == '\"') && l < r)
+			r--;
+		if (input[l++] != input[r--])
+		{
+			return (show_quotes_error());
+		}
+	}
+	return (has_special_chars(input));
 }
 
 /* main para testar o ft_split_default */

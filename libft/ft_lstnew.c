@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/11 11:25:13 by abaiao-r          #+#    #+#             */
-/*   Updated: 2022/11/19 16:11:56 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/01 11:56:56 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
