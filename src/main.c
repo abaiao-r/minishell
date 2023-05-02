@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/01 15:28:18 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:13:52 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	main(int ac, char **av, char **env)
 		status = exe_cmd(quote_parsed, input, i, env);
 		free(input);
 		free_parsed(parsed);
+		free_parsed(quote_parsed);
 		if (status == EXIT)
 			break ;
 	}

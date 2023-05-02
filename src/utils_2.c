@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/01 15:15:49 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/02 17:48:56 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,60 +118,68 @@ int	is_valid_input(char *input)
 
 #define MAX_ARGS 1024
 
-char** parse_echo_arguments(char* string)
+char **parse_echo_arguments(char *string)
 {
     char **args = malloc(MAX_ARGS * sizeof(char *));
     int arg_index = 0;
-    int string_len = ft_strlen(string);
+    int string_len = strlen(string);
     int i = 0;
-    
-    while (i < string_len && arg_index < MAX_ARGS) {
-        char *arg = malloc(string_len * sizeof(char));
+
+    while (i < string_len && arg_index < MAX_ARGS)
+    {
+        char *arg = malloc((string_len + 1) * sizeof(char));
         int arg_len = 0;
         int in_quotes = 0;
         char quote_type = '\0';
-        
-        while (i < string_len && isspace(string[i])) {
+
+        while (i < string_len && isspace(string[i]))
+        {
             i++;
         }
-        
-        while (i < string_len && arg_len < string_len && arg_index < MAX_ARGS) {
+
+        while (i < string_len && arg_index < MAX_ARGS)
+        {
             char c = string[i];
-            
-            if (!in_quotes && (c == '\'' || c == '\"')) {
+
+            if (!in_quotes && (c == '\'' || c == '\"'))
+            {
                 in_quotes = 1;
                 quote_type = c;
                 i++;
                 continue;
             }
-            
-            if (in_quotes && c == quote_type) {
+
+            if (in_quotes && c == quote_type)
+            {
                 in_quotes = 0;
                 quote_type = '\0';
                 i++;
                 continue;
             }
-            
-            if (!in_quotes && isspace(c)) {
+
+            if (!in_quotes && isspace(c))
+            {
                 break;
             }
-            
+
             arg[arg_len++] = c;
             i++;
         }
-        
-        if (arg_len > 0) {
+
+        if (arg_len > 0)
+        {
             arg[arg_len] = '\0';
             args[arg_index++] = arg;
-        } else {
+        }
+        else
+        {
             free(arg);
         }
     }
-    
-    args[arg_index] = NULL;
-    
-    return args;
 
+    args[arg_index] = NULL;
+
+    return args;
 }
 
 /* main para testar o ft_split_default */

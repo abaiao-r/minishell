@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/01 14:25:01 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:02:00 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ char				**get_cmd(char **input, char c);
 int					exe_cmd(char **parsed, char *input, int num_tokens,
 						char **env);
 void				exe_command(char **parsed);
+void				exe_executable(char **input);
 
 /* env.c */
 void				add_env_node(char *var_name, char *var_value, t_env **head);
 void				create_env_node(char *env_var_str, t_env **environment);
 t_env				*parse_env(char **environ);
 int					show_env(char **env);
-int					old_show_env(void);
 
 /* env.utils.c */
 void				ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -85,11 +85,13 @@ char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
-char				**parse_echo_arguments(char* input_string);
+char				**parse_echo_arguments(char *input_string);
 
 /* export.c */
+t_env				*sort_env_list(t_env *head);
+int					export_error(char *input);
+void				print_export(t_env *head);
+int					show_export(char **env);
 int					export(char **input, int num_tokens, char **env);
-
-void				exe_executable(char **input);
 
 #endif
