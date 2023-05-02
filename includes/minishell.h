@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 16:02:00 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:47:14 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
-char				**parse_echo_arguments(char *input_string);
 
 /* export.c */
 t_env				*sort_env_list(t_env *head);
@@ -93,5 +92,11 @@ int					export_error(char *input);
 void				print_export(t_env *head);
 int					show_export(char **env);
 int					export(char **input, int num_tokens, char **env);
+
+/* parse_echo_arguments */
+size_t				compute_memory_needed(char *string);
+char				**allocate_memory(size_t size);
+char				**parse_arguments(char *string, char **args, size_t count);
+char				**parse_echo_arguments(char *string);
 
 #endif
