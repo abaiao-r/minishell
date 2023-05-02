@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_skip_whitespace.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 14:05:20 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 20:56:09 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/05/02 20:39:01 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/05/02 22:30:25 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+void	ft_skip_whitespace(char **string_ptr)
 {
-	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z' ));
+	int	i;
+
+	i = 0;
+	while ((*string_ptr)[i] != '\0' && ft_isspace((*string_ptr)[i]))
+		++i;
+	*string_ptr += i;
 }
-/*int main(void)
+
+/* int	main(void)
 {
-	char c;
-	c = 'Q';
-	printf("\nResult when uppercase alphabet is passed: %d", ft_isalpha(c));
+	char test_string[] = "  \t\nhello world";
+	char *str = test_string;
 
-	c = 'q';
-	printf("\nResult when lowercase alphabet is passed: %d", ft_isalpha(c));
+	skip_whitespace(&str);
 
-	c='2';
-	printf("\nResult when non-alphabetic character is passed: %d", ft_isalpha(c));
+	printf("%s\n", str);
 
 	return (0);
-}*/
+} */

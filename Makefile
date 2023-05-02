@@ -6,7 +6,7 @@
 #    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/05/02 18:47:57 by abaiao-r         ###   ########.fr        #
+#    Updated: 2023/05/02 22:39:26 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ OBJDIR = ./objs
 
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c \
 	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c $(SRCDIR)/exe.c \
-	   $(SRCDIR)/env_utils.c $(SRCDIR)/export.c $(SRCDIR)/parse_echo_arguments.c 
+	   $(SRCDIR)/env_utils.c $(SRCDIR)/export.c $(SRCDIR)/parse_echo_arguments.c  \
+	   $(SRCDIR)/parse_echo_arguments_utils.c 
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 

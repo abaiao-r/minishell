@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 21:58:38 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 17:11:48 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/02 19:53:11 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	print_export(t_env *head)
 		printf("declare -x %s=\"%s\"\n", node->var_name, node->var_value);
 		node = node->next;
 	}
-	/* free_env_list(sorted_head); */
 }
 
 int	show_export(char **env)

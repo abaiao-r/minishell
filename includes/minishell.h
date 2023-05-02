@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 18:47:14 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/02 22:48:37 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,17 @@ int					show_export(char **env);
 int					export(char **input, int num_tokens, char **env);
 
 /* parse_echo_arguments */
-size_t				compute_memory_needed(char *string);
-char				**allocate_memory(size_t size);
+void				free_memory(char **args, size_t count);
+char				*parse_argument_string(char *arg_start, char *arg_end);
 char				**parse_arguments(char *string, char **args, size_t count);
 char				**parse_echo_arguments(char *string);
+
+/* parse_echo_arguments_utils.c */
+char				*process_argument(char *arg, char *string, char **args,
+						int count);
+void				parse_string(char **string_ptr, int *inside_quote_ptr,
+						char *quote_type_ptr);
+void				parse_quote(char **string_ptr, int *inside_quote_ptr,
+						char *quote_type_ptr);
 
 #endif
