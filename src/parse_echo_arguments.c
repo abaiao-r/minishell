@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_echo_arguments.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:38:19 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/03 21:25:31 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/04 00:48:34 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,27 +81,27 @@ int	count_words(char *str)
 {
 	int	i;
 	int	wc;
+	char c;
 
 	wc = 0;
 	i = 0;
-	while (str[i])
+	while (str[i++])
 	{
 		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
 			i++;
-		if (str[i] == '"' || str[i] == '\'')
+		if (str[i] == '\"' || str[i] == '\'')
 		{
 			i++;
+			c = str[i - 1];
 			if (!ft_quotes_are_closed(&str[i], str[i - 1]))
 				return (-1);
 			wc++;
-			while (str[i] != '"')
+			while (str[i] != c)
 				i++;
 			i++;
 		}
 		else if (str[i])
 			wc++;
-		while (str[i] && (str[i] != ' ' && str[i] != '\t' && str[i] != '\n'))
-			i++;
 	}
 	return (wc);
 }
@@ -112,7 +112,7 @@ void	remove_quotes(char *str)
     int j = 0;
     while (str[i])
     {
-        if (str[i] != '"' && str[i] != '\'')
+        if (str[i] != '\"' && str[i] != '\'')
         {
             str[j] = str[i];
             j++;
@@ -207,9 +207,9 @@ char	**parse_echo_arguments(char *str)
 		while (str[i] && ((in_quote && !ft_is_quote(str[i])) || (!in_quote
 					&& str[i] != ' ' && str[i] != '\t' && str[i] != '\n')))
 		{
-			if (ft_is_quote(str[i]))
+			if (in_quote && ft_is_quote(str[i + 1]))
 			{
-				i--;
+				i++;
 				break ;
 			}
 			i++;
@@ -228,8 +228,8 @@ char	**parse_echo_arguments(char *str)
 	}
 	out[k] = NULL;
 	return (out);
-} */
-
+}
+ */
 /* main to test char	**parse_echo_arguments(char *string)
 to use this main you need few funtions of libft.h. 
 the funtions need were pasted below this main */
@@ -237,7 +237,7 @@ the funtions need were pasted below this main */
 int	main(void)
 {
 	int		i;
-	char	input[] = "Hello \"World is\" ae a test. a fdsa";
+	char	input[] = "Hello \"World is\" ae a \'test. a\' fdsa";
 	char	**args;
 
 	args = parse_echo_arguments(input);
@@ -252,7 +252,7 @@ int	main(void)
 		printf("Argument %d: %s\n", i, args[i]);
 		i++;
 	}
-	free(args);
+	free_memory(args, i);
 	return (EXIT_SUCCESS);
 }
 
