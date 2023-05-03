@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:38:19 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/03 17:12:22 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/03 21:25:31 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,161 +51,184 @@ void	free_memory(char **args, size_t count)
 	free(args);
 }
 
-char	*parse_argument_string(char *arg_start, char *arg_end)
+char	*ft_strncpy(char *s1, char *s2, int n)
 {
-	char	*arg_str;
+	int	i;
 
-	arg_str = strndup(arg_start, arg_end - arg_start);
-	if (!arg_str)
+	i = -1;
+	while (++i < n && s2[i])
+		s1[i] = s2[i];
+	s1[i] = '\0';
+	return (s1);
+}
+/* utils | */
+
+int	ft_quotes_are_closed(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
 	{
-		return (NULL);
+		if (str[i] == c)
+			return (1);
+		i++;
 	}
-	if (ft_is_quote(arg_str[0]) && arg_str[0] == arg_str[strlen(arg_str) - 1])
-	{
-		arg_str[strlen(arg_str) - 1] = '\0';
-		++arg_str;
-	}
-	return (arg_str);
+	return (0);
 }
 
-char	*process_argument(char *arg, char *string, char **args, int count)
+int	count_words(char *str)
 {
-	char	*arg_str;
+	int	i;
+	int	wc;
 
-	arg_str = NULL;
-	if (arg != string)
+	wc = 0;
+	i = 0;
+	while (str[i])
 	{
-		arg_str = parse_argument_string(arg, string);
-		if (!arg_str)
+		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+			i++;
+		if (str[i] == '"' || str[i] == '\'')
 		{
-			free_memory(args, count - 1);
-			return (NULL);
+			i++;
+			if (!ft_quotes_are_closed(&str[i], str[i - 1]))
+				return (-1);
+			wc++;
+			while (str[i] != '"')
+				i++;
+			i++;
 		}
-		args[count - 1] = arg_str;
+		else if (str[i])
+			wc++;
+		while (str[i] && (str[i] != ' ' && str[i] != '\t' && str[i] != '\n'))
+			i++;
 	}
-	return (arg_str);
+	return (wc);
 }
 
-void	parse_string(char **string_ptr, int *inside_quote_ptr,
-		char *quote_type_ptr)
+void	remove_quotes(char *str)
 {
-	char	*string;
-	int		inside_quote;
-	char	quote_type;
-
-	string = *string_ptr;
-	inside_quote = *inside_quote_ptr;
-	quote_type = *quote_type_ptr;
-	while (*string != '\0')
-	{
-		if (inside_quote && *string == quote_type)
-		{
-			inside_quote = 0;
-			quote_type = '\0';
-			++string;
-			break ;
-		}
-		else if (!inside_quote && ft_isspace(*string))
-		{
-			++string;
-			break ;
-		}
-		 ++string;
-	}
-	*string_ptr = string;
-	*inside_quote_ptr = inside_quote;
-	*quote_type_ptr = quote_type;
+    int i = 0;
+    int j = 0;
+    while (str[i])
+    {
+        if (str[i] != '"' && str[i] != '\'')
+        {
+            str[j] = str[i];
+            j++;
+        }
+        i++;
+    }
+    str[j] = '\0';
 }
 
-void	parse_quote(char **string_ptr, int *inside_quote_ptr,
-		char *quote_type_ptr)
+char	**parse_echo_arguments(char *str)
 {
-	char	*string;
-	int		inside_quote;
-	char	quote_type;
+    int		i;
+    int		j;
+    int		k;
+    char	**out;
+    bool	in_quote;
 
-	string = *string_ptr;
-	inside_quote = *inside_quote_ptr;
-	quote_type = *quote_type_ptr;
-	if (ft_is_quote(*string))
-	{
-		inside_quote = 1;
-		quote_type = *string;
-		++string;
-	}
-	*string_ptr = string;
-	*inside_quote_ptr = inside_quote;
-	*quote_type_ptr = quote_type;
+    i = 0;
+    j = 0;
+    k = 0;
+    if (count_words(str) == -1)
+        return (0);
+    out = (char **)malloc(sizeof(char *) * (count_words(str) + 1));
+    in_quote = false;
+    while (str[i])
+    {
+        while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
+        {
+            i++;
+        }
+        if (ft_is_quote(str[i]))
+        {
+            in_quote = true;
+            i++;
+        }
+        j = i;
+        while (str[i] && ((in_quote && !ft_is_quote(str[i])) || (!in_quote
+                    && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')))
+        {
+            if (ft_is_quote(str[i]))
+            {
+                i--;
+                break ;
+            }
+            i++;
+        }
+
+        if (in_quote)
+        {
+            in_quote = false;
+            i++;
+        }
+        if (i > j)
+        {
+            out[k] = (char *)malloc(sizeof(char) * ((i - j) + 1));
+            ft_strncpy(out[k], &str[j], i - j);
+            remove_quotes(out[k]);
+            k++;
+        }
+    }
+    out[k] = NULL;
+    return (out);
 }
 
-static size_t	compute_memory_needed(char *string)
+/* char	**parse_echo_arguments(char *str)
 {
-	size_t	size;
+	int		i;
+	int		j;
+	int		k;
+	char	**out;
+	bool	in_quote;
 
-	size = sizeof(char *);
-	while (*string != '\0')
+	i = 0;
+	j = 0;
+	k = 0;
+	if (count_words(str) == -1)
+		return (0);
+	out = (char **)malloc(sizeof(char *) * (count_words(str) + 1));
+	in_quote = false;
+	while (str[i])
 	{
-		while (*string != '\0' && ft_isspace(*string))
+		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
 		{
-			++string;
+			i++;
 		}
-		if (*string != '\0')
+		if (ft_is_quote(str[i]))
 		{
-			++size;
-			while (*string != '\0' && !ft_isspace(*string))
+			in_quote = true;
+			i++;
+		}
+		j = i;
+		while (str[i] && ((in_quote && !ft_is_quote(str[i])) || (!in_quote
+					&& str[i] != ' ' && str[i] != '\t' && str[i] != '\n')))
+		{
+			if (ft_is_quote(str[i]))
 			{
-				++size;
-				++string;
+				i--;
+				break ;
 			}
+			i++;
 		}
-	}
-	return (size);
-}
 
-char	**parse_arguments(char *string, char **args, size_t count)
-{
-	char	*arg;
-	int		inside_quote;
-	char	quote_type;
-	char	*arg_str;
-
-	inside_quote = 0;
-	quote_type = '\0';
-	while (*string != '\0')
-	{
-		ft_skip_whitespace(&string);
-		if (*string != '\0')
+		if (in_quote)
 		{
-			arg = string;
-			++count;
-			parse_quote(&string, &inside_quote, &quote_type);
-			parse_string(&string, &inside_quote, &quote_type);
-			arg_str = process_argument(arg, string, args, count);
-			if (!arg_str)
-			{
-				return (NULL);
-			}
+			in_quote = false;
+			i++;
+		}
+		if (i > j)
+		{
+			out[k] = (char *)malloc(sizeof(char) * ((i - j) + 1));
+			ft_strncpy(out[k++], &str[j], i - j);
 		}
 	}
-	args[count] = NULL;
-	return (args);
-}
-
-char	**parse_echo_arguments(char *string)
-{
-	size_t	count;
-	char	**args;
-
-	count = 0;
-	args = NULL;
-	args = malloc(compute_memory_needed(string));
-	if (!args)
-		return (NULL);
-	args = parse_arguments(string, args, count);
-	if (!args)
-		return (NULL);
-	return (args);
-}
+	out[k] = NULL;
+	return (out);
+} */
 
 /* main to test char	**parse_echo_arguments(char *string)
 to use this main you need few funtions of libft.h. 
@@ -213,9 +236,9 @@ the funtions need were pasted below this main */
 
 int	main(void)
 {
-	int i;
-	char input[] = "Hello World is ae a test.";
-	char **args;
+	int		i;
+	char	input[] = "Hello \"World is\" ae a test. a fdsa";
+	char	**args;
 
 	args = parse_echo_arguments(input);
 	if (!args)
@@ -232,3 +255,10 @@ int	main(void)
 	free(args);
 	return (EXIT_SUCCESS);
 }
+
+/* int main(void)
+{
+	char input[] = "Hello \'World is ae\' \"a test.\"";
+
+	printf("%d", count_words(input));
+} */
