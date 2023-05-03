@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 20:39:01 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 22:30:25 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/03 13:46:36 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_skip_whitespace(char **string_ptr)
 	char test_string[] = "  \t\nhello world";
 	char *str = test_string;
 
-	skip_whitespace(&str);
+	ft_skip_whitespace(&str);
 
 	printf("%s\n", str);
 
