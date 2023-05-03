@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:38:19 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 23:16:28 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/03 17:12:22 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	parse_string(char **string_ptr, int *inside_quote_ptr,
 	string = *string_ptr;
 	inside_quote = *inside_quote_ptr;
 	quote_type = *quote_type_ptr;
-	while (*string++ != '\0')
+	while (*string != '\0')
 	{
 		if (inside_quote && *string == quote_type)
 		{
@@ -110,6 +110,7 @@ void	parse_string(char **string_ptr, int *inside_quote_ptr,
 			++string;
 			break ;
 		}
+		 ++string;
 	}
 	*string_ptr = string;
 	*inside_quote_ptr = inside_quote;
@@ -161,17 +162,13 @@ static size_t	compute_memory_needed(char *string)
 	return (size);
 }
 
-/* char	**allocate_memory(size_t size)
+char	**parse_arguments(char *string, char **args, size_t count)
 {
 	char	*arg;
 	int		inside_quote;
 	char	quote_type;
 	char	*arg_str;
 
-	return (malloc(size * sizeof(char *)));
-} */
-char	**parse_arguments(char *string, char **args, size_t count)
-{
 	inside_quote = 0;
 	quote_type = '\0';
 	while (*string != '\0')
@@ -203,14 +200,10 @@ char	**parse_echo_arguments(char *string)
 	args = NULL;
 	args = malloc(compute_memory_needed(string));
 	if (!args)
-	{
 		return (NULL);
-	}
 	args = parse_arguments(string, args, count);
 	if (!args)
-	{
 		return (NULL);
-	}
 	return (args);
 }
 
@@ -221,7 +214,7 @@ the funtions need were pasted below this main */
 int	main(void)
 {
 	int i;
-	char input[] = "Hello World is is a test.";
+	char input[] = "Hello World is ae a test.";
 	char **args;
 
 	args = parse_echo_arguments(input);
