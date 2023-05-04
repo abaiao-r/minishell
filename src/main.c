@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/01 15:28:18 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:32:45 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,6 @@ int	main(int ac, char **av, char **env)
 			//printf("Echoed string %d: %s\n", i, quote_parsed[i]);
 			i++;
 		}
-		/* printf("num_tokens: %d\n", num_tokens);
-		if (num_tokens >= 0)
-		{
-			i = 0;
-			while (i < num_tokens)
-			{
-				printf("-> %s\n", parsed[i]);
-				i++;
-			}
-		} */
 		status = exe_cmd(quote_parsed, input, i, env);
 		free(input);
 		free_parsed(parsed);
