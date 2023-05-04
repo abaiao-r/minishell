@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_quote.c                                      :+:      :+:    :+:   */
+/*   .c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,16 +12,16 @@
 
 #include "libft.h"
 
-int	ft_is_quote(char c)
+int	ft_isquote(char c)
 {
 	return (c == '\'' || c == '\"');
 }
 
-/* main to test ft_is_quote */
+/* main to test  */
 /* int main(void) 
 {
     char c = '"';
-    int result = is_quote(c);
+    int result = ft_isquote(c);
 
     if (result)
         printf("%c is a quote character\n", c);

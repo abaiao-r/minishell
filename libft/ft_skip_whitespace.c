@@ -6,20 +6,20 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 20:39:01 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/03 13:46:36 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:08:45 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_skip_whitespace(char **string_ptr)
+void	ft_skip_whitespace(char **str)
 {
 	int	i;
 
 	i = 0;
-	while ((*string_ptr)[i] != '\0' && ft_isspace((*string_ptr)[i]))
+	while ((*str)[i] != '\0' && ft_isspace((*str)[i]))
 		++i;
-	*string_ptr += i;
+	*str += i;
 }
 
 /* int	main(void)

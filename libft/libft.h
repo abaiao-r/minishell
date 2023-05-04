@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:00:36 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 21:58:25 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/04 15:10:51 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
 int					ft_isspace(int c);
-void				ft_skip_whitespace(char **string_ptr);
+void				ft_skip_whitespace(char **str);
 char				*ft_strndup(const char *str, size_t n);
-int					ft_is_quote(char c);
+int					ft_isquote(char c);
 /* ft_printf */
 int					ft_printf(const char *s, ...);
 

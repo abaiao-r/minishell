@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_echo_arguments.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:38:19 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 00:48:34 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/04 15:16:17 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_is_quote(char c)
+/* int	ft_isquote(char c)
 {
 	return (c == '\'' || c == '\"');
 }
@@ -26,17 +26,17 @@ int	ft_isspace(int c)
 		return (0);
 }
 
-void	ft_skip_whitespace(char **string_ptr)
+void	ft_skip_whitespace(char **str)
 {
 	int	i;
 
 	i = 0;
-	while ((*string_ptr)[i] != '\0' && ft_isspace((*string_ptr)[i]))
+	while ((*str)[i] != '\0' && ft_isspace((*str)[i]))
 	{
 		++i;
 	}
-	*string_ptr += i;
-}
+	*str += i;
+} */
 
 void	free_memory(char **args, size_t count)
 {
@@ -51,16 +51,6 @@ void	free_memory(char **args, size_t count)
 	free(args);
 }
 
-char	*ft_strncpy(char *s1, char *s2, int n)
-{
-	int	i;
-
-	i = -1;
-	while (++i < n && s2[i])
-		s1[i] = s2[i];
-	s1[i] = '\0';
-	return (s1);
-}
 /* utils | */
 
 int	ft_quotes_are_closed(char *str, char c)
@@ -77,7 +67,7 @@ int	ft_quotes_are_closed(char *str, char c)
 	return (0);
 }
 
-int	count_words(char *str)
+int	count_words_parser(char *str)
 {
 	int	i;
 	int	wc;
@@ -133,9 +123,9 @@ char	**parse_echo_arguments(char *str)
     i = 0;
     j = 0;
     k = 0;
-    if (count_words(str) == -1)
+    if (count_words_parser(str) == -1)
         return (0);
-    out = (char **)malloc(sizeof(char *) * (count_words(str) + 1));
+    out = (char **)malloc(sizeof(char *) * (count_words_parser(str) + 1));
     in_quote = false;
     while (str[i])
     {
@@ -143,16 +133,16 @@ char	**parse_echo_arguments(char *str)
         {
             i++;
         }
-        if (ft_is_quote(str[i]))
+        if (ft_isquote(str[i]))
         {
             in_quote = true;
             i++;
         }
         j = i;
-        while (str[i] && ((in_quote && !ft_is_quote(str[i])) || (!in_quote
+        while (str[i] && ((in_quote && !ft_isquote(str[i])) || (!in_quote
                     && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')))
         {
-            if (ft_is_quote(str[i]))
+            if (ft_isquote(str[i]))
             {
                 i--;
                 break ;
@@ -177,64 +167,11 @@ char	**parse_echo_arguments(char *str)
     return (out);
 }
 
-/* char	**parse_echo_arguments(char *str)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	**out;
-	bool	in_quote;
-
-	i = 0;
-	j = 0;
-	k = 0;
-	if (count_words(str) == -1)
-		return (0);
-	out = (char **)malloc(sizeof(char *) * (count_words(str) + 1));
-	in_quote = false;
-	while (str[i])
-	{
-		while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'))
-		{
-			i++;
-		}
-		if (ft_is_quote(str[i]))
-		{
-			in_quote = true;
-			i++;
-		}
-		j = i;
-		while (str[i] && ((in_quote && !ft_is_quote(str[i])) || (!in_quote
-					&& str[i] != ' ' && str[i] != '\t' && str[i] != '\n')))
-		{
-			if (in_quote && ft_is_quote(str[i + 1]))
-			{
-				i++;
-				break ;
-			}
-			i++;
-		}
-
-		if (in_quote)
-		{
-			in_quote = false;
-			i++;
-		}
-		if (i > j)
-		{
-			out[k] = (char *)malloc(sizeof(char) * ((i - j) + 1));
-			ft_strncpy(out[k++], &str[j], i - j);
-		}
-	}
-	out[k] = NULL;
-	return (out);
-}
- */
 /* main to test char	**parse_echo_arguments(char *string)
 to use this main you need few funtions of libft.h. 
 the funtions need were pasted below this main */
 
-int	main(void)
+/* int	main(void)
 {
 	int		i;
 	char	input[] = "Hello \"World is\" ae a \'test. a\' fdsa";
@@ -254,11 +191,11 @@ int	main(void)
 	}
 	free_memory(args, i);
 	return (EXIT_SUCCESS);
-}
-
+} */
+/* main to test count_words_parser*/
 /* int main(void)
 {
 	char input[] = "Hello \'World is ae\' \"a test.\"";
 
-	printf("%d", count_words(input));
+	printf("%d", count_words_parser(input));
 } */
