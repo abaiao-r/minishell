@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:38:19 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 15:28:00 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/04 16:57:49 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	ft_skip_whitespace(char **str)
 		++i;
 	}
 	*str += i;
-} */
+}
 
-/* void	free_memory(char **args, size_t count)
+void	free_memory(char **args, size_t count)
 {
 	size_t	i;
 
