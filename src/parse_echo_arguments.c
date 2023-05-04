@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 18:38:19 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 16:57:49 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/04 17:20:02 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,17 @@ void	free_memory(char **args, size_t count)
 	free(args);
 } */
 
+/* char	*ft_strncpy(char *s1, char *s2, int n)
+{
+	int	i;
+
+	i = -1;
+	while (++i < n && s2[i])
+		s1[i] = s2[i];
+	s1[i] = '\0';
+	return (s1);
+} */
+
 /* utils | */
 
 int	ft_quotes_are_closed(char *str, char c)
@@ -90,8 +101,10 @@ int	count_words_parser(char *str)
 				i++;
 			i++;
 		}
-		else if (str[i])
+		else if (str[i] && (str[i] != ' ' || str[i] != '\t' || str[i] != '\n'))
 			wc++;
+		while (str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\n')
+            i++;
 	}
 	return (wc);
 }
@@ -195,7 +208,7 @@ the funtions need were pasted below this main */
 /* main to test count_words_parser*/
 /* int main(void)
 {
-	char input[] = "Hello \'World is ae\' \"a test.\"";
+	char input[] = "Hello \"World is\" ae \'a test.\'";
 
 	printf("%d", count_words_parser(input));
 } */
