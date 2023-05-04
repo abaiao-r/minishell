@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 21:58:38 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 19:53:11 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:10:29 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	export(char **input, int num_tokens, char **env)
 		i++;
 	}
 	if (ft_strchr(input[1], '='))
-		printf("putenv success\n");
+		ft_setenv();
 	//ft_putenv(input, env);
 	return (NO_EXIT);
 }

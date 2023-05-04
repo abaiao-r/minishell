@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 15:15:33 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/04 19:05:17 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,16 @@ int					export(char **input, int num_tokens, char **env);
 
 /* parse_echo_arguments */
 void				free_memory(char **args, size_t count);
-int					ft_quotes_are_closed(char *str, char c);
-int					count_words_parser(char *str);
-void				remove_quotes(char *str);
-char				**parse_echo_arguments(char *str);
+char				*parse_argument_string(char *arg_start, char *arg_end);
+char				**parse_arguments(char *string, char **args, size_t count);
+char				**parse_echo_arguments(char *string);
+
+/* parse_echo_arguments_utils.c */
+char				*process_argument(char *arg, char *string, char **args,
+						int count);
+void				parse_string(char **string_ptr, int *inside_quote_ptr,
+						char *quote_type_ptr);
+void				parse_quote(char **string_ptr, int *inside_quote_ptr,
+						char *quote_type_ptr);
 
 #endif
