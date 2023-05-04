@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 23:13:20 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/05 00:23:41 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	sig_handler(int signum)
 	}
 }
 
-int	main(int ac, char **av, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	char	*input;
 	char	**parsed;
@@ -31,9 +31,8 @@ int	main(int ac, char **av, char **env)
 	int		i;
 	int		status;
 
-	(void) ac;
-	(void) av;
-
+	(void) argc;
+	(void) argv;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	status = 0;
@@ -43,10 +42,8 @@ int	main(int ac, char **av, char **env)
 		if (!input)
 			return (0);
 		add_history(input);
-		//i = 0;
 		if (!is_valid_input(input))
 			continue ;
-		//num_tokens = count_words(input);
 		parsed = ft_split_default(input);
 		if (!parsed)
 			continue ;
@@ -60,6 +57,7 @@ int	main(int ac, char **av, char **env)
 		status = exe_cmd(quote_parsed, input, i, env);
 		free(input);
 		free_parsed(parsed);
+		free_parsed(quote_parsed);
 		if (status == EXIT)
 			break ;
 	}
