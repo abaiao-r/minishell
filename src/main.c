@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/01 15:32:45 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/04 23:13:20 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		input = print_prompt();
+		if (!input)
+			return (0);
 		add_history(input);
 		//i = 0;
 		if (!is_valid_input(input))
@@ -52,7 +54,7 @@ int	main(int ac, char **av, char **env)
 		i = 0;
 		while (quote_parsed[i] != NULL)
 		{
-			//printf("Echoed string %d: %s\n", i, quote_parsed[i]);
+			printf("Echoed string %d: %s\n", i, quote_parsed[i]);
 			i++;
 		}
 		status = exe_cmd(quote_parsed, input, i, env);
