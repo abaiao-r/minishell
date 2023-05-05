@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/05 17:13:35 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 19:53:15 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ void				parse_quote(char **string_ptr, int *inside_quote_ptr,
 						char *quote_type_ptr);
 
 /* ft_setenv */
-int					ft_setenv(const char *name, const char *value,
-						int overwrite);
+
 
 #endif
