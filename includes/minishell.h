@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/05 14:28:25 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 17:13:35 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_env
 {
 	char			*var_name;
 	char			*var_value;
+	int				rank;
 	struct s_env	*next;
 }					t_env;
 
@@ -61,9 +62,12 @@ void				exe_command(char **parsed);
 void				exe_executable(char **input);
 
 /* env.c */
-void				add_env_node(char *var_name, char *var_value, t_env **head);
-void				create_env_node(char *env_var_str, t_env **environment);
+void				add_env_node(char *var_name, char *var_value, int i,
+						t_env **environment);
+void				create_env_node(char *env_var_str, int i,
+						t_env **environment);
 t_env				*parse_env(char **environ);
+t_env				*sort_rank_env_list(t_env **head);
 int					show_env(t_env **environment);
 
 /* env.utils.c */
@@ -71,6 +75,7 @@ void				ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env				*ft_lstlast_env(t_env *lst);
 void				print_env(t_env **head);
 void				free_env_list(t_env **head);
+void				swap_env_nodes(t_env *curr);
 
 /* print_prompt.c */
 char				*print_prompt(void);
@@ -88,7 +93,7 @@ int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
 
 /* export.c */
-t_env				*sort_env_list(t_env **head);
+t_env				*sort_alphabet_env_list(t_env **head);
 int					export_error(char *input);
 void				print_export(t_env **head);
 int					show_export(t_env **environment);

@@ -6,13 +6,13 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 18:58:18 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 19:21:25 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 17:20:57 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int ft_setenv(const char* name, const char* value, int overwrite)
+/* int ft_setenv(const char* name, const char* value, int overwrite)
 {
     if (!name || !value) {
         return -1;
@@ -43,4 +43,4 @@ int ft_setenv(const char* name, const char* value, int overwrite)
     }
 
     return 0;
-}
+} */

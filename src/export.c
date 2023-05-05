@@ -6,17 +6,16 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 21:58:38 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/05 14:43:57 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 17:15:35 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*sort_env_list(t_env **head)
+t_env	*sort_alphabet_env_list(t_env **head)
 {
 	t_env	*curr;
 	int		swapped;
-	char	*temp;
 
 	swapped = 1;
 	if (!head || !(*head)->next)
@@ -29,13 +28,7 @@ t_env	*sort_env_list(t_env **head)
 		{
 			if (ft_strcmp(curr->var_name, curr->next->var_name) > 0)
 			{
-				temp = curr->var_name;
-				curr->var_name = curr->next->var_name;
-				curr->next->var_name = temp;
-
-				temp = curr->var_value;
-				curr->var_value = curr->next->var_value;
-				curr->next->var_value = temp;
+				swap_env_nodes(curr);
 				swapped = 1;
 			}
 			curr = curr->next;
@@ -55,7 +48,7 @@ void	print_export(t_env **head)
 	t_env	*node;
 	t_env	*sorted_head;
 
-	sorted_head = sort_env_list(head);
+	sorted_head = sort_alphabet_env_list(head);
 	node = sorted_head;
 	while (node != NULL)
 	{
@@ -67,7 +60,6 @@ void	print_export(t_env **head)
 int	show_export(t_env **environment)
 {
 	print_export(environment);
-	/* free_env_list(environment); */
 	return (NO_EXIT);
 }
 

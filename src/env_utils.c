@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:36:35 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/05 14:39:24 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 17:20:06 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,20 @@ void	free_env_list(t_env **head)
 		*node = next_node;
 	}
 	*head = NULL;
+}
+
+void	swap_env_nodes(t_env *curr)
+{
+	char	*temp;
+	int		temp_rank;
+
+	temp = curr->var_name;
+	curr->var_name = curr->next->var_name;
+	curr->next->var_name = temp;
+	temp = curr->var_value;
+	curr->var_value = curr->next->var_value;
+	curr->next->var_value = temp;
+	temp_rank = curr->rank;
+	curr->rank = curr->next->rank;
+	curr->next->rank = temp_rank;
 }
