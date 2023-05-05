@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 19:05:04 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:44:16 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ int	main(int ac, char **av, char **env)
 	char	**quote_parsed;
 	int		i;
 	int		status;
+	t_env	*environment;
 
+	environment = parse_env(env);
 	(void) ac;
 	(void) av;
 
@@ -65,7 +67,7 @@ int	main(int ac, char **av, char **env)
 				i++;
 			}
 		} */
-		status = exe_cmd(quote_parsed, input, i, env);
+		status = exe_cmd(quote_parsed, input, i, &environment);
 		free(input);
 		free_parsed(parsed);
 		free_parsed(quote_parsed);
@@ -73,5 +75,6 @@ int	main(int ac, char **av, char **env)
 			break ;
 	}
 	rl_clear_history();
+	free_env_list(&environment);
 	return (0);
 }

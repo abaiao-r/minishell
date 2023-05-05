@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/04 19:04:49 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 13:59:05 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,9 +167,8 @@ int	exe_shell_cmd(char *cmd)
 	return (NO_EXIT);
 }
 
-int	exe_cmd(char **parsed, char *input, int num_tokens, char **env)
+int	exe_cmd(char **parsed, char *input, int num_tokens, t_env **environment)
 {
-	(void) env;
 	if (!parsed || !*parsed || num_tokens <= 0)
 		return (1);
 	if (ft_strcmp(parsed[0], "echo") == 0)
@@ -179,14 +178,14 @@ int	exe_cmd(char **parsed, char *input, int num_tokens, char **env)
 	else if (ft_strcmp(parsed[0], "pwd") == 0)
 		return (pwd());
 	else if (ft_strcmp(parsed[0], "export") == 0)
-		return (export(parsed, num_tokens, env));
+		return (export(parsed, num_tokens, environment));
 	else if (ft_strcmp(parsed[0], "unset") == 0)
 	{
 		printf("UNSET\n");
 		return (NO_EXIT);
 	}
 	else if (ft_strcmp(parsed[0], "env") == 0)
-		return (show_env(env));
+		return (show_env(environment));
 	else if (ft_strcmp(parsed[0], "exit") == 0)
 		return (EXIT);
 	else if (!ft_strncmp(parsed[0], "/", 1))

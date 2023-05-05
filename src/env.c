@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 00:32:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/04 19:04:26 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:42:44 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,10 @@ t_env	*parse_env(char **environ)
 /* show_env: displays the current environment variables to the user by calling 
 parse_env, printing the environment list with print_env, and then freeing the 
 environment list. */
-int	show_env(char **env)
+int	show_env(t_env **environment)
 {
-	t_env	*environment;
-
-	environment = parse_env(env);
 	print_env(environment);
-	free_env_list(environment);
+	/* free_env_list(environment); */
 	return (NO_EXIT);
 }
 

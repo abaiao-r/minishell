@@ -6,25 +6,25 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 21:58:38 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 19:10:29 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:43:57 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*sort_env_list(t_env *head)
+t_env	*sort_env_list(t_env **head)
 {
 	t_env	*curr;
 	int		swapped;
 	char	*temp;
 
 	swapped = 1;
-	if (!head || !head->next)
-		return (head);
+	if (!head || !(*head)->next)
+		return (*head);
 	while (swapped)
 	{
 		swapped = 0;
-		curr = head;
+		curr = *head;
 		while (curr->next)
 		{
 			if (ft_strcmp(curr->var_name, curr->next->var_name) > 0)
@@ -41,7 +41,7 @@ t_env	*sort_env_list(t_env *head)
 			curr = curr->next;
 		}
 	}
-	return (head);
+	return (*head);
 }
 
 int	export_error(char *input)
@@ -50,7 +50,7 @@ int	export_error(char *input)
 	return (NO_EXIT);
 }
 
-void	print_export(t_env *head)
+void	print_export(t_env **head)
 {
 	t_env	*node;
 	t_env	*sorted_head;
@@ -64,22 +64,19 @@ void	print_export(t_env *head)
 	}
 }
 
-int	show_export(char **env)
+int	show_export(t_env **environment)
 {
-	t_env	*environment;
-
-	environment = parse_env(env);
 	print_export(environment);
-	free_env_list(environment);
+	/* free_env_list(environment); */
 	return (NO_EXIT);
 }
 
-int	export(char **input, int num_tokens, char **env)
+int	export(char **input, int num_tokens, t_env **environment)
 {
 	int	i;
 
 	if (num_tokens == 1)
-		return (show_export(env));
+		return (show_export(environment));
 	if (num_tokens != 2 || input[1][0] == '_')
 		return (NO_EXIT);
 	if (input[1][0] == '_')
@@ -94,7 +91,7 @@ int	export(char **input, int num_tokens, char **env)
 		i++;
 	}
 	if (ft_strchr(input[1], '='))
-		ft_setenv();
+		printf("setenv");
 	//ft_putenv(input, env);
 	return (NO_EXIT);
 }

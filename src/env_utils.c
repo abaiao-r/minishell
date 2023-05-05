@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:36:35 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/04 19:04:41 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/05 14:39:24 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	return ;
 }
 
-void	print_env(t_env *head)
+void	print_env(t_env **head)
 {
 	t_env	*node;
 
-	node = head;
+	node = *head;
 	while (node != NULL)
 	{
 		printf("%s=%s\n", node->var_name, node->var_value);
@@ -60,17 +60,18 @@ void	print_env(t_env *head)
 	}
 }
 
-void	free_env_list(t_env *head)
+void	free_env_list(t_env **head)
 {
-	t_env	*node;
+	t_env	**node;
 	t_env	*next_node;
 
 	node = head;
-	while (node != NULL)
+	while (*node != NULL)
 	{
-		next_node = node->next;
-		free(node->var_name);
-		free(node);
-		node = next_node;
+		next_node = (*node)->next;
+		free((*node)->var_name);
+		free(*node);
+		*node = next_node;
 	}
+	*head = NULL;
 }
