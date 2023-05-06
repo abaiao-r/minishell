@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
+#    By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/05/05 00:24:02 by quackson         ###   ########.fr        #
+#    Updated: 2023/05/06 14:04:08 by pedgonca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ run:	all
 re:		fclean all
 
 lldb:	all
-		lldb ./$(NAME)
+		lldb $(NAME)
 
 gdb:	all
 		gdb $(NAME)
