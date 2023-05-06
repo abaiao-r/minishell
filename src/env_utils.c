@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:36:35 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/05 17:20:06 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:15:49 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	print_env(t_env **head)
 	node = *head;
 	while (node != NULL)
 	{
-		printf("%s=%s\n", node->var_name, node->var_value);
+		if (node->var_value)
+			printf("%s=%s\n", node->var_name, node->var_value);
 		node = node->next;
 	}
 }

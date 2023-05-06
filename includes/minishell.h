@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/05 19:53:15 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:47:48 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,16 @@ char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
 
-/* export.c */
-t_env				*sort_alphabet_env_list(t_env **head);
-int					export_error(char *input);
-void				print_export(t_env **head);
-int					show_export(t_env **environment);
+/* export_utils.c */
 int					update_env_name(t_env **environment, char *find_var,
 						char *new_value);
+void				parse_input_export(char *input, char **find_var,
+						char **new_value);
+t_env				*sort_alphabet_env_list(t_env **head);
+void				print_export(t_env **head);
+int					show_export(t_env **environment);
+
+/* export.c */
 int					export(char **input, int num_tokens, t_env **environment);
 
 /* parse_echo_arguments */
@@ -115,6 +118,7 @@ void				parse_string(char **string_ptr, int *inside_quote_ptr,
 void				parse_quote(char **string_ptr, int *inside_quote_ptr,
 						char *quote_type_ptr);
 
-/* ft_setenv */
-
+/* unset.c */
+int					delete_env_name(t_env **env_list, char *input);
+int					ft_unset(char **input, int num_tokens, t_env **environment);
 #endif

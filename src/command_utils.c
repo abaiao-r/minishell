@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/05 13:59:05 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:34:54 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,10 +180,7 @@ int	exe_cmd(char **parsed, char *input, int num_tokens, t_env **environment)
 	else if (ft_strcmp(parsed[0], "export") == 0)
 		return (export(parsed, num_tokens, environment));
 	else if (ft_strcmp(parsed[0], "unset") == 0)
-	{
-		printf("UNSET\n");
-		return (NO_EXIT);
-	}
+		return (ft_unset(parsed, num_tokens, environment));
 	else if (ft_strcmp(parsed[0], "env") == 0)
 		return (show_env(environment));
 	else if (ft_strcmp(parsed[0], "exit") == 0)

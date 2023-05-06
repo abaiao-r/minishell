@@ -39,16 +39,19 @@ void	create_env_node(char *env_var_str, int i, t_env **environment)
 	size_t	var_name_len;
 
 	eq_pos = ft_strchr(env_var_str, '=');
-	if (eq_pos == NULL)
+	if (eq_pos)
 	{
-		perror("Error");
-		return ;
+		var_name_len = eq_pos - env_var_str;
+		var_value = eq_pos + 1;
 	}
-	var_name_len = eq_pos - env_var_str;
+	else
+	{
+		var_name_len = ft_strlen(env_var_str);
+		var_value = NULL;
+	}
 	var_name = malloc(var_name_len + 1);
 	ft_strncpy(var_name, env_var_str, var_name_len);
 	var_name[var_name_len] = '\0';
-	var_value = eq_pos + 1;
 	add_env_node(var_name, var_value, i, environment);
 }
 

@@ -18,6 +18,8 @@ char	*ft_strndup(const char *str, size_t n)
 	size_t	i;
 	char	*duplicated;
 
+	if (!str)
+		return (NULL);
 	len = 0;
 	while (len < n && str[len] != '\0')
 		len++;
