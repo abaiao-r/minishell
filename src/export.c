@@ -63,16 +63,18 @@ int	show_export(t_env **environment)
 	return (NO_EXIT);
 }
 
-int	update_env_name(t_env *env_list, char *find_var, char *new_value)
+int	update_env_name(t_env **env_list, char *find_var, char *new_value)
 {
 	t_env	*current_node;
 
-	current_node = env_list;
+	current_node = *env_list;
 	while (current_node != NULL)
 	{
 		if (ft_strcmp(current_node->var_name, find_var) == 0)
 		{
-			current_node->var_value = new_value;
+			free(current_node->var_value);
+			current_node->var_value = ft_strndup((const char *)new_value,
+					ft_strlen(new_value));
 			return (1);
 		}
 		current_node = current_node->next;
@@ -82,24 +84,34 @@ int	update_env_name(t_env *env_list, char *find_var, char *new_value)
 
 int	export(char **input, int num_tokens, t_env **environment)
 {
-	int	i;
-	char *equal_sign;
+	int		i;
+	char	*equal_sign;
+	char	*find_var;
+	char	*new_value;
+	size_t	find_var_len;
 
-	i = 1;
 	if (num_tokens == 1)
 		return (show_export(environment));
-	if ((!ft_isalpha(input[1][0]) && !(input[1][0] == '_')))
+	i = 1;
+	while (input[i])
 	{
-		printf("export: `%s': not a valid identifier \n", input[i]);
-		return ;
+		if ((!ft_isalpha(input[1][0]) && !(input[1][0] == '_')))
+		{
+			printf("export: `%s': not a valid identifier \n", input[i]);
+			return (NO_EXIT);
+		}
+		if (!ft_strchr(input[i], '='))
+			return (NO_EXIT);
+		equal_sign = ft_strchr(input[i], '=');
+		find_var_len = equal_sign - input[i];
+		find_var = malloc(find_var_len + 1);
+		ft_strncpy(find_var, input[i], find_var_len);
+		find_var[find_var_len] = '\0';
+		new_value = equal_sign + 1;
+		update_env_name(environment, find_var, new_value);
+		free(find_var);
+		i++;
 	}
-	if (!ft_strchr(input[i], '='))
-		return ;
-	char *equal_sign = strchr(input, '=');
-	find_var = 
-	new_value = 
-	update_env_name(environment, find_var, new_value);
-	
 	/* if (ft_strchr(input[1], '='))
 		ft_setenv(input[1], environment); */
 	//ft_putenv(input, env);

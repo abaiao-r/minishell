@@ -70,6 +70,7 @@ void	free_env_list(t_env **head)
 	{
 		next_node = (*node)->next;
 		free((*node)->var_name);
+		free((*node)->var_value);
 		free(*node);
 		*node = next_node;
 	}

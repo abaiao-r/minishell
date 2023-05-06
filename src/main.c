@@ -26,7 +26,7 @@ void	sig_handler(int signum)
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
-	char	**parsed;
+	/* char	**parsed; */
 	char	**quote_parsed;
 	int		i;
 	int		status;
@@ -47,9 +47,9 @@ int	main(int ac, char **av, char **env)
 		if (!is_valid_input(input))
 			continue ;
 		//num_tokens = count_words(input);
-		parsed = ft_split_default(input);
-		if (!parsed)
-			continue ;
+		/* parsed = ft_split_default(input); */
+		/* if (!parsed)
+			continue ; */
 		quote_parsed = parse_echo_arguments(input);
 		i = 0;
 		while (quote_parsed[i] != NULL)
@@ -68,11 +68,11 @@ int	main(int ac, char **av, char **env)
 			}
 		} */
 		status = exe_cmd(quote_parsed, input, i, &environment);
-		free(input);
-		free_parsed(parsed);
-		free_parsed(quote_parsed);
 		if (status == EXIT)
 			break ;
+		free(input);
+		/* free_parsed(parsed); */
+		free_parsed(quote_parsed);
 	}
 	rl_clear_history();
 	free_env_list(&environment);

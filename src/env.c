@@ -21,7 +21,8 @@ void	add_env_node(char *var_name, char *var_value, int rank,
 
 	env_node = malloc(sizeof(*env_node));
 	env_node->var_name = var_name;
-	env_node->var_value = var_value;
+	env_node->var_value = ft_strndup((const char *)var_value,
+			ft_strlen(var_value));
 	env_node->rank = rank;
 	env_node->next = NULL;
 	ft_lstadd_back_env(environment, env_node);

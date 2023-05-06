@@ -97,6 +97,8 @@ t_env				*sort_alphabet_env_list(t_env **head);
 int					export_error(char *input);
 void				print_export(t_env **head);
 int					show_export(t_env **environment);
+int					update_env_name(t_env **environment, char *find_var,
+						char *new_value);
 int					export(char **input, int num_tokens, t_env **environment);
 
 /* parse_echo_arguments */
@@ -114,6 +116,5 @@ void				parse_quote(char **string_ptr, int *inside_quote_ptr,
 						char *quote_type_ptr);
 
 /* ft_setenv */
-
 
 #endif
