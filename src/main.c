@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/05 00:23:41 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/07 19:24:11 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	sig_handler(int signum)
 int	main(int argc, char **argv, char **env)
 {
 	char	*input;
-	char	**parsed;
 	char	**quote_parsed;
 	int		i;
 	int		status;
@@ -44,10 +43,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(input);
 		if (!is_valid_input(input))
 			continue ;
-		parsed = ft_split_default(input);
-		if (!parsed)
-			continue ;
-		quote_parsed = parse_echo_arguments(input);
+		quote_parsed = parse_arguments(input);
 		i = 0;
 		while (quote_parsed[i] != NULL)
 		{
@@ -56,7 +52,6 @@ int	main(int argc, char **argv, char **env)
 		}
 		status = exe_cmd(quote_parsed, input, i, env);
 		free(input);
-		free_parsed(parsed);
 		free_parsed(quote_parsed);
 		if (status == EXIT)
 			break ;

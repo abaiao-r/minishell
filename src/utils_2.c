@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/02 19:16:53 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/07 19:32:08 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,80 +116,23 @@ int	is_valid_input(char *input)
 	return (1);
 }
 
-#define MAX_ARGS 1024
-
-char** parse_echo_arguments(char* string)
-{
-    char **args = malloc(MAX_ARGS * sizeof(char *));
-    int arg_index = 0;
-    int string_len = ft_strlen(string);
-    int i = 0;
-    
-    while (i < string_len && arg_index < MAX_ARGS) {
-        char *arg = malloc(string_len * sizeof(char));
-        int arg_len = 0;
-        int in_quotes = 0;
-        char quote_type = '\0';
-        
-        while (i < string_len && isspace(string[i])) {
-            i++;
-        }
-        
-        while (i < string_len && arg_len < string_len && arg_index < MAX_ARGS) {
-            char c = string[i];
-            
-            if (!in_quotes && (c == '\'' || c == '\"')) {
-                in_quotes = 1;
-                quote_type = c;
-                i++;
-                continue;
-            }
-            
-            if (in_quotes && c == quote_type) {
-                in_quotes = 0;
-                quote_type = '\0';
-                i++;
-                continue;
-            }
-            
-            if (!in_quotes && isspace(c)) {
-                break;
-            }
-            
-            arg[arg_len++] = c;
-            i++;
-        }
-        
-        if (arg_len > 0) {
-            arg[arg_len] = '\0';
-            args[arg_index++] = arg;
-        } else {
-            free(arg);
-        }
-    }
-    
-    args[arg_index] = NULL;
-    
-    return args;
-
-}
 
 /* main to test parse_echo_arguments */
 /* int main(void)
 {
-    char input[] = "Hello \"world, this\" is a test.";
-    char **args = parse_echo_arguments(input);
-    if (!args)
-    {
-        fprintf(stderr, "Error: failed to parse input.\n");
-        return EXIT_FAILURE;
-    }
-    for (int i = 0; args[i] != NULL; i++)
-    {
-        printf("Argument %d: %s\n", i, args[i]);
-    }
-    free(args);
-    return EXIT_SUCCESS;
+	char input[] = "Hello \"world, this\" is a test.";
+	char **args = parse_echo_arguments(input);
+	if (!args)
+	{
+		fprintf(stderr, "Error: failed to parse input.\n");
+		return EXIT_FAILURE;
+	}
+	for (int i = 0; args[i] != NULL; i++)
+	{
+		printf("Argument %d: %s\n", i, args[i]);
+	}
+	free(args);
+	return EXIT_SUCCESS;
 } */
 
 /* main para testar o ft_split_default */

@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/07 18:56:09 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/07 19:24:04 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,14 @@ char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
-char				**parse_echo_arguments(char *input_string);
+char				**parse_arguments(char *input_string);
 
 /* export.c */
 int					export(char **input, int num_tokens, char **env);
 
 void				exe_executable(char **input);
 
-void				execute_pipe(char *cmd1, char *cmd2);
+void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens);
+
 
 #endif

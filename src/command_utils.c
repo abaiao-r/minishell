@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/07 18:56:12 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/07 19:09:18 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,12 +142,15 @@ int	exe_shell_cmd(char *cmd)
 	pid_t	pid;
 	int		status;
 
+	if (!cmd)
+	{
+		printf("NULL shell cmd\n");
+		return (NO_EXIT);
+	}
 	pid = fork();
 	if (pid == 0)
 	{
-		// child process
 		execve("/bin/bash", (char *[]){"/bin/bash", "-c", cmd, NULL}, NULL);
-		// if execve returns, an error occurred
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
