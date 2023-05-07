@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/01 01:04:22 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/07 18:56:12 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,10 +189,8 @@ int	exe_cmd(char **parsed, char *input, int num_tokens, char **env)
 		return (show_env(env));
 	else if (ft_strcmp(parsed[0], "exit") == 0)
 		return (EXIT);
-	else if (!ft_strncmp(parsed[0], "/", 1))
-		return (exe_shell_cmd(input));
 	else
-		return (show_cmd_error(parsed[0]));
+		return (exe_shell_cmd(input));
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */
