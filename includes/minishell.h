@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/08 22:01:08 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/08 22:14:32 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,27 +105,12 @@ int					show_export(t_env **environment);
 /* export.c */
 int					export(char **input, int num_tokens, t_env **environment);
 
-/* parse_echo_arguments */
-void				free_memory(char **args, size_t count);
-char				*parse_argument_string(char *arg_start, char *arg_end);
-char				**parse_arguments(char *string, char **args, size_t count);
-char				**parse_echo_arguments(char *string);
-
-/* parse_echo_arguments_utils.c */
-char				*process_argument(char *arg, char *string, char **args,
-						int count);
-void				parse_string(char **string_ptr, int *inside_quote_ptr,
-						char *quote_type_ptr);
-void				parse_quote(char **string_ptr, int *inside_quote_ptr,
-						char *quote_type_ptr);
-
 void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens);
-
-
-void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens);
-
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);
 int					ft_unset(char **input, int num_tokens, t_env **environment);
+
+char**				parse_echo_arguments(char* string);
+
 #endif
