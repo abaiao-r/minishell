@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/08 22:14:32 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/08 22:31:02 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,5 @@ void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);
 int					ft_unset(char **input, int num_tokens, t_env **environment);
-
-char**				parse_echo_arguments(char* string);
 
 #endif

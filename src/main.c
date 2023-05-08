@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/08 22:27:57 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/08 22:30:24 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(input);
 		if (!is_valid_input(input))
 			continue ;
-		quote_parsed = parse_echo_arguments(input);
+		quote_parsed = parse_arguments(input);
 		i = 0;
 		while (quote_parsed[i] != NULL)
 		{
