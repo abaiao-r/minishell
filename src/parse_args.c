@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/07 19:58:32 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/08 21:48:25 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_arg
 	int		in_quotes;
 	char	quote_type;
 }	t_arg;
-
 
 static int	create_parsed(t_parsed *parsed, char *str)
 {
