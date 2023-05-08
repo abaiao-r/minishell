@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 14:00:36 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/06 13:56:43 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/05/08 22:02:21 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 						void (*del)(void *));
+int					ft_isspace(int c);
+void				ft_skip_whitespace(char **str);
+char				*ft_strndup(const char *str, size_t n);
+int					ft_isquote(char c);
 /* ft_printf */
 int					ft_printf(const char *s, ...);
 

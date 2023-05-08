@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   .c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 14:05:20 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 20:56:09 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/05/02 21:56:44 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/05/02 22:00:33 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+int	ft_isquote(char c)
 {
-	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z' ));
+	return (c == '\'' || c == '\"');
 }
-/*int main(void)
+
+/* main to test  */
+/* int main(void) 
 {
-	char c;
-	c = 'Q';
-	printf("\nResult when uppercase alphabet is passed: %d", ft_isalpha(c));
+    char c = '"';
+    int result = ft_isquote(c);
 
-	c = 'q';
-	printf("\nResult when lowercase alphabet is passed: %d", ft_isalpha(c));
-
-	c='2';
-	printf("\nResult when non-alphabetic character is passed: %d", ft_isalpha(c));
-
-	return (0);
-}*/
+    if (result)
+        printf("%c is a quote character\n", c);
+    else
+        printf("%c is not a quote character\n", c);
+    return (0);
+} */

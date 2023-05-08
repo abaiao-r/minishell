@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/07 19:24:04 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/08 22:01:08 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+# include <stdbool.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -42,6 +43,7 @@ typedef struct s_env
 {
 	char			*var_name;
 	char			*var_value;
+	int				rank;
 	struct s_env	*next;
 }					t_env;
 
@@ -55,21 +57,25 @@ int					change_dir(char **input, int num_tokens);
 char				*find_executable(char *cmd);
 char				**get_cmd(char **input, char c);
 int					exe_cmd(char **parsed, char *input, int num_tokens,
-						char **env);
+						t_env **environment);
 void				exe_command(char **parsed);
+void				exe_executable(char **input);
 
 /* env.c */
-void				add_env_node(char *var_name, char *var_value, t_env **head);
-void				create_env_node(char *env_var_str, t_env **environment);
+void				add_env_node(char *var_name, char *var_value, int i,
+						t_env **environment);
+void				create_env_node(char *env_var_str, int i,
+						t_env **environment);
 t_env				*parse_env(char **environ);
-int					show_env(char **env);
-int					old_show_env(void);
+t_env				*sort_rank_env_list(t_env **head);
+int					show_env(t_env **environment);
 
 /* env.utils.c */
 void				ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env				*ft_lstlast_env(t_env *lst);
-void				print_env(t_env *head);
-void				free_env_list(t_env *head);
+void				print_env(t_env **head);
+void				free_env_list(t_env **head);
+void				swap_env_nodes(t_env *curr);
 
 /* print_prompt.c */
 char				*print_prompt(void);
@@ -87,12 +93,39 @@ int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
 char				**parse_arguments(char *input_string);
 
-/* export.c */
-int					export(char **input, int num_tokens, char **env);
+/* export_utils.c */
+int					update_env_name(t_env **environment, char *find_var,
+						char *new_value);
+void				parse_input_export(char *input, char **find_var,
+						char **new_value);
+t_env				*sort_alphabet_env_list(t_env **head);
+void				print_export(t_env **head);
+int					show_export(t_env **environment);
 
-void				exe_executable(char **input);
+/* export.c */
+int					export(char **input, int num_tokens, t_env **environment);
+
+/* parse_echo_arguments */
+void				free_memory(char **args, size_t count);
+char				*parse_argument_string(char *arg_start, char *arg_end);
+char				**parse_arguments(char *string, char **args, size_t count);
+char				**parse_echo_arguments(char *string);
+
+/* parse_echo_arguments_utils.c */
+char				*process_argument(char *arg, char *string, char **args,
+						int count);
+void				parse_string(char **string_ptr, int *inside_quote_ptr,
+						char *quote_type_ptr);
+void				parse_quote(char **string_ptr, int *inside_quote_ptr,
+						char *quote_type_ptr);
 
 void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens);
 
 
+void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens);
+
+
+/* unset.c */
+int					delete_env_name(t_env **env_list, char *input);
+int					ft_unset(char **input, int num_tokens, t_env **environment);
 #endif

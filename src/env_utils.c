@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:36:35 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/04/28 20:54:22 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/06 19:15:49 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,29 +48,48 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	return ;
 }
 
-void	print_env(t_env *head)
+void	print_env(t_env **head)
 {
 	t_env	*node;
 
-	node = head;
+	node = *head;
 	while (node != NULL)
 	{
-		printf("%s=%s\n", node->var_name, node->var_value);
+		if (node->var_value)
+			printf("%s=%s\n", node->var_name, node->var_value);
 		node = node->next;
 	}
 }
 
-void	free_env_list(t_env *head)
+void	free_env_list(t_env **head)
 {
-	t_env	*node;
+	t_env	**node;
 	t_env	*next_node;
 
 	node = head;
-	while (node != NULL)
+	while (*node != NULL)
 	{
-		next_node = node->next;
-		free(node->var_name);
-		free(node);
-		node = next_node;
+		next_node = (*node)->next;
+		free((*node)->var_name);
+		free((*node)->var_value);
+		free(*node);
+		*node = next_node;
 	}
+	*head = NULL;
+}
+
+void	swap_env_nodes(t_env *curr)
+{
+	char	*temp;
+	int		temp_rank;
+
+	temp = curr->var_name;
+	curr->var_name = curr->next->var_name;
+	curr->next->var_name = temp;
+	temp = curr->var_value;
+	curr->var_value = curr->next->var_value;
+	curr->next->var_value = temp;
+	temp_rank = curr->rank;
+	curr->rank = curr->next->rank;
+	curr->next->rank = temp_rank;
 }

@@ -1,32 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 14:05:20 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/02 20:56:09 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/05/02 20:28:06 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/05/02 20:35:11 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+int	ft_isspace(int c)
 {
-	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z' ));
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f'
+		|| c == '\v')
+		return (1);
+	else
+		return (0);
 }
-/*int main(void)
+
+/* main to test ft_isspace */
+/* int	main(void)
 {
+	char test_string[] = "  \t\nhello\r\f\vworld  \n\t ";
+	int i;
 	char c;
-	c = 'Q';
-	printf("\nResult when uppercase alphabet is passed: %d", ft_isalpha(c));
 
-	c = 'q';
-	printf("\nResult when lowercase alphabet is passed: %d", ft_isalpha(c));
-
-	c='2';
-	printf("\nResult when non-alphabetic character is passed: %d", ft_isalpha(c));
+	i = 0;
+	while ((c = test_string[i]))
+	{
+		if (ft_isspace(c))
+		{
+			printf("'%c' is a whitespace character\n", c);
+		}
+		else
+		{
+			printf("'%c' is not a whitespace character\n", c);
+		}
+		i++;
+	}
 
 	return (0);
-}*/
+} */
