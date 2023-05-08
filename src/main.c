@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/08 22:17:46 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/08 22:27:57 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,9 @@ int	main(int argc, char **argv, char **env)
 
 	(void) argc;
 	(void) argv;
-	(void) env;
-
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	environment = parse_env(env);
-	status = 0;
 	while (1)
 	{
 		input = print_prompt();
