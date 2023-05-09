@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/08 22:30:56 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:22:05 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
 			*i = *i + 1;
 			continue ;
 		}
-		if (!arg->in_quotes && isspace(c))
+		if (!arg->in_quotes && ft_isspace(c))
 			break ;
 		arg->arg[(arg->arg_len)++] = c;
 		*i = *i + 1;
@@ -92,7 +92,7 @@ char	**parse_arguments(char *string)
 	{
 		if (!create_arg(&args, &arg))
 			return (NULL);
-		while (i < args.string_len && isspace(string[i]))
+		while (i < args.string_len && ft_isspace(string[i]))
 			i++;
 		parse_aux(&args, &arg, string, &i);
 		if (arg.arg_len > 0)
