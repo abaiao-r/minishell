@@ -6,12 +6,11 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/08 22:30:24 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/09 11:20:33 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 void	sig_handler(int signum)
 {

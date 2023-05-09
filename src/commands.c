@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/03 17:38:01 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/09 11:49:48 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	change_dir(char **input, int num_tokens)
 		dir_path = home_path;
 	else
 		dir_path = input[1];
+	printf("dir: %s\n", dir_path);
 	if (chdir(dir_path) != 0)
 		printf("bash: cd: %s: No such file or directory\n", dir_path);
 	return (NO_EXIT);

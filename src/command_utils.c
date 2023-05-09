@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/08 21:53:44 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/09 11:59:28 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*find_executable(char *cmd)
 		ft_strncpy(executable, path, path_end - path);
 		executable[path_end - path] = '/';
 		ft_strcpy(executable + (path_end - path) + 1, cmd);
+		printf("executable: %s\n", executable);
 		if (!access(executable, X_OK))
 			return (executable);
 		free(executable);
@@ -137,12 +138,12 @@ char	**get_cmd(char **input, char c)
     waitpid(pid2, NULL, 0);
 } */
 
-int	exe_shell_cmd(char *cmd)
+int	exe_shell_cmd(char **args)
 {
 	pid_t	pid;
 	int		status;
 
-	if (!cmd)
+	if (!args)
 	{
 		printf("NULL shell cmd\n");
 		return (NO_EXIT);
@@ -150,7 +151,8 @@ int	exe_shell_cmd(char *cmd)
 	pid = fork();
 	if (pid == 0)
 	{
-		execve("/bin/bash", (char *[]){"/bin/bash", "-c", cmd, NULL}, NULL);
+        execve(args[0], args, NULL);
+		//execve("/bin/bash", (char *[]){"/bin/bash", "-c", cmd, NULL}, NULL);
 		perror("execve");
 		exit(EXIT_FAILURE);
 	}
@@ -172,6 +174,7 @@ int	exe_shell_cmd(char *cmd)
 
 int	exe_cmd(char **parsed, char *input, int num_tokens, t_env **environment)
 {
+	(void) input;
 	if (!parsed || !*parsed || num_tokens <= 0)
 		return (1);
 	if (ft_strcmp(parsed[0], "echo") == 0)
@@ -189,7 +192,7 @@ int	exe_cmd(char **parsed, char *input, int num_tokens, t_env **environment)
 	else if (ft_strcmp(parsed[0], "exit") == 0)
 		return (EXIT);
 	else
-		return (exe_shell_cmd(input));
+		return (exe_shell_cmd(parsed));
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */
