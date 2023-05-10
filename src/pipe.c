@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/09 13:27:21 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/10 21:56:17 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,19 @@
 
 void	execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens)
 {
-	int	pipe_fd[2];
+	int		pipe_fd[2];
+	pid_t	pid1;
 
 	(void) cmd1;
 	(void) cmd1_num_tokens;
 	(void) cmd2;
 	(void) cmd2_num_tokens;
-
-
 	if (pipe(pipe_fd) == -1)
 	{
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-
-	// Fork the first child process
-	pid_t pid1 = fork();
+	pid1 = fork();
 	if (pid1 == -1)
 	{
 		perror("fork");
@@ -45,44 +42,22 @@ void	execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_to
 	}
 	else if (pid1 == 0)
 	{
-		// Child process 1: redirect stdout to the write end of the pipe
 		close(pipe_fd[0]);
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
-
-		// Parse and execute the first command
-		//printf("exe cmd1\n");
+		printf("exe cmd1\n");
 		exe_cmd(cmd1, NULL, cmd1_num_tokens, NULL);
 		exit(0);
 	}
-
-	// Fork the second child process
-	pid_t pid2 = fork();
-	if (pid2 == -1) {
-		perror("fork");
-		exit(EXIT_FAILURE);
-	} else if (pid2 == 0) {
-		// Child process 2: redirect stdin to the read end of the pipe
-		close(pipe_fd[1]);
-		dup2(pipe_fd[0], STDIN_FILENO);
-
-		//waitpid(pid1, NULL, 0);
-		// Parse and execute the second command
-		printf("exe cmd2\n");
-		exe_cmd(cmd2, NULL, cmd2_num_tokens, NULL);
-		close(pipe_fd[0]);
-		exit(0);
-		
-	}
-	close(pipe_fd[0]);
 	close(pipe_fd[1]);
+	dup2(pipe_fd[0], STDIN_FILENO);
 	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	printf("exe cmd2\n");
+	for (int i = 0; cmd2[i] != NULL; i++)
+		printf("str: %s\n", cmd2[i]);
+	exe_cmd(cmd2, NULL, cmd2_num_tokens, NULL);
+	close(pipe_fd[0]);
 }
-
-
-
-
 
 /* 
 int main()
