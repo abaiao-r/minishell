@@ -6,32 +6,15 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/09 20:05:41 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:45:20 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-#define MAX_ARGS 1024
-
-typedef struct s_parsed
-{
-	char	**args;
-	int		arg_index;
-	int		string_len;
-}			t_parsed;
-
-typedef struct s_arg
-{
-	char	*arg;
-	int		arg_len;
-	int		in_quotes;
-	char	quote_type;
-}			t_arg;
-
 static int	create_parsed(t_parsed *parsed, char *str)
 {
-	parsed->args = malloc((MAX_ARGS + 1) * sizeof(char *));
+	parsed->args = (char **)malloc((MAX_ARGS + 1) * sizeof(char *));
 	if (!parsed->args)
 		return (0);
 	parsed->arg_index = 0;
@@ -91,7 +74,10 @@ char	**parse_arguments(char *string)
 	while (i < args.string_len && args.arg_index < MAX_ARGS)
 	{
 		if (!create_arg(&args, &arg))
-			return (NULL);
+        {
+            free(args.args);
+            return (NULL);
+        }
 		while (i < args.string_len && ft_isspace(string[i]))
 			i++;
 		parse_aux(&args, &arg, string, &i);
