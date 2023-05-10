@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/10 14:48:11 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/10 21:37:19 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ int	main(int argc, char **argv, char **env)
 			i++;
 		}
 		status = exe_cmd(quote_parsed, input, i, &environment);
-		if (status == EXIT)
-			break ;
 		free(input);
 		free_parsed(quote_parsed);
+		if (status == EXIT)
+			break ;
 	}
 	rl_clear_history();
 	free_env_list(&environment);
