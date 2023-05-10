@@ -3,35 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parse_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/08 22:30:56 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:45:20 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-#define MAX_ARGS 1024
-
-typedef struct s_parsed
-{
-	char	**args;
-	int		arg_index;
-	int		string_len;
-}	t_parsed;
-
-typedef struct s_arg
-{
-	char	*arg;
-	int		arg_len;
-	int		in_quotes;
-	char	quote_type;
-}	t_arg;
-
 static int	create_parsed(t_parsed *parsed, char *str)
 {
-	parsed->args = malloc(MAX_ARGS * sizeof(char *));
+	parsed->args = (char **)malloc((MAX_ARGS + 1) * sizeof(char *));
 	if (!parsed->args)
 		return (0);
 	parsed->arg_index = 0;
@@ -41,7 +24,7 @@ static int	create_parsed(t_parsed *parsed, char *str)
 
 static int	create_arg(t_parsed *parsed_args, t_arg *arg)
 {
-	arg->arg = malloc(parsed_args->string_len * sizeof(char));
+	arg->arg = malloc((parsed_args->string_len + 1) * sizeof(char));
 	if (!arg->arg)
 		return (0);
 	arg->arg_len = 0;
@@ -62,20 +45,20 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
 		{
 			arg->in_quotes = 1;
 			arg->quote_type = c;
-			*i = *i + 1;
+			(*i)++;
 			continue ;
 		}
 		if (arg->in_quotes && c == arg->quote_type)
 		{
 			arg->in_quotes = 0;
 			arg->quote_type = '\0';
-			*i = *i + 1;
+			(*i)++;
 			continue ;
 		}
-		if (!arg->in_quotes && isspace(c))
+		if (!arg->in_quotes && ft_isspace(c))
 			break ;
-		arg->arg[(arg->arg_len)++] = c;
-		*i = *i + 1;
+		arg->arg[arg->arg_len++] = c;
+		(*i)++;
 	}
 }
 
@@ -91,8 +74,11 @@ char	**parse_arguments(char *string)
 	while (i < args.string_len && args.arg_index < MAX_ARGS)
 	{
 		if (!create_arg(&args, &arg))
-			return (NULL);
-		while (i < args.string_len && isspace(string[i]))
+        {
+            free(args.args);
+            return (NULL);
+        }
+		while (i < args.string_len && ft_isspace(string[i]))
 			i++;
 		parse_aux(&args, &arg, string, &i);
 		if (arg.arg_len > 0)

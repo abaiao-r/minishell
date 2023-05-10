@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/08 22:31:02 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/10 14:45:18 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define EXIT 0
 # define NO_EXIT 1
 # define PROMPT_SIZE 1024
+# define MAX_ARGS 1024
 
 # include "../libft/libft.h"
 # include <dirent.h>
@@ -46,6 +47,21 @@ typedef struct s_env
 	int				rank;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_parsed
+{
+	char			**args;
+	int				arg_index;
+	int				string_len;
+}					t_parsed;
+
+typedef struct s_arg
+{
+	char			*arg;
+	int				arg_len;
+	int				in_quotes;
+	char			quote_type;
+}					t_arg;
 
 /* commands.c */
 void				echo_aux(char **args, int num_args, int flag);
@@ -105,7 +121,8 @@ int					show_export(t_env **environment);
 /* export.c */
 int					export(char **input, int num_tokens, t_env **environment);
 
-void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens);
+void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2,
+						int cmd2_num_tokens);
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);
