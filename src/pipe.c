@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/07 19:13:46 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/09 13:27:21 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,15 @@
 
 #define MAX_COMMAND_LENGTH 1024
 
-/* void	execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens, char **env)
+void	execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens)
 {
 	int	pipe_fd[2];
+
+	(void) cmd1;
+	(void) cmd1_num_tokens;
+	(void) cmd2;
+	(void) cmd2_num_tokens;
+
 
 	if (pipe(pipe_fd) == -1)
 	{
@@ -45,7 +51,9 @@
 		close(pipe_fd[1]);
 
 		// Parse and execute the first command
-		exe_cmd(cmd1, NULL, cmd1_num_tokens, )
+		//printf("exe cmd1\n");
+		exe_cmd(cmd1, NULL, cmd1_num_tokens, NULL);
+		exit(0);
 	}
 
 	// Fork the second child process
@@ -57,26 +65,27 @@
 		// Child process 2: redirect stdin to the read end of the pipe
 		close(pipe_fd[1]);
 		dup2(pipe_fd[0], STDIN_FILENO);
-		close(pipe_fd[0]);
 
+		//waitpid(pid1, NULL, 0);
 		// Parse and execute the second command
-		char* cmd2_args[] = { "/bin/sh", "-c", cmd2, NULL };
-		if (execve(cmd2_args[0], cmd2_args, NULL) == -1) {
-			perror("execve");
-			exit(EXIT_FAILURE);
-		}
+		printf("exe cmd2\n");
+		exe_cmd(cmd2, NULL, cmd2_num_tokens, NULL);
+		close(pipe_fd[0]);
+		exit(0);
+		
 	}
-
-	// Close the pipe ends in the parent process
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-
-	// Wait for both child processes to finish
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
-} */
+}
 
-/* int main()
+
+
+
+
+/* 
+int main()
 {
 	execute_pipe("echo hello", "grep hello");
 	//execute_pipe("ls -l", "grep myfile.txt");
