@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/10 14:45:18 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:18:41 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,21 @@ void				print_env(t_env **head);
 void				free_env_list(t_env **head);
 void				swap_env_nodes(t_env *curr);
 
+/* export.c */
+int					export(char **input, int num_tokens, t_env **environment);
+
+void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2,
+						int cmd2_num_tokens);
+
+/* export_utils.c */
+int					update_env_name(t_env **env_list, char *find_var,
+						char *new_value, int flag_equal);
+int					parse_input_export(char *input, char **find_var,
+						char **new_value);
+t_env				*sort_alphabet_env_list(t_env **head);
+void				print_export(t_env **head);
+int					show_export(t_env **environment);
+
 /* print_prompt.c */
 char				*print_prompt(void);
 
@@ -106,23 +121,9 @@ int					count_words(char *str);
 char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
+int					show_pipe_error(void);
 int					is_valid_input(char *input);
 char				**parse_arguments(char *input_string);
-
-/* export_utils.c */
-int					update_env_name(t_env **environment, char *find_var,
-						char *new_value);
-void				parse_input_export(char *input, char **find_var,
-						char **new_value);
-t_env				*sort_alphabet_env_list(t_env **head);
-void				print_export(t_env **head);
-int					show_export(t_env **environment);
-
-/* export.c */
-int					export(char **input, int num_tokens, t_env **environment);
-
-void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2,
-						int cmd2_num_tokens);
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);

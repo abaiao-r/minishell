@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/08 21:59:38 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/12 16:59:38 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,18 +88,52 @@ int	show_quotes_error(void)
 	return (0);
 }
 
+int	show_pipe_error(void)
+{
+	perror("bash: syntax error near unexpected token `|'\n");
+	return (0);
+}
+
+int	show_after_pipe_error(void)
+{
+	perror("bash: no input after the token '|'\n");
+	return (0);
+}
+
+int	check_before_pipe(char *input, int i, int flag)
+{
+	int	pipe;
+
+	pipe = 0;
+	if (input[i] != ' ' && input[i] != '|')
+		flag = 1;
+	if (input[i] == '|')
+	{
+		pipe = 1;
+		if (flag == 0)
+			return (show_pipe_error());
+		flag = 0;
+	}
+	if (pipe == 1 && input[i + 1] == '\0')
+		return (show_after_pipe_error());
+	return (flag);
+}
+
 int	is_valid_input(char *input)
 {
 	char	stack[1024];
 	int		stack_size;
+	int		flag;
 	int		i;
 
 	i = -1;
 	stack_size = 0;
+	flag = 0;
 	while (input[++i])
 	{
 		if (input[i] == ';' || input[i] == '\\')
 			return (show_special_char_error(input[i]));
+		flag = check_before_pipe(input, i, flag);
 		if (input[i] == '\'' || input[i] == '\"')
 		{
 			if (stack_size != 0 && stack[stack_size - 1] == input[i])
@@ -116,7 +150,6 @@ int	is_valid_input(char *input)
 	return (1);
 }
 
-
 /* main to test parse_echo_arguments */
 /* int main(void)
 {
@@ -125,14 +158,14 @@ int	is_valid_input(char *input)
 	if (!args)
 	{
 		fprintf(stderr, "Error: failed to parse input.\n");
-		return EXIT_FAILURE;
+		return (EXIT_FAILURE);
 	}
 	for (int i = 0; args[i] != NULL; i++)
 	{
 		printf("Argument %d: %s\n", i, args[i]);
 	}
 	free(args);
-	return EXIT_SUCCESS;
+	return (EXIT_SUCCESS);
 } */
 
 /* main para testar o ft_split_default */
