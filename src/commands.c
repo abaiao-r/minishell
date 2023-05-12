@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/09 11:49:48 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/12 09:15:13 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	echo_aux(char **args, int num_args, int flag)
 	int	i;
 
 	i = 0;
-	while (args[i])
+	while (args[i] && i < num_args)
 	{
 		printf("%s", args[i]);
 		if (i + 1 != num_args)

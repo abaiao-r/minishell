@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/10 23:17:52 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:45:50 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,20 @@ int	main(int argc, char **argv, char **env)
 		if (!is_valid_input(input))
 			continue ;
 		quote_parsed = parse_arguments(input);
+		if (has_valid_redirections(quote_parsed) == 0)
+		{
+			free(input);
+			free_parsed(quote_parsed);
+			continue ;
+		}
 		i = 0;
 		while (quote_parsed[i] != NULL)
 		{
-			printf("Echoed string %d: %s\n", i, quote_parsed[i]);
+			printf("arg%d: %s\n", i, quote_parsed[i]);
 			i++;
 		}
-		status = exe_cmd(quote_parsed, input, i, &environment);
+		status = exe_commands(quote_parsed);
+		//status = exe_cmd(quote_parsed, input, i, &environment);
 		free(input);
 		free_parsed(quote_parsed);
 		if (status == EXIT)

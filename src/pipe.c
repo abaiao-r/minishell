@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/10 21:56:17 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/12 09:12:55 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,64 @@
 #include <sys/wait.h>
 
 #define MAX_COMMAND_LENGTH 1024
+
+char	**get_next_cmd(char **args)
+{
+	while (*args)
+	{
+		if (is_redirection(*args))
+			return (args + 1);
+		args++;
+	}
+	return (args);
+}
+
+int	count_tokens(char **args)
+{
+	int		i;
+
+	i = 0;
+	while (*args)
+	{
+		if (is_redirection(*args))
+			return (i);
+		args++;
+		i++;
+	}
+	return (i);
+}
+
+void	print_command(char **args, int n_tokens)
+{
+	int	i;
+
+	i = 0;
+	while (args[i] && n_tokens--)
+	{
+		//printf("%s ", args[i]);
+		i++;
+	}
+	//printf("\n");
+}
+
+int	exe_commands(char **args)
+{
+	int	n_tokens;
+	int	status;
+
+	// why is echo hello | cd .. | pwd not working?
+	while (*args)
+	{
+		n_tokens = count_tokens(args);
+		print_command(args, n_tokens);
+		printf("n_tokens: %d\n", n_tokens);
+		status = exe_cmd(args, NULL, n_tokens, NULL);
+		if (n_tokens == 1 && status == EXIT)
+			return (EXIT);
+		args = get_next_cmd(args);
+	}
+	return (NO_EXIT);
+}
 
 void	execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens)
 {

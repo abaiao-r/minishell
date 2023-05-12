@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/10 14:45:18 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/11 20:46:09 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
 char				**parse_arguments(char *input_string);
+int					show_special_char_error(char c);
 
 /* export_utils.c */
 int					update_env_name(t_env **environment, char *find_var,
@@ -121,11 +122,19 @@ int					show_export(t_env **environment);
 /* export.c */
 int					export(char **input, int num_tokens, t_env **environment);
 
+/* pipe.c */
 void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2,
 						int cmd2_num_tokens);
+int					count_tokens(char **args);
+int					exe_commands(char **args);
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);
 int					ft_unset(char **input, int num_tokens, t_env **environment);
+
+/* utils_3.c */
+int					is_redirection(char *str);
+int					has_valid_redirections(char **args);
+
 
 #endif

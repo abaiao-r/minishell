@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/04/29 10:21:59 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/11 20:19:37 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	free_parsed(char **parsed)
 {
 	int	i;
 
+	if (!parsed)
+		return ;
 	i = 0;
 	while (parsed[i])
 	{
