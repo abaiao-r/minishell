@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/11 20:45:50 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/12 09:19:13 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ int	main(int argc, char **argv, char **env)
 	{
 		input = print_prompt();
 		if (!input)
+		{
+			free_env_list(&environment);
 			return (0);
+		}
 		add_history(input);
 		if (!is_valid_input(input))
 			continue ;
