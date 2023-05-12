@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_1.c                                          :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/12 18:19:43 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/05/12 18:14:52 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/05/12 18:15:34 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	free_parsed(char **parsed)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (parsed[i])
-	{
-		free(parsed[i]);
+	while (s1[i] && s1[i] == s2[i])
 		i++;
-	}
-	free(parsed[i]);
-	free(parsed);
+	return ((const unsigned char) s1[i] - (const unsigned char) s2[i]);
 }

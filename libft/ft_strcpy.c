@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_1.c                                          :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/12 18:19:43 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/05/12 18:17:21 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/05/12 18:18:17 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	free_parsed(char **parsed)
+char	*ft_strcpy(char *dest, const char *src)
 {
-	int	i;
+	char	*d;
 
-	i = 0;
-	while (parsed[i])
+	d = dest;
+	while (*src)
 	{
-		free(parsed[i]);
-		i++;
+		*d++ = *src++;
 	}
-	free(parsed[i]);
-	free(parsed);
+	*d = '\0';
+	return (dest);
 }

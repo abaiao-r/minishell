@@ -6,7 +6,7 @@
 #    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 12:44:03 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/05/02 21:58:42 by abaiao-r         ###   ########.fr        #
+#    Updated: 2023/05/12 18:19:58 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,8 @@ SRC = ft_isdigit.c \
 		ft_skip_whitespace.c\
 		ft_strndup.c \
 		ft_is_quote.c \
+		ft_strcmp.c \
+		ft_strcpy.c \
 		ft_printf.c \
 		get_next_line_utils.c \
 		get_next_line.c

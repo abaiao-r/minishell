@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/12 17:18:41 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/12 18:23:16 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,6 @@ int					show_export(t_env **environment);
 char				*print_prompt(void);
 
 /* utils_1.c */
-char				*ft_strcpy(char *dest, const char *src);
-int					ft_strcmp(const char *s1, const char *s2);
 void				free_parsed(char **parsed);
 
 /* utils_2.c */
