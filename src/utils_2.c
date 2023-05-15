@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/12 16:59:38 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/15 17:23:46 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,64 +88,31 @@ int	show_quotes_error(void)
 	return (0);
 }
 
-int	show_pipe_error(void)
-{
-	perror("bash: syntax error near unexpected token `|'\n");
-	return (0);
-}
-
-int	show_after_pipe_error(void)
-{
-	perror("bash: no input after the token '|'\n");
-	return (0);
-}
-
-int	check_before_pipe(char *input, int i, int flag)
-{
-	int	pipe;
-
-	pipe = 0;
-	if (input[i] != ' ' && input[i] != '|')
-		flag = 1;
-	if (input[i] == '|')
-	{
-		pipe = 1;
-		if (flag == 0)
-			return (show_pipe_error());
-		flag = 0;
-	}
-	if (pipe == 1 && input[i + 1] == '\0')
-		return (show_after_pipe_error());
-	return (flag);
-}
-
 int	is_valid_input(char *input)
 {
-	char	stack[1024];
-	int		stack_size;
-	int		flag;
+	int		flag_quote;
+	char	quote_type;
 	int		i;
 
 	i = -1;
-	stack_size = 0;
-	flag = 0;
+	flag_quote = 0;
 	while (input[++i])
 	{
 		if (input[i] == ';' || input[i] == '\\')
 			return (show_special_char_error(input[i]));
-		flag = check_before_pipe(input, i, flag);
 		if (input[i] == '\'' || input[i] == '\"')
 		{
-			if (stack_size != 0 && stack[stack_size - 1] == input[i])
-				stack_size--;
-			else
+			if (flag_quote == 0)
 			{
-				stack_size++;
-				stack[stack_size - 1] = input[i];
+				quote_type = input[i];
+				flag_quote = 1;
 			}
+			else if (flag_quote == 1)
+				if (quote_type == input[i])
+					flag_quote = 0;
 		}
 	}
-	if (stack_size != 0)
+	if (flag_quote != 0)
 		return (show_quotes_error());
 	return (1);
 }
