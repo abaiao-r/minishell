@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:56:16 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/15 19:54:26 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/15 21:45:20 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*parse_dollar(char *input, t_env **environment)
 		{
 			start = i;
 			i++;
-			while (i < input_len && input[i] != ' ' && input[i] != '$')
+			while (i < input_len && input[i] != ' ' && input[i] != '$' && input[i] != '\"')
 				i++;
 			end = i;
 			find_var = ft_strndup(&input[start + 1], end - start - 1);
