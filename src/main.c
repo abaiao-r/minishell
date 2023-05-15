@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/11 14:15:55 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:28:50 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(input);
 		if (!is_valid_input(input))
 			continue ;
+		input = parse_dollar(input, &environment);
 		quote_parsed = parse_arguments(input);
 		i = 0;
 		while (quote_parsed[i] != NULL)

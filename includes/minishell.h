@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/12 18:23:16 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/15 19:27:42 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,12 @@ int					show_export(t_env **environment);
 /* print_prompt.c */
 char				*print_prompt(void);
 
+/* parser_args */
+char				**parse_arguments(char *input_string);
+
+/* parser_utils.c */
+char				*parse_dollar(char *input, t_env **environment);
+
 /* utils_1.c */
 void				free_parsed(char **parsed);
 
@@ -121,7 +127,6 @@ char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					show_pipe_error(void);
 int					is_valid_input(char *input);
-char				**parse_arguments(char *input_string);
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);
