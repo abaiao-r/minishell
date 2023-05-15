@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/10 14:45:20 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/11 16:47:37 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ char	**parse_arguments(char *string)
 	while (i < args.string_len && args.arg_index < MAX_ARGS)
 	{
 		if (!create_arg(&args, &arg))
-        {
-            free(args.args);
-            return (NULL);
-        }
+		{
+			free(args.args);
+			return (NULL);
+		}
 		while (i < args.string_len && ft_isspace(string[i]))
 			i++;
 		parse_aux(&args, &arg, string, &i);

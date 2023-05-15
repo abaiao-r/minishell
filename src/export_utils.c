@@ -6,13 +6,14 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 18:49:51 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/06 21:06:50 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:19:30 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	update_env_name(t_env **env_list, char *find_var, char *new_value)
+int	update_env_name(t_env **env_list, char *find_var, char *new_value,
+		int flag_equal)
 {
 	t_env	*current_node;
 
@@ -21,6 +22,8 @@ int	update_env_name(t_env **env_list, char *find_var, char *new_value)
 	{
 		if (ft_strcmp(current_node->var_name, find_var) == 0)
 		{
+			if (flag_equal == 0)
+				return (1);
 			free(current_node->var_value);
 			current_node->var_value = ft_strndup((const char *)new_value,
 					ft_strlen(new_value));
@@ -31,20 +34,26 @@ int	update_env_name(t_env **env_list, char *find_var, char *new_value)
 	return (0);
 }
 
-void	parse_input_export(char *input, char **find_var, char **new_value)
+int	parse_input_export(char *input, char **find_var, char **new_value)
 {
 	char	*equal_sign;
 	size_t	find_var_len;
+	int		flag_equal;
 
+	flag_equal = 0;
 	equal_sign = ft_strchr(input, '=');
 	if (equal_sign)
+	{
 		find_var_len = equal_sign - input;
+		flag_equal = 1;
+	}
 	else
 		find_var_len = ft_strlen(input);
 	*find_var = malloc(find_var_len + 1);
 	ft_strncpy(*find_var, input, find_var_len);
 	(*find_var)[find_var_len] = '\0';
 	*new_value = equal_sign + 1;
+	return (flag_equal);
 }
 
 t_env	*sort_alphabet_env_list(t_env **head)

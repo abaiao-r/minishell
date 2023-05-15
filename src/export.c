@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 21:58:38 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/06 19:02:29 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:15:54 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	export(char **input, int num_tokens, t_env **environment)
 	char	*find_var;
 	char	*new_value;
 	int		i;
+	int		flag_equal;
 
 	if (num_tokens == 1)
 		return (show_export(environment));
@@ -29,8 +30,8 @@ int	export(char **input, int num_tokens, t_env **environment)
 			i++;
 			continue ;
 		}
-		parse_input_export(input[i], &find_var, &new_value);
-		if (!update_env_name(environment, find_var, new_value))
+		flag_equal = parse_input_export(input[i], &find_var, &new_value);
+		if (!update_env_name(environment, find_var, new_value, flag_equal))
 			create_env_node(input[i], 100, environment);
 		free(find_var);
 		i++;

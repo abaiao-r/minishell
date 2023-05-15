@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/11 20:07:46 by quackson         ###   ########.fr       */
+/*   Updated: 2023/05/15 14:49:24 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,12 @@ int	is_valid_input(char *input)
 {
 	char	stack[1024];
 	int		stack_size;
+	int		flag;
 	int		i;
 
 	i = -1;
 	stack_size = 0;
+	flag = 0;
 	while (input[++i])
 	{
 		if (input[i] == ';' || input[i] == '\\')
@@ -116,7 +118,6 @@ int	is_valid_input(char *input)
 	return (1);
 }
 
-
 /* main to test parse_echo_arguments */
 /* int main(void)
 {
@@ -125,14 +126,14 @@ int	is_valid_input(char *input)
 	if (!args)
 	{
 		fprintf(stderr, "Error: failed to parse input.\n");
-		return EXIT_FAILURE;
+		return (EXIT_FAILURE);
 	}
 	for (int i = 0; args[i] != NULL; i++)
 	{
 		printf("Argument %d: %s\n", i, args[i]);
 	}
 	free(args);
-	return EXIT_SUCCESS;
+	return (EXIT_SUCCESS);
 } */
 
 /* main para testar o ft_split_default */
