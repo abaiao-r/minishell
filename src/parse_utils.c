@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-static char	*search_and_replace_var(t_env **env_list, char *find_var)
+static char	*search_and_replace_var(t_env **env_list, char *find_var, int flag_single_quotes)
 {
 	t_env	*current_node;
 	char	*var_value;
@@ -20,7 +20,7 @@ static char	*search_and_replace_var(t_env **env_list, char *find_var)
 	current_node = *env_list;
 	while (current_node != NULL)
 	{
-		if (ft_strcmp(current_node->var_name, find_var) == 0)
+		if ((ft_strcmp(current_node->var_name, find_var) == 0) && flag_single_quotes == 0)
 		{
 			var_value = ft_strndup((const char *)current_node->var_value,
 					ft_strlen(current_node->var_value));
@@ -40,20 +40,41 @@ char	*parse_dollar(char *input, t_env **environment)
 	char	*replacement;
 	size_t	input_len;
 	size_t	replacement_len;
+	int		flag_double_quotes;
+	int		flag_single_quotes;
 
 	i = 0;
 	input_len = ft_strlen(input);
+	flag_single_quotes = 0;
+	flag_double_quotes = 0;
 	while (i < input_len)
 	{
+		if(input[i] == '\'' || input[i] == '\"')
+		{
+			if (input[i] == '\'' && flag_double_quotes == 0)
+			{
+				if (flag_single_quotes == 0)
+					flag_single_quotes = 1;
+				else
+					flag_single_quotes = 0;
+			}
+			else if (input[i] == '\"' && flag_single_quotes == 0)
+			{
+				if (flag_double_quotes == 0)
+					flag_double_quotes = 1;
+				else
+					flag_double_quotes = 0;
+			}
+		}
 		if (input[i] == '$')
 		{
 			start = i;
 			i++;
-			while (i < input_len && input[i] != ' ' && input[i] != '$' && input[i] != '\"')
+			while (i < input_len && input[i] != ' ' && input[i] != '$' && input[i] != '\"' && input[i] != '\'')
 				i++;
 			end = i;
 			find_var = ft_strndup(&input[start + 1], end - start - 1);
-			replacement = search_and_replace_var(environment, find_var);
+			replacement = search_and_replace_var(environment, find_var, flag_single_quotes);
 			if (replacement != NULL)
 			{
 				replacement_len = ft_strlen(replacement);
@@ -71,32 +92,3 @@ char	*parse_dollar(char *input, t_env **environment)
 	}
     return(input);
 }
-
-/* void	*parse_dollar(char *input, t_env **enviroment)
-{
-	int		i;
-	int		start;
-	int		end;
-	char	*find_var;
-    char *replace;
-
-	start = 0;
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == '$')
-		{
-			start = i;
-			while (input[i] != '\0' && input[i] != ' ' && input[i] != '$')
-				i++;
-			end = i;
-			find_var = ft_strndup((const char *)&input[start + 1], end - start
-					- 1);
-			input[start] = search_and_replace_var(enviroment, find_var);
-			if(!find_var)
-            i = start;
-        }
-        i++;
-    }
-}*/
-
