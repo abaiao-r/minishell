@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/15 19:27:42 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:00:35 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,18 @@ typedef struct s_env
 	int				rank;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_dollar_data
+{
+	int		start;
+	int		end;
+	char	*find_var;
+	char	*replacement;
+	size_t	input_len;
+	size_t	replacement_len;
+	int		flag_double_quotes;
+	int		flag_single_quotes;
+}			t_dollar_data;
 
 typedef struct s_parsed
 {

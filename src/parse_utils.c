@@ -6,24 +6,39 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:56:16 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/16 17:59:32 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:08:18 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-typedef struct s_dollar_data
-{
-	int		start;
-	int		end;
-	char	*find_var;
-	char	*replacement;
-	size_t	input_len;
-	size_t	replacement_len;
-	int		flag_double_quotes;
-	int		flag_single_quotes;
-}			t_dollar_data;
 
+
+/* Replaces a portion of the input string with the given
+replacement string. */
+static void	replace_input(char **input, t_dollar_data *dollar_data)
+{
+	size_t	new_input_len;
+	char	*new_input;
+
+	dollar_data->replacement_len = ft_strlen(dollar_data->replacement);
+	new_input_len = dollar_data->input_len + dollar_data->replacement_len
+		- (dollar_data->end - dollar_data->start - 1);
+	new_input = malloc(new_input_len + 1);
+	ft_memcpy(new_input, *input, dollar_data->start);
+	ft_memcpy(new_input + dollar_data->start, dollar_data->replacement,
+		dollar_data->replacement_len);
+	ft_memcpy(new_input + dollar_data->start + dollar_data->replacement_len,
+		&(*input)[dollar_data->end],
+		dollar_data->input_len - dollar_data->end + 1);
+	free(*input);
+	*input = new_input;
+	dollar_data->input_len = new_input_len;
+}
+
+/* Searches for a variable in the environment list and returns
+its value if found. If flag_single_quotes is 0 and the variable
+is found, the value is duplicated and returned. */
 static char	*search_and_replace_var(t_env **env_list, char *find_var,
 		int flag_single_quotes)
 {
@@ -45,45 +60,8 @@ static char	*search_and_replace_var(t_env **env_list, char *find_var,
 	return (NULL);
 }
 
-static void	update_quote_flags(char current_char, int *flag_single_quotes,
-		int *flag_double_quotes)
-{
-	if (current_char == '\'' && *flag_double_quotes == 0)
-	{
-		if (*flag_single_quotes == 0)
-			*flag_single_quotes = 1;
-		else
-			*flag_single_quotes = 0;
-	}
-	else if (current_char == '\"' && *flag_single_quotes == 0)
-	{
-		if (*flag_double_quotes == 0)
-			*flag_double_quotes = 1;
-		else
-			*flag_double_quotes = 0;
-	}
-}
-
-static void	replace_input(char **input, t_dollar_data *dollar_data)
-{
-	size_t	new_input_len;
-	char	*new_input;
-
-	dollar_data->replacement_len = ft_strlen(dollar_data->replacement);
-	new_input_len = dollar_data->input_len + dollar_data->replacement_len
-		- (dollar_data->end - dollar_data->start - 1);
-	new_input = malloc(new_input_len + 1);
-	ft_memcpy(new_input, *input, dollar_data->start);
-	ft_memcpy(new_input + dollar_data->start, dollar_data->replacement,
-		dollar_data->replacement_len);
-	ft_memcpy(new_input + dollar_data->start + dollar_data->replacement_len,
-		&(*input)[dollar_data->end],
-		dollar_data->input_len - dollar_data->end + 1);
-	free(*input);
-	*input = new_input;
-	dollar_data->input_len = new_input_len;
-}
-
+/* Replaces a dollar variable in the input string with its corresponding
+value from the environment. */
 static void	replace_dollar_var(char **input, t_env **environment,
 		t_dollar_data *dollar_data, size_t *i)
 {
@@ -107,6 +85,30 @@ static void	replace_dollar_var(char **input, t_env **environment,
 	free(dollar_data->replacement);
 }
 
+/* Updates the flag_single_quotes and flag_double_quotes based on the
+current character. */
+static void	update_quote_flags(char current_char, int *flag_single_quotes,
+		int *flag_double_quotes)
+{
+	if (current_char == '\'' && *flag_double_quotes == 0)
+	{
+		if (*flag_single_quotes == 0)
+			*flag_single_quotes = 1;
+		else
+			*flag_single_quotes = 0;
+	}
+	else if (current_char == '\"' && *flag_single_quotes == 0)
+	{
+		if (*flag_double_quotes == 0)
+			*flag_double_quotes = 1;
+		else
+			*flag_double_quotes = 0;
+	}
+}
+
+/* Parses the input string and replaces dollar variables with
+their values from the environment. Handles single and double 
+quotes to determine whether variable replacement should occur. */
 char	*parse_dollar(char *input, t_env **environment)
 {
 	size_t			i;
