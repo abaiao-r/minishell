@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/16 18:33:07 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/16 19:17:18 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,6 @@ int					count_words(char *str);
 char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
-int					show_pipe_error(void);
 int					is_valid_input(char *input);
 
 /* unset.c */
