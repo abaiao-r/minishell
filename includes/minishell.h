@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/16 18:00:35 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/16 18:33:07 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,10 @@ int					show_export(t_env **environment);
 /* print_prompt.c */
 char				*print_prompt(void);
 
-/* parser_args */
+/* parse_args */
 char				**parse_arguments(char *input_string);
 
-/* parser_utils.c */
+/* parse_utils.c */
 char				*parse_dollar(char *input, t_env **environment);
 
 /* utils_1.c */
