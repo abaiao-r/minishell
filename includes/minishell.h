@@ -6,7 +6,11 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/05/15 14:45:59 by abaiao-r         ###   ########.fr       */
+=======
+/*   Updated: 2023/05/16 19:17:18 by abaiao-r         ###   ########.fr       */
+>>>>>>> parser_$
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +51,18 @@ typedef struct s_env
 	int				rank;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_dollar_data
+{
+	int		start;
+	int		end;
+	char	*find_var;
+	char	*replacement;
+	size_t	input_len;
+	size_t	replacement_len;
+	int		flag_double_quotes;
+	int		flag_single_quotes;
+}			t_dollar_data;
 
 typedef struct s_parsed
 {
@@ -111,6 +127,12 @@ int					show_export(t_env **environment);
 /* print_prompt.c */
 char				*print_prompt(void);
 
+/* parse_args */
+char				**parse_arguments(char *input_string);
+
+/* parse_utils.c */
+char				*parse_dollar(char *input, t_env **environment);
+
 /* utils_1.c */
 void				free_parsed(char **parsed);
 
@@ -120,8 +142,11 @@ char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
+<<<<<<< HEAD
 char				**parse_arguments(char *input_string);
 int					show_special_char_error(char c);
+=======
+>>>>>>> parser_$
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);

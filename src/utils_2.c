@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/15 14:49:24 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/17 14:23:27 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,30 +90,29 @@ int	show_quotes_error(void)
 
 int	is_valid_input(char *input)
 {
-	char	stack[1024];
-	int		stack_size;
-	int		flag;
+	int		flag_quote;
+	char	quote_type;
 	int		i;
 
 	i = -1;
-	stack_size = 0;
-	flag = 0;
+	flag_quote = 0;
 	while (input[++i])
 	{
 		if (input[i] == ';' || input[i] == '\\')
 			return (show_special_char_error(input[i]));
 		if (input[i] == '\'' || input[i] == '\"')
 		{
-			if (stack_size != 0 && stack[stack_size - 1] == input[i])
-				stack_size--;
-			else
+			if (flag_quote == 0)
 			{
-				stack_size++;
-				stack[stack_size - 1] = input[i];
+				quote_type = input[i];
+				flag_quote = 1;
 			}
+			else if (flag_quote == 1)
+				if (quote_type == input[i])
+					flag_quote = 0;
 		}
 	}
-	if (stack_size != 0)
+	if (flag_quote != 0)
 		return (show_quotes_error());
 	return (1);
 }
