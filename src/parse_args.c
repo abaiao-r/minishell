@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/15 17:51:12 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/17 22:57:57 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,63 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
 		}
 		if (!arg->in_quotes && ft_isspace(c))
 			break ;
+		if (!arg->in_quotes && c == '>' && *i + 1 < args->string_len && str[*i + 1] == '>')
+		{
+			// Handle ">>" as a single token
+			if (arg->arg_len > 0)
+			{
+				arg->arg[arg->arg_len++] = '\0';
+				args->args[args->arg_index++] = arg->arg;
+				if (!create_arg(args, arg))
+					return ;
+			}
+			args->args[args->arg_index++] = ">>";
+			(*i)++;
+			(*i)++;
+			continue;
+		}
+		if (!arg->in_quotes && c == '>')
+        {
+            // Handle ">" as a single token
+            if (arg->arg_len > 0)
+            {
+                arg->arg[arg->arg_len++] = '\0';
+                args->args[args->arg_index++] = arg->arg;
+                if (!create_arg(args, arg))
+                    return;
+            }
+            args->args[args->arg_index++] = ">";
+            (*i)++;
+            continue;
+        }
+		if (!arg->in_quotes && c == '|' && *i + 1 < args->string_len && str[*i + 1] == '|')
+        {
+            // Handle "|" as a single token
+            if (arg->arg_len > 0)
+            {
+                arg->arg[arg->arg_len++] = '\0';
+                args->args[args->arg_index++] = arg->arg;
+                if (!create_arg(args, arg))
+                    return;
+            }
+            args->args[args->arg_index++] = "||";
+            (*i)++;
+            continue;
+        }
+		if (!arg->in_quotes && c == '|')
+        {
+            // Handle "|" as a single token
+            if (arg->arg_len > 0)
+            {
+                arg->arg[arg->arg_len++] = '\0';
+                args->args[args->arg_index++] = arg->arg;
+                if (!create_arg(args, arg))
+                    return;
+            }
+            args->args[args->arg_index++] = "|";
+            (*i)++;
+            continue;
+        }
 		arg->arg[arg->arg_len++] = c;
 		(*i)++;
 	}
