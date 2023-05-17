@@ -142,11 +142,6 @@ char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					is_valid_input(char *input);
-<<<<<<< HEAD
-char				**parse_arguments(char *input_string);
-int					show_special_char_error(char c);
-=======
->>>>>>> parser_$
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);
