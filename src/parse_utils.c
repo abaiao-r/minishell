@@ -6,13 +6,11 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:56:16 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/16 18:08:18 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/18 14:57:16 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-
 
 /* Replaces a portion of the input string with the given
 replacement string. */

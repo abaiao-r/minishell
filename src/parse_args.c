@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/17 22:57:57 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/18 15:30:44 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	create_parsed(t_parsed *parsed, char *str)
 	parsed->args = (char **)malloc((MAX_ARGS + 1) * sizeof(char *));
 	if (!parsed->args)
 		return (0);
+	parsed->args[MAX_ARGS] = 0;
 	parsed->arg_index = 0;
 	parsed->string_len = ft_strlen(str);
 	return (1);
