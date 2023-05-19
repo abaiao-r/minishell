@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/18 15:30:44 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/19 18:51:40 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
 				if (!create_arg(args, arg))
 					return ;
 			}
-			args->args[args->arg_index++] = ">>";
+			args->args[args->arg_index++] = ft_strdup(">>");
 			(*i)++;
 			(*i)++;
 			continue;
@@ -93,7 +93,7 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
                 if (!create_arg(args, arg))
                     return;
             }
-            args->args[args->arg_index++] = ">";
+            args->args[args->arg_index++] = ft_strdup(">");
             (*i)++;
             continue;
         }
@@ -107,7 +107,7 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
                 if (!create_arg(args, arg))
                     return;
             }
-            args->args[args->arg_index++] = "||";
+            args->args[args->arg_index++] = ft_strdup("||");
             (*i)++;
             continue;
         }
@@ -121,7 +121,7 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
                 if (!create_arg(args, arg))
                     return;
             }
-            args->args[args->arg_index++] = "|";
+            args->args[args->arg_index++] = ft_strdup("|");
             (*i)++;
             continue;
         }
