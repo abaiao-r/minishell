@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/17 14:22:50 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:00:11 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	sig_handler(int signum)
 	{
 		printf("\n");
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -43,6 +44,7 @@ int	main(int argc, char **argv, char **env)
 		if (!input)
 		{
 			free_env_list(&environment);
+			printf("\n");
 			return (0);
 		}
 		add_history(input);
@@ -50,6 +52,8 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		input = parse_dollar(input, &environment);
 		quote_parsed = parse_arguments(input);
+		if (!is_quote_parsed_valid(quote_parsed))
+			continue ;
 		if (has_valid_redirections(quote_parsed) == 0)
 		{
 			free(input);

@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/15 14:48:21 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/20 18:01:06 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	free_parsed(char **parsed)
 	if (!parsed)
 		return ;
 	i = 0;
+	if (!parsed || !parsed[i])
+		return ;
 	while (parsed[i])
 	{
 		free(parsed[i]);

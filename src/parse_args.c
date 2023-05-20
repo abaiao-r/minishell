@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/15 17:51:12 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/19 23:55:32 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	create_parsed(t_parsed *parsed, char *str)
 	parsed->args = (char **)malloc((MAX_ARGS + 1) * sizeof(char *));
 	if (!parsed->args)
 		return (0);
+	parsed->args[MAX_ARGS] = 0;
 	parsed->arg_index = 0;
 	parsed->string_len = ft_strlen(str);
 	return (1);
@@ -28,7 +29,7 @@ static int	create_parsed(t_parsed *parsed, char *str)
 /* This function initializes an argument structure. It allocates memory for 
 the argument string, sets the initial argument length, and initializes the 
 quote type. */
-static int	create_arg(t_parsed *parsed_args, t_arg *arg)
+int	create_arg(t_parsed *parsed_args, t_arg *arg)
 {
 	arg->arg = malloc((parsed_args->string_len + 1) * sizeof(char));
 	if (!arg->arg)
@@ -39,10 +40,10 @@ static int	create_arg(t_parsed *parsed_args, t_arg *arg)
 	return (1);
 }
 
-/* This function is a helper function for parse_arguments. It parses a 
-string for arguments and updates an argument structure. It handles quotes 
-and whitespace, and adds the parsed argument to the parsed arguments 
-if it is not empty. */
+/* Parses the string character by character.
+It handles quotes, whitespace, redirection operators,
+and pipe operators by calling the respective functions.
+It stores the parsed arguments and operators in the args struct. */
 static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
 {
 	char	c;
@@ -51,22 +52,14 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
 		&& args->arg_index < MAX_ARGS)
 	{
 		c = str[*i];
-		if (!arg->in_quotes && (c == '\'' || c == '\"'))
-		{
-			arg->in_quotes = 1;
-			arg->quote_type = c;
-			(*i)++;
+		if (handle_quotes(arg, c, i))
 			continue ;
-		}
-		if (arg->in_quotes && c == arg->quote_type)
-		{
-			arg->in_quotes = 0;
-			arg->quote_type = '\0';
-			(*i)++;
-			continue ;
-		}
 		if (!arg->in_quotes && ft_isspace(c))
 			break ;
+		if (!arg->in_quotes && handle_redirection(args, arg, str, i))
+			continue ;
+		if (!arg->in_quotes && handle_piping(args, arg, str, i))
+			continue ;
 		arg->arg[arg->arg_len++] = c;
 		(*i)++;
 	}
@@ -90,11 +83,8 @@ char	**parse_arguments(char *string)
 	i = 0;
 	while (i < args.string_len && args.arg_index < MAX_ARGS)
 	{
-		if (!create_arg(&args, &arg))
-		{
-			free(args.args);
+		if (!create_arg(&args, &arg) && (free(args.args), 1))
 			return (NULL);
-		}
 		while (i < args.string_len && ft_isspace(string[i]))
 			i++;
 		parse_aux(&args, &arg, string, &i);

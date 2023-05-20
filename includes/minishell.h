@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/17 14:32:23 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/20 17:58:03 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ typedef struct s_env
 
 typedef struct s_dollar_data
 {
-	int		start;
-	int		end;
-	char	*find_var;
-	char	*replacement;
-	size_t	input_len;
-	size_t	replacement_len;
-	int		flag_double_quotes;
-	int		flag_single_quotes;
-}			t_dollar_data;
+	int				start;
+	int				end;
+	char			*find_var;
+	char			*replacement;
+	size_t			input_len;
+	size_t			replacement_len;
+	int				flag_double_quotes;
+	int				flag_single_quotes;
+}					t_dollar_data;
 
 typedef struct s_parsed
 {
@@ -120,11 +120,26 @@ t_env				*sort_alphabet_env_list(t_env **head);
 void				print_export(t_env **head);
 int					show_export(t_env **environment);
 
+/* is_quote_parsed */
+int					is_quote_parsed_valid(char **input);
+
 /* print_prompt.c */
 char				*print_prompt(void);
 
 /* parse_args */
+int					create_arg(t_parsed *parsed_args, t_arg *arg);
 char				**parse_arguments(char *input_string);
+
+/* parse_arg_utils1.c */
+bool				handle_quotes(t_arg *arg, char c, int *i);
+
+/* parse_arg_utils2.c */
+bool				handle_redirection(t_parsed *args, t_arg *arg, char *str,
+						int *i);
+
+/* parse_arg_utils3.c */
+bool				handle_piping(t_parsed *args, t_arg *arg, char *str,
+						int *i);
 
 /* parse_utils.c */
 char				*parse_dollar(char *input, t_env **environment);
