@@ -6,17 +6,13 @@
 #    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2023/05/17 14:25:59 by abaiao-r         ###   ########.fr        #
-=======
-#    Updated: 2023/05/20 16:40:42 by abaiao-r         ###   ########.fr        #
->>>>>>> parser_$
+#    Updated: 2023/05/20 19:12:52 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler settings
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -g# -fsanitize=address 
 
 # Directories
 SRCDIR = ./src
