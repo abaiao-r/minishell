@@ -6,13 +6,13 @@
 #    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/05/20 19:18:20 by abaiao-r         ###   ########.fr        #
+#    Updated: 2023/05/20 19:48:55 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler settings
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g# -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address 
 
 # Directories
 SRCDIR = ./src
@@ -24,7 +24,7 @@ SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/comman
 	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c $(SRCDIR)/exe.c \
 	   $(SRCDIR)/env_utils.c $(SRCDIR)/export_utils.c $(SRCDIR)/export.c $(SRCDIR)/is_quote_parsed_valid.c \
 	   $(SRCDIR)/unset.c $(SRCDIR)/pipe.c $(SRCDIR)/parse_args.c $(SRCDIR)/parse_args_utils1.c \
-	   $(SRCDIR)/parse_args_utils2.c $(SRCDIR)/parse_args_utils3.c $(SRCDIR)/parse_dollar.c 
+	   $(SRCDIR)/parse_args_utils2.c $(SRCDIR)/parse_args_utils3.c $(SRCDIR)/parse_dollar.c $(SRCDIR)/utils_3.c
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
