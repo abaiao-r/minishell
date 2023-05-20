@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/19 23:55:18 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/20 16:39:41 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,9 @@ int					parse_input_export(char *input, char **find_var,
 t_env				*sort_alphabet_env_list(t_env **head);
 void				print_export(t_env **head);
 int					show_export(t_env **environment);
+
+/* is_quote_parsed */
+int					is_quote_parsed_valid(char **input);
 
 /* print_prompt.c */
 char				*print_prompt(void);
