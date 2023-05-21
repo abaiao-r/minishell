@@ -6,21 +6,95 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/19 23:55:32 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:04:15 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	update_quote_flags(char current_char, int *flag_single_quotes,
+		int *flag_double_quotes)
+{
+	if (current_char == '\'' && *flag_double_quotes == 0)
+	{
+		if (*flag_single_quotes == 0)
+			*flag_single_quotes = 1;
+		else
+			*flag_single_quotes = 0;
+	}
+	else if (current_char == '\"' && *flag_single_quotes == 0)
+	{
+		if (*flag_double_quotes == 0)
+			*flag_double_quotes = 1;
+		else
+			*flag_double_quotes = 0;
+	}
+}
+
+int	ft_count_args(char *str)
+{
+	int		i;
+	int		wc;
+	int		flag_single_quotes;
+	int		flag_double_quotes;
+
+	flag_single_quotes = 0;
+	flag_double_quotes = 0;
+	wc = 0;
+	i = 0;
+	while (str[i])
+	{
+		while (ft_isspace(str[i]))
+			i++;
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			update_quote_flags(str[i], &flag_single_quotes, &flag_double_quotes);
+			i++;
+		}
+		if (str[i])
+			wc++;
+		while (flag_single_quotes == 1 || flag_double_quotes == 1)
+		{
+			if (str[i] == '\'' || str[i] == '\"')
+				update_quote_flags(str[i], &flag_single_quotes, &flag_double_quotes);
+			i++;
+		}
+		while (str[i] && !ft_isspace(str[i]))
+		{
+			if((str[i] == '|' || str[i] == '>' || str[i] == '<') && flag_double_quotes == 0 && flag_single_quotes == 0)
+			{
+				wc++;
+				i++;
+			}
+			if(((str[i] == '|' && str[i + 1] == '|') || (str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<')) && (flag_double_quotes == 0 && flag_single_quotes == 0))
+			{
+				wc++;
+				i++;
+				i++;
+			}
+			i++;
+		}
+	}
+	return (wc);
+}
+
+/* main to test ft_count_args */
+/* int	main(void)
+{
+	char	str1[] = " echo \"a'|'\"echo b";
+	
+	printf("%d\n", ft_count_args(str1));
+} */
 
 /* This function initializes a parsed structure with a given string. 
 It allocates memory for the parsed arguments and sets the initial 
 argument index. */
 static int	create_parsed(t_parsed *parsed, char *str)
 {
-	parsed->args = (char **)malloc((MAX_ARGS + 1) * sizeof(char *));
+	parsed->args = (char **)malloc((ft_count_args(str) + 1) * sizeof(char *));
 	if (!parsed->args)
 		return (0);
-	parsed->args[MAX_ARGS] = 0;
+	parsed->args[ft_count_args(str)] = 0;
 	parsed->arg_index = 0;
 	parsed->string_len = ft_strlen(str);
 	return (1);

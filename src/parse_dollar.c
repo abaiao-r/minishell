@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:56:16 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/18 14:57:16 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/21 16:42:49 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	replace_input(char **input, t_dollar_data *dollar_data)
 	dollar_data->replacement_len = ft_strlen(dollar_data->replacement);
 	new_input_len = dollar_data->input_len + dollar_data->replacement_len
 		- (dollar_data->end - dollar_data->start - 1);
-	new_input = malloc(new_input_len + 1);
+	new_input = ft_calloc(new_input_len + 1, sizeof(char));
 	ft_memcpy(new_input, *input, dollar_data->start);
 	ft_memcpy(new_input + dollar_data->start, dollar_data->replacement,
 		dollar_data->replacement_len);
