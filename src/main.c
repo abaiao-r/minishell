@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/20 18:00:11 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/20 20:57:59 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@ int	main(int argc, char **argv, char **env)
 		input = parse_dollar(input, &environment);
 		quote_parsed = parse_arguments(input);
 		if (!is_quote_parsed_valid(quote_parsed))
+		{
+			free(input);
+			free_parsed(quote_parsed);
 			continue ;
+		}
 		if (has_valid_redirections(quote_parsed) == 0)
 		{
 			free(input);
