@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/21 16:04:15 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/21 17:12:14 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
 	char	c;
 
 	while (*i < args->string_len && arg->arg_len < args->string_len
-		&& args->arg_index < MAX_ARGS)
+		&& args->arg_index < ft_count_args(str))
 	{
 		c = str[*i];
 		if (handle_quotes(arg, c, i))
