@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:56:16 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/21 17:32:09 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/21 17:58:38 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,12 @@ static char	*search_and_replace_var(t_env **env_list, char *find_var,
 		}
 		current_node = current_node->next;
 	}
-	var_value = ft_strndup((const char *) "", 0);
-	return (var_value);
+	if (flag_single_quotes == 0)
+	{
+		var_value = ft_strndup((const char *) "", 0);
+		return (var_value);
+	}
+	return (NULL);
 }
 
 /* Replaces a dollar variable in the input string with its corresponding
