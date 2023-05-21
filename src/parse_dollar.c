@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:56:16 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/21 17:58:38 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/21 18:49:31 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,18 @@ value from the environment. */
 static void	replace_dollar_var(char **input, t_env **environment,
 		t_dollar_data *dollar_data, size_t *i)
 {
+	size_t	flag;
+
 	dollar_data->start = *i;
 	(*i)++;
-	while (*i < dollar_data->input_len && (*input)[*i] != ' '
-		&& (*input)[*i] != '$' && (*input)[*i] != '\"' && (*input)[*i] != '\'')
+	flag = *i;
+	while (*i < dollar_data->input_len && (ft_isalnum((*input)[*i])
+		|| (*input)[*i] == '_' ))
 		(*i)++;
-	dollar_data->end = *i;
+	if (ft_isdigit((*input)[flag]))
+		dollar_data->end = flag + 1;
+	else
+		dollar_data->end = *i;
 	dollar_data->find_var = ft_strndup(&(*input)[dollar_data->start + 1],
 			dollar_data->end - dollar_data->start - 1);
 	dollar_data->replacement = search_and_replace_var(environment,
