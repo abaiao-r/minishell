@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/21 17:06:13 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/21 19:15:34 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,5 @@ void	free_parsed(char **parsed)
 		free(parsed[i]);
 		i++;
 	}
-	free(parsed[i]);
 	free(parsed);
 }

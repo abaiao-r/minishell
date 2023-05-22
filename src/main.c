@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/20 20:57:59 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/22 12:50:20 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **env)
 		if (!input)
 		{
 			free_env_list(&environment);
-			printf("\n");
+			printf("exit\n");
 			return (0);
 		}
 		add_history(input);
@@ -75,7 +75,10 @@ int	main(int argc, char **argv, char **env)
 		free(input);
 		free_parsed(quote_parsed);
 		if (status == EXIT)
+		{
+			printf("\nexit");
 			break ;
+		}
 	}
 	rl_clear_history();
 	free_env_list(&environment);
