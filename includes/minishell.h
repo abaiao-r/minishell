@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/20 17:58:03 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/24 18:34:10 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,17 @@ typedef struct s_env
 	int				rank;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_prompt
+{
+	char			*prompt_full;
+}					t_prompt;
+
+typedef struct s_minishell
+{
+	t_env			*environment;
+	t_prompt		*prompt;
+}					t_minishell;
 
 typedef struct s_dollar_data
 {
@@ -124,7 +135,7 @@ int					show_export(t_env **environment);
 int					is_quote_parsed_valid(char **input);
 
 /* print_prompt.c */
-char				*print_prompt(void);
+char				*print_prompt(t_prompt *prompt_full);
 
 /* parse_args */
 int					create_arg(t_parsed *parsed_args, t_arg *arg);

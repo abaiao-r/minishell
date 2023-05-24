@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/21 19:11:57 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/24 19:52:59 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ char	**parse_arguments(char *string)
 	if (!create_parsed(&args, string))
 		return (NULL);
 	i = 0;
-	while (i < args.string_len && args.arg_index < MAX_ARGS)
+	while (i < args.string_len && args.arg_index < ft_count_args(string))
 	{
 		if (!create_arg(&args, &arg) && (free(args.args), 1))
 			return (NULL);

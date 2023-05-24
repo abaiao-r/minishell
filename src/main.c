@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/22 12:50:20 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/24 19:33:45 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,34 @@ int	main(int argc, char **argv, char **env)
 	char	**quote_parsed;
 	int		i;
 	int		status;
-	t_env	*environment;
+	t_minishell	*minishell;
+	//t_env	*environment;
 
 	(void) argc;
 	(void) argv;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-	environment = parse_env(env);
+	minishell = ft_calloc(1, sizeof(t_minishell));
+	minishell->environment = parse_env(env);
+	minishell->prompt = ft_calloc(1, sizeof(t_prompt));
 	//execute_pipe((char*[]){"echo", "hello", NULL}, 2, (char*[]){"/bin/grep", "h", NULL}, 2);
 	//exit(0);
 	while (1)
 	{
-		input = print_prompt();
+		input = print_prompt(minishell->prompt);
 		if (!input)
 		{
-			free_env_list(&environment);
+			free_env_list(&minishell->environment);
+			free(minishell->prompt->prompt_full);
+			free(minishell->prompt);
+			free(minishell);
 			printf("exit\n");
 			return (0);
 		}
 		add_history(input);
 		if (!is_valid_input(input))
 			continue ;
-		input = parse_dollar(input, &environment);
+		input = parse_dollar(input, &minishell->environment);
 		quote_parsed = parse_arguments(input);
 		if (!is_quote_parsed_valid(quote_parsed))
 		{
@@ -71,7 +77,8 @@ int	main(int argc, char **argv, char **env)
 			i++;
 		}
 		status = exe_commands(quote_parsed);
-		//status = exe_cmd(quote_parsed, input, i, &environment);
+		//status = exe_cmd(quote_parsed, input, i, &minishell->environment);
+    	free(minishell->prompt->prompt_full);
 		free(input);
 		free_parsed(quote_parsed);
 		if (status == EXIT)
@@ -81,6 +88,8 @@ int	main(int argc, char **argv, char **env)
 		}
 	}
 	rl_clear_history();
-	free_env_list(&environment);
+	free_env_list(&minishell->environment);
+	free(minishell->prompt);
+	free(minishell);
 	return (0);
 }
