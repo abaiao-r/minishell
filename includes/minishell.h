@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/26 14:40:00 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:30:17 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,14 @@ typedef struct s_minishell
 
 typedef struct s_parsed
 {
-	char			**args;
 	int				arg_index;
 	int				string_len;
 }					t_parsed;
 
 typedef struct s_arg
 {
+	int				arg_index;
+	int				string_len;
 	char			*arg;
 	int				arg_len;
 	int				in_quotes;
@@ -148,19 +149,18 @@ int					is_quote_parsed_valid(t_input *input);
 char				*print_prompt(t_prompt *prompt_full);
 
 /* parse_args */
-int					create_arg(t_parsed *parsed_args, t_arg *arg);
+int					create_arg(t_arg *arg);
 t_input				*parse_arguments(char *string);
 
 /* parse_arg_utils1.c */
-bool				handle_quotes(t_arg *arg, char c, int *i);
+
 
 /* parse_arg_utils2.c */
-bool				handle_redirection(t_parsed *args, t_arg *arg, char *str,
-						int *i);
+
 
 /* parse_arg_utils3.c */
-bool				handle_piping(t_parsed *args, t_arg *arg, char *str,
-						int *i);
+
+
 
 /* parse_utils.c */
 char				*parse_dollar(char *input, t_env **environment);

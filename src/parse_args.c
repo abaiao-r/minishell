@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/26 20:10:47 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 22:27:05 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,19 @@ int	ft_count_args(char *str)
 	printf("%d\n", ft_count_args(str1));
 } */
 
-static int	create_parsed(t_parsed *parsed, char *str)
+static int	create_parsed(t_arg *arg, char *str)
 {
-	parsed->arg_index = 0;
-	parsed->string_len = ft_strlen(str);
+	arg->arg_index = 0;
+	arg->string_len = ft_strlen(str);
 	return (1);
 }
 
 /* This function initializes an argument structure. It allocates memory for 
 the argument string, sets the initial argument length, and initializes the 
 quote type. */
-int	create_arg(t_parsed *parsed_args, t_arg *arg)
+int	create_arg(t_arg *arg)
 {
-	arg->arg = malloc((parsed_args->string_len + 1) * sizeof(char));
+	arg->arg = malloc((arg->string_len + 1) * sizeof(char));
 	if (!arg->arg)
 		return (0);
 	arg->arg_len = 0;
@@ -112,13 +112,13 @@ int	create_arg(t_parsed *parsed_args, t_arg *arg)
 It handles quotes, whitespace, redirection operators,
 and pipe operators by calling the respective functions.
 It stores the parsed arguments and operators in the args struct. */
-static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **head, t_input **tail)
+static void parse_aux(t_arg *arg, char *str, int *i, t_input **head, t_input **tail)
 {
     char c;
     int prev_was_pipe;
 
 	prev_was_pipe = 0;
-    while (*i < args->string_len && arg->arg_len < args->string_len)
+    while (*i < arg->string_len && arg->arg_len < arg->string_len)
     {
         c = str[*i];
         if (handle_quotes(arg, c, i))
@@ -137,7 +137,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
 
                 t_input *new_input = malloc(sizeof(t_input));
                 new_input->input = arg->arg;
-                new_input->index = args->arg_index;
+                new_input->index = arg->arg_index;
                 new_input->within_quotes = arg->within_quotes;
                 new_input->next = NULL;
 
@@ -152,13 +152,13 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                     *tail = new_input;
                 }
 
-                args->arg_index++;
-                arg->arg = malloc(args->string_len * sizeof(char));
+                arg->arg_index++;
+                arg->arg = malloc(arg->string_len * sizeof(char));
                 arg->arg_len = 0;
             }
             t_input *new_input = malloc(sizeof(t_input));
             new_input->input = ft_strdup("<<");
-            new_input->index = args->arg_index;
+            new_input->index = arg->arg_index;
             new_input->within_quotes = arg->within_quotes;
             new_input->next = NULL;
 
@@ -173,7 +173,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                 *tail = new_input;
             }
 
-            args->arg_index++;
+            arg->arg_index++;
             (*i)++;
 			(*i)++;
             prev_was_pipe = 1;
@@ -187,7 +187,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
 
                 t_input *new_input = malloc(sizeof(t_input));
                 new_input->input = arg->arg;
-                new_input->index = args->arg_index;
+                new_input->index = arg->arg_index;
                 new_input->within_quotes = arg->within_quotes;
                 new_input->next = NULL;
 
@@ -202,13 +202,13 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                     *tail = new_input;
                 }
 
-                args->arg_index++;
-                arg->arg = malloc(args->string_len * sizeof(char));
+                arg->arg_index++;
+                arg->arg = malloc(arg->string_len * sizeof(char));
                 arg->arg_len = 0;
             }
             t_input *new_input = malloc(sizeof(t_input));
             new_input->input = ft_strdup("<");
-            new_input->index = args->arg_index;
+            new_input->index = arg->arg_index;
             new_input->within_quotes = arg->within_quotes;
             new_input->next = NULL;
 
@@ -223,7 +223,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                 *tail = new_input;
             }
 
-            args->arg_index++;
+            arg->arg_index++;
             (*i)++;
             prev_was_pipe = 1;
             continue;
@@ -236,7 +236,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
 
                 t_input *new_input = malloc(sizeof(t_input));
                 new_input->input = arg->arg;
-                new_input->index = args->arg_index;
+                new_input->index = arg->arg_index;
                 new_input->within_quotes = arg->within_quotes;
                 new_input->next = NULL;
 
@@ -251,13 +251,13 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                     *tail = new_input;
                 }
 
-                args->arg_index++;
-                arg->arg = malloc(args->string_len * sizeof(char));
+                arg->arg_index++;
+                arg->arg = malloc(arg->string_len * sizeof(char));
                 arg->arg_len = 0;
             }
             t_input *new_input = malloc(sizeof(t_input));
             new_input->input = ft_strdup(">>");
-            new_input->index = args->arg_index;
+            new_input->index = arg->arg_index;
             new_input->within_quotes = arg->within_quotes;
             new_input->next = NULL;
 
@@ -272,7 +272,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                 *tail = new_input;
             }
 
-            args->arg_index++;
+            arg->arg_index++;
             (*i)++;
 			(*i)++;
             prev_was_pipe = 1;
@@ -286,7 +286,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
 
                 t_input *new_input = malloc(sizeof(t_input));
                 new_input->input = arg->arg;
-                new_input->index = args->arg_index;
+                new_input->index = arg->arg_index;
                 new_input->within_quotes = arg->within_quotes;
                 new_input->next = NULL;
 
@@ -301,13 +301,13 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                     *tail = new_input;
                 }
 
-                args->arg_index++;
-                arg->arg = malloc(args->string_len * sizeof(char));
+                arg->arg_index++;
+                arg->arg = malloc(arg->string_len * sizeof(char));
                 arg->arg_len = 0;
             }
             t_input *new_input = malloc(sizeof(t_input));
             new_input->input = ft_strdup(">");
-            new_input->index = args->arg_index;
+            new_input->index = arg->arg_index;
             new_input->within_quotes = arg->within_quotes;
             new_input->next = NULL;
 
@@ -322,7 +322,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                 *tail = new_input;
             }
 
-            args->arg_index++;
+            arg->arg_index++;
             (*i)++;
             prev_was_pipe = 1;
             continue;
@@ -335,7 +335,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
 
                 t_input *new_input = malloc(sizeof(t_input));
                 new_input->input = arg->arg;
-                new_input->index = args->arg_index;
+                new_input->index = arg->arg_index;
                 new_input->within_quotes = arg->within_quotes;
                 new_input->next = NULL;
 
@@ -350,13 +350,13 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                     *tail = new_input;
                 }
 
-                args->arg_index++;
-                arg->arg = malloc(args->string_len * sizeof(char));
+                arg->arg_index++;
+                arg->arg = malloc(arg->string_len * sizeof(char));
                 arg->arg_len = 0;
             }
             t_input *new_input = malloc(sizeof(t_input));
             new_input->input = ft_strdup("||");
-            new_input->index = args->arg_index;
+            new_input->index = arg->arg_index;
             new_input->within_quotes = arg->within_quotes;
             new_input->next = NULL;
 
@@ -371,7 +371,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                 *tail = new_input;
             }
 
-            args->arg_index++;
+            arg->arg_index++;
             (*i)++;
 			(*i)++;
             prev_was_pipe = 1;
@@ -385,7 +385,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
 
                 t_input *new_input = malloc(sizeof(t_input));
                 new_input->input = arg->arg;
-                new_input->index = args->arg_index;
+                new_input->index = arg->arg_index;
                 new_input->within_quotes = arg->within_quotes;
                 new_input->next = NULL;
 
@@ -400,13 +400,13 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                     *tail = new_input;
                 }
 
-                args->arg_index++;
-                arg->arg = malloc(args->string_len * sizeof(char));
+                arg->arg_index++;
+                arg->arg = malloc(arg->string_len * sizeof(char));
                 arg->arg_len = 0;
             }
             t_input *new_input = malloc(sizeof(t_input));
             new_input->input = ft_strdup("|");
-            new_input->index = args->arg_index;
+            new_input->index = arg->arg_index;
             new_input->within_quotes = arg->within_quotes;
             new_input->next = NULL;
 
@@ -421,7 +421,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                 *tail = new_input;
             }
 
-            args->arg_index++;
+            arg->arg_index++;
             (*i)++;
             prev_was_pipe = 1;
             continue;
@@ -437,7 +437,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
 
         t_input *new_input = malloc(sizeof(t_input));
         new_input->input = arg->arg;
-        new_input->index = args->arg_index;
+        new_input->index = arg->arg_index;
         new_input->within_quotes = arg->within_quotes;
         new_input->next = NULL;
 
@@ -452,7 +452,7 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
             *tail = new_input;
         }
 
-        args->arg_index++;
+        arg->arg_index++;
     }
     else if (!prev_was_pipe)
         free(arg->arg);
@@ -466,18 +466,19 @@ from the string, and stores it in the linked list. Finally, it returns the head 
 t_input	*parse_arguments(char *string)
 {
 	int			i;
-	t_parsed	args;
 	t_arg		arg;
-	t_input		*head = NULL;
-	t_input		*tail = NULL;
+	t_input		*head;
+	t_input		*tail;
 
-	if (!create_parsed(&args, string))
+	head = NULL;
+	tail = NULL;
+	if (!create_parsed(&arg, string))
 		return (NULL);
 
 	i = 0;
-	while (i < args.string_len)
+	while (i < arg.string_len)
 	{
-		if (!create_arg(&args, &arg))
+		if (!create_arg(&arg))
 		{
 			t_input *current = head;
 			while (current != NULL)
@@ -489,10 +490,10 @@ t_input	*parse_arguments(char *string)
 			return (NULL);
 		}
 
-		while (i < args.string_len && ft_isspace(string[i]))
+		while (i < arg.string_len && ft_isspace(string[i]))
 			i++;
 
-		parse_aux(&args, &arg, string, &i, &head, &tail);
+		parse_aux(&arg, string, &i, &head, &tail);
 	}
 
 	return (head);
