@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/26 19:50:38 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 19:55:36 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,56 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
             break;
         if (!arg->in_quotes && handle_redirection(args, arg, str, i))
             continue;
+        if (!arg->in_quotes && c == '|' && str[*i + 1] == '|')
+        {
+            if (arg->arg_len > 0)
+            {
+                arg->arg[arg->arg_len] = '\0';
+
+                t_input *new_input = malloc(sizeof(t_input));
+                new_input->input = arg->arg;
+                new_input->index = args->arg_index;
+                new_input->within_quotes = arg->within_quotes;
+                new_input->next = NULL;
+
+                if (*head == NULL)
+                {
+                    *head = new_input;
+                    *tail = new_input;
+                }
+                else
+                {
+                    (*tail)->next = new_input;
+                    *tail = new_input;
+                }
+
+                args->arg_index++;
+                arg->arg = malloc(args->string_len * sizeof(char));
+                arg->arg_len = 0;
+            }
+            t_input *new_input = malloc(sizeof(t_input));
+            new_input->input = ft_strdup("||");
+            new_input->index = args->arg_index;
+            new_input->within_quotes = arg->within_quotes;
+            new_input->next = NULL;
+
+            if (*head == NULL)
+            {
+                *head = new_input;
+                *tail = new_input;
+            }
+            else
+            {
+                (*tail)->next = new_input;
+                *tail = new_input;
+            }
+
+            args->arg_index++;
+            (*i)++;
+			(*i)++;
+            prev_was_pipe = 1;
+            continue;
+        }
         if (!arg->in_quotes && c == '|')
         {
             if (arg->arg_len > 0)
@@ -157,8 +207,6 @@ static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **h
                 arg->arg = malloc(args->string_len * sizeof(char));
                 arg->arg_len = 0;
             }
-
-            // Create a separate node for the pipe character
             t_input *new_input = malloc(sizeof(t_input));
             new_input->input = ft_strdup("|");
             new_input->index = args->arg_index;
