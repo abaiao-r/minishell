@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:42:39 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/20 20:17:24 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 15:02:30 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,27 @@ static int	show_special_str_error(char *str)
 contains valid combinations of special characters and returns 1 if it
 is valid. If an invalid combination is found, it calls show_special_str_error
 with the corresponding input element and returns 0. */
-int	is_quote_parsed_valid(char **input)
+int	is_quote_parsed_valid(t_input *input)
 {
-	int	i;
+	t_input *current = input;
 
-	i = 0;
-	while (input[i])
+	while (current)
 	{
-		if ((ft_strcmp(input[i], ">") == 0 || ft_strcmp(input[i], ">>") == 0
-				|| ft_strcmp(input[i], "<") == 0 || ft_strcmp(input[i],
-					"<<") == 0 || ft_strcmp(input[i], "|") == 0) && input[i
-				+ 1] == NULL)
-			return (show_special_str_error(input[i]));
-		if (ft_strcmp(input[i], "||") == 0)
-			return (show_special_str_error(input[i]));
-		if ((ft_strcmp(input[i], ">") == 0 || ft_strcmp(input[i], ">>") == 0
-				|| ft_strcmp(input[i], "<") == 0 || ft_strcmp(input[i],
-					"<<") == 0 || ft_strcmp(input[i], "|") == 0)
-			&& (ft_strcmp(input[i + 1], ">") == 0 || ft_strcmp(input[i + 1],
-					">>") == 0 || ft_strcmp(input[i + 1], "<") == 0
-				|| ft_strcmp(input[i + 1], "<<") == 0 || ft_strcmp(input[i + 1],
-					"|") == 0))
-			return (show_special_str_error(input[i]));
-		i++;
+		if ((ft_strcmp(current->input, ">") == 0 || ft_strcmp(current->input, ">>") == 0
+				|| ft_strcmp(current->input, "<") == 0 || ft_strcmp(current->input,
+					"<<") == 0 || ft_strcmp(current->input, "|") == 0) && current->within_quotes == 0 && current->next->input == NULL)
+			return (show_special_str_error(current->input));
+		if (ft_strcmp(current->input, "||") == 0 && current->within_quotes == 0)
+			return (show_special_str_error(current->input));
+		if ((((ft_strcmp(current->input, ">") == 0 || ft_strcmp(current->input, ">>") == 0
+				|| ft_strcmp(current->input, "<") == 0 || ft_strcmp(current->input,
+					"<<") == 0 || ft_strcmp(current->input, "|") == 0) && current->within_quotes == 0))
+			&& (((ft_strcmp(current->next->input, ">") == 0 || ft_strcmp(current->next->input,
+					">>") == 0 || ft_strcmp(current->next->input, "<") == 0
+				|| ft_strcmp(current->next->input, "<<") == 0 || ft_strcmp(current->next->input,
+					"|") == 0)) && current->next->within_quotes == 0))
+			return (show_special_str_error(current->input));
+		current = current->next;
 	}
 	return (1);
 }

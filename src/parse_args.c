@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/26 14:14:05 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 19:50:38 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,54 +112,105 @@ int	create_arg(t_parsed *parsed_args, t_arg *arg)
 It handles quotes, whitespace, redirection operators,
 and pipe operators by calling the respective functions.
 It stores the parsed arguments and operators in the args struct. */
-static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **head, t_input **tail)
+static void parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **head, t_input **tail)
 {
-	char	c;
+    char c;
+    int prev_was_pipe = 0;
 
-	while (*i < args->string_len && arg->arg_len < args->string_len)
-	{
-		c = str[*i];
-		if (handle_quotes(arg, c, i))
-		{
-			if(arg->in_quotes == 1 && arg->within_quotes == 0)
-				arg->within_quotes = 1;
-			continue ;
-		}
-		if (!arg->in_quotes && ft_isspace(c))
-			break ;
-		if (!arg->in_quotes && handle_redirection(args, arg, str, i))
-			continue ;
-		if (!arg->in_quotes && handle_piping(args, arg, str, i))
-			continue ;
-		arg->arg[arg->arg_len++] = c;
-		(*i)++;
-	}
+    while (*i < args->string_len && arg->arg_len < args->string_len)
+    {
+        c = str[*i];
+        if (handle_quotes(arg, c, i))
+        {
+            if (arg->in_quotes == 1 && arg->within_quotes == 0)
+                arg->within_quotes = 1;
+            continue;
+        }
+        if (!arg->in_quotes && ft_isspace(c))
+            break;
+        if (!arg->in_quotes && handle_redirection(args, arg, str, i))
+            continue;
+        if (!arg->in_quotes && c == '|')
+        {
+            if (arg->arg_len > 0)
+            {
+                arg->arg[arg->arg_len] = '\0';
 
-	if (arg->arg_len > 0)
-	{
-		arg->arg[arg->arg_len] = '\0';
+                t_input *new_input = malloc(sizeof(t_input));
+                new_input->input = arg->arg;
+                new_input->index = args->arg_index;
+                new_input->within_quotes = arg->within_quotes;
+                new_input->next = NULL;
 
-		t_input *new_input = malloc(sizeof(t_input));
-		new_input->input = arg->arg;
-		new_input->index = args->arg_index;
-		new_input->within_quotes = arg->within_quotes;
-		new_input->next = NULL;
+                if (*head == NULL)
+                {
+                    *head = new_input;
+                    *tail = new_input;
+                }
+                else
+                {
+                    (*tail)->next = new_input;
+                    *tail = new_input;
+                }
 
-		if (*head == NULL)
-		{
-			*head = new_input;
-			*tail = new_input;
-		}
-		else
-		{
-			(*tail)->next = new_input;
-			*tail = new_input;
-		}
+                args->arg_index++;
+                arg->arg = malloc(args->string_len * sizeof(char));
+                arg->arg_len = 0;
+            }
 
-		args->arg_index++;
-	}
-	else
-		free(arg->arg);
+            // Create a separate node for the pipe character
+            t_input *new_input = malloc(sizeof(t_input));
+            new_input->input = ft_strdup("|");
+            new_input->index = args->arg_index;
+            new_input->within_quotes = arg->within_quotes;
+            new_input->next = NULL;
+
+            if (*head == NULL)
+            {
+                *head = new_input;
+                *tail = new_input;
+            }
+            else
+            {
+                (*tail)->next = new_input;
+                *tail = new_input;
+            }
+
+            args->arg_index++;
+            (*i)++;
+            prev_was_pipe = 1;
+            continue;
+        }
+        arg->arg[arg->arg_len++] = c;
+        (*i)++;
+        prev_was_pipe = 0;
+    }
+
+    if (arg->arg_len > 0)
+    {
+        arg->arg[arg->arg_len] = '\0';
+
+        t_input *new_input = malloc(sizeof(t_input));
+        new_input->input = arg->arg;
+        new_input->index = args->arg_index;
+        new_input->within_quotes = arg->within_quotes;
+        new_input->next = NULL;
+
+        if (*head == NULL)
+        {
+            *head = new_input;
+            *tail = new_input;
+        }
+        else
+        {
+            (*tail)->next = new_input;
+            *tail = new_input;
+        }
+
+        args->arg_index++;
+    }
+    else if (!prev_was_pipe)
+        free(arg->arg);
 }
 
 /* This is the main function for parsing arguments from a string.
@@ -202,4 +253,3 @@ t_input	*parse_arguments(char *string)
 
 	return (head);
 }
-
