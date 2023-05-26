@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/24 19:33:45 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 13:13:49 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	sig_handler(int signum)
 int	main(int argc, char **argv, char **env)
 {
 	char	*input;
-	char	**quote_parsed;
-	int		i;
-	int		status;
+/* 	int		status; */
 	t_minishell	*minishell;
 	//t_env	*environment;
 
@@ -43,6 +41,7 @@ int	main(int argc, char **argv, char **env)
 	//exit(0);
 	while (1)
 	{
+		minishell->input = ft_calloc(1, sizeof(t_input));
 		input = print_prompt(minishell->prompt);
 		if (!input)
 		{
@@ -57,35 +56,34 @@ int	main(int argc, char **argv, char **env)
 		if (!is_valid_input(input))
 			continue ;
 		input = parse_dollar(input, &minishell->environment);
-		quote_parsed = parse_arguments(input);
-		if (!is_quote_parsed_valid(quote_parsed))
+		minishell->input = parse_arguments(input);
+		if (!is_quote_parsed_valid(&minishell->input->input))
 		{
 			free(input);
-			free_parsed(quote_parsed);
+			free_input_list(&minishell->input);
 			continue ;
 		}
-		if (has_valid_redirections(quote_parsed) == 0)
+		if (has_valid_redirections(&minishell->input->input) == 0)
 		{
 			free(input);
-			free_parsed(quote_parsed);
+			free_input_list(&minishell->input);
 			continue ;
 		}
-		i = 0;
-		while (quote_parsed[i] != NULL)
+		while (minishell->input)
 		{
-			printf("arg%d: %s\n", i, quote_parsed[i]);
-			i++;
+			printf("arg[%d] and within_quotes[%d]: %s\n", minishell->input->index, minishell->input->within_quotes, minishell->input->input);
+			minishell->input = minishell->input->next;
 		}
-		status = exe_commands(quote_parsed);
+		/* status = exe_commands(&minishell->input->input); */
 		//status = exe_cmd(quote_parsed, input, i, &minishell->environment);
     	free(minishell->prompt->prompt_full);
 		free(input);
-		free_parsed(quote_parsed);
-		if (status == EXIT)
+		free_input_list(&minishell->input);
+		/* if (status == EXIT)
 		{
 			printf("\nexit");
 			break ;
-		}
+		} */
 	}
 	rl_clear_history();
 	free_env_list(&minishell->environment);

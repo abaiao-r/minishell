@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/24 18:34:10 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 13:49:32 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,23 +53,20 @@ typedef struct s_prompt
 	char			*prompt_full;
 }					t_prompt;
 
+typedef struct s_input
+{
+	char			*input;
+	int				index;
+	int				within_quotes;
+	struct s_input	*next;
+}					t_input;
+
 typedef struct s_minishell
 {
 	t_env			*environment;
 	t_prompt		*prompt;
+	t_input			*input;
 }					t_minishell;
-
-typedef struct s_dollar_data
-{
-	int				start;
-	int				end;
-	char			*find_var;
-	char			*replacement;
-	size_t			input_len;
-	size_t			replacement_len;
-	int				flag_double_quotes;
-	int				flag_single_quotes;
-}					t_dollar_data;
 
 typedef struct s_parsed
 {
@@ -83,8 +80,21 @@ typedef struct s_arg
 	char			*arg;
 	int				arg_len;
 	int				in_quotes;
+	int				within_quotes;
 	char			quote_type;
 }					t_arg;
+
+typedef struct s_dollar_data
+{
+	int				start;
+	int				end;
+	char			*find_var;
+	char			*replacement;
+	size_t			input_len;
+	size_t			replacement_len;
+	int				flag_double_quotes;
+	int				flag_single_quotes;
+}					t_dollar_data;
 
 /* commands.c */
 void				echo_aux(char **args, int num_args, int flag);
@@ -139,7 +149,7 @@ char				*print_prompt(t_prompt *prompt_full);
 
 /* parse_args */
 int					create_arg(t_parsed *parsed_args, t_arg *arg);
-char				**parse_arguments(char *input_string);
+t_input				*parse_arguments(char *string);
 
 /* parse_arg_utils1.c */
 bool				handle_quotes(t_arg *arg, char c, int *i);
@@ -157,6 +167,7 @@ char				*parse_dollar(char *input, t_env **environment);
 
 /* utils_1.c */
 void				free_parsed(char **parsed);
+void				free_input_list(t_input **head);
 
 /* utils_2.c */
 int					count_words(char *str);

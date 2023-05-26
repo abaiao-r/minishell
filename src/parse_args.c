@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/24 19:52:59 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 14:14:05 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,8 @@ int	ft_count_args(char *str)
 	printf("%d\n", ft_count_args(str1));
 } */
 
-/* This function initializes a parsed structure with a given string. 
-It allocates memory for the parsed arguments and sets the initial 
-argument index. */
 static int	create_parsed(t_parsed *parsed, char *str)
 {
-	parsed->args = (char **)malloc((ft_count_args(str) + 1) * sizeof(char *));
-	if (!parsed->args)
-		return (0);
-	parsed->args[ft_count_args(str)] = 0;
 	parsed->arg_index = 0;
 	parsed->string_len = ft_strlen(str);
 	return (1);
@@ -110,6 +103,7 @@ int	create_arg(t_parsed *parsed_args, t_arg *arg)
 		return (0);
 	arg->arg_len = 0;
 	arg->in_quotes = 0;
+	arg->within_quotes = 0;
 	arg->quote_type = '\0';
 	return (1);
 }
@@ -118,16 +112,19 @@ int	create_arg(t_parsed *parsed_args, t_arg *arg)
 It handles quotes, whitespace, redirection operators,
 and pipe operators by calling the respective functions.
 It stores the parsed arguments and operators in the args struct. */
-static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
+static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i, t_input **head, t_input **tail)
 {
 	char	c;
 
-	while (*i < args->string_len && arg->arg_len < args->string_len
-		&& args->arg_index < ft_count_args(str))
+	while (*i < args->string_len && arg->arg_len < args->string_len)
 	{
 		c = str[*i];
 		if (handle_quotes(arg, c, i))
+		{
+			if(arg->in_quotes == 1 && arg->within_quotes == 0)
+				arg->within_quotes = 1;
 			continue ;
+		}
 		if (!arg->in_quotes && ft_isspace(c))
 			break ;
 		if (!arg->in_quotes && handle_redirection(args, arg, str, i))
@@ -137,39 +134,72 @@ static void	parse_aux(t_parsed *args, t_arg *arg, char *str, int *i)
 		arg->arg[arg->arg_len++] = c;
 		(*i)++;
 	}
+
+	if (arg->arg_len > 0)
+	{
+		arg->arg[arg->arg_len] = '\0';
+
+		t_input *new_input = malloc(sizeof(t_input));
+		new_input->input = arg->arg;
+		new_input->index = args->arg_index;
+		new_input->within_quotes = arg->within_quotes;
+		new_input->next = NULL;
+
+		if (*head == NULL)
+		{
+			*head = new_input;
+			*tail = new_input;
+		}
+		else
+		{
+			(*tail)->next = new_input;
+			*tail = new_input;
+		}
+
+		args->arg_index++;
+	}
+	else
+		free(arg->arg);
 }
 
 /* This is the main function for parsing arguments from a string.
 It initializes the args struct, creates an iterator i, and starts 
 a loop to process the string. Inside the loop, it creates a new arg 
 struct, skips leading spaces, calls parse_aux to extract the argument 
-from the string, and stores it in the args array. Finally, it sets the 
-last element of the args array to NULL and returns the array of parsed 
-arguments. */
-char	**parse_arguments(char *string)
+from the string, and stores it in the linked list. Finally, it returns the head of the linked list. */
+t_input	*parse_arguments(char *string)
 {
 	int			i;
 	t_parsed	args;
 	t_arg		arg;
+	t_input		*head = NULL;
+	t_input		*tail = NULL;
 
 	if (!create_parsed(&args, string))
 		return (NULL);
+
 	i = 0;
-	while (i < args.string_len && args.arg_index < ft_count_args(string))
+	while (i < args.string_len)
 	{
-		if (!create_arg(&args, &arg) && (free(args.args), 1))
+		if (!create_arg(&args, &arg))
+		{
+			// Clean up the allocated memory before returning NULL
+			t_input *current = head;
+			while (current != NULL)
+			{
+				t_input *next = current->next;
+				free(current);
+				current = next;
+			}
 			return (NULL);
+		}
+
 		while (i < args.string_len && ft_isspace(string[i]))
 			i++;
-		parse_aux(&args, &arg, string, &i);
-		if (arg.arg_len > 0)
-		{
-			arg.arg[arg.arg_len] = '\0';
-			args.args[args.arg_index++] = arg.arg;
-		}
-		else
-			free(arg.arg);
+
+		parse_aux(&args, &arg, string, &i, &head, &tail);
 	}
-	args.args[args.arg_index] = NULL;
-	return (args.args);
+
+	return (head);
 }
+
