@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:42:39 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/26 15:02:30 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/26 20:54:23 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,39 @@ static int	show_special_str_error(char *str)
 contains valid combinations of special characters and returns 1 if it
 is valid. If an invalid combination is found, it calls show_special_str_error
 with the corresponding input element and returns 0. */
+static int	is_special_character(const char *input)
+{
+	return (ft_strcmp(input, ">") == 0 || ft_strcmp(input, ">>") == 0 || \
+			ft_strcmp(input, "<") == 0 || ft_strcmp(input, "<<") == 0 || \
+			ft_strcmp(input, "|") == 0);
+}
+
+static int	is_end_of_input(const t_input *current)
+{
+	return (current->next == NULL);
+}
+
+static int	is_within_quotes(const t_input *current)
+{
+	return (current->within_quotes == 0);
+}
+
 int	is_quote_parsed_valid(t_input *input)
 {
-	t_input *current = input;
+	t_input	*current;
 
+	current = input;
 	while (current)
 	{
-		if ((ft_strcmp(current->input, ">") == 0 || ft_strcmp(current->input, ">>") == 0
-				|| ft_strcmp(current->input, "<") == 0 || ft_strcmp(current->input,
-					"<<") == 0 || ft_strcmp(current->input, "|") == 0) && current->within_quotes == 0 && current->next->input == NULL)
+		if (is_special_character(current->input) && is_within_quotes(current)
+			&& is_end_of_input(current))
 			return (show_special_str_error(current->input));
-		if (ft_strcmp(current->input, "||") == 0 && current->within_quotes == 0)
+		if (ft_strcmp(current->input, "||") == 0 && is_within_quotes(current))
 			return (show_special_str_error(current->input));
-		if ((((ft_strcmp(current->input, ">") == 0 || ft_strcmp(current->input, ">>") == 0
-				|| ft_strcmp(current->input, "<") == 0 || ft_strcmp(current->input,
-					"<<") == 0 || ft_strcmp(current->input, "|") == 0) && current->within_quotes == 0))
-			&& (((ft_strcmp(current->next->input, ">") == 0 || ft_strcmp(current->next->input,
-					">>") == 0 || ft_strcmp(current->next->input, "<") == 0
-				|| ft_strcmp(current->next->input, "<<") == 0 || ft_strcmp(current->next->input,
-					"|") == 0)) && current->next->within_quotes == 0))
+		if (current->next && is_special_character(current->input)
+			&& is_within_quotes(current) && \
+			is_special_character(current->next->input)
+			&& is_within_quotes(current->next))
 			return (show_special_str_error(current->input));
 		current = current->next;
 	}
