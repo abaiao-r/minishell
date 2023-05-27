@@ -68,12 +68,6 @@ typedef struct s_minishell
 	t_input			*input;
 }					t_minishell;
 
-typedef struct s_parsed
-{
-	int				arg_index;
-	int				string_len;
-}					t_parsed;
-
 typedef struct s_arg
 {
 	int				arg_index;
