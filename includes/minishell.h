@@ -153,7 +153,7 @@ int					create_arg(t_arg *arg);
 t_input				*parse_arguments(char *string);
 
 /* parse_arg_utils1.c */
-
+bool				handle_quotes(t_arg *arg, char c, int *i);
 
 /* parse_arg_utils2.c */
 
