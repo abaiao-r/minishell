@@ -105,7 +105,64 @@ int	create_arg(t_arg *arg)
 	arg->in_quotes = 0;
 	arg->within_quotes = 0;
 	arg->quote_type = '\0';
+    arg->prev_was_pipe = 0;
 	return (1);
+}
+
+
+void add_new_input(t_arg *arg, t_input **head)
+{
+    t_input *current;
+
+    arg->arg[arg->arg_len] = '\0';
+
+    t_input *new_input = malloc(sizeof(t_input));
+    new_input->input = arg->arg;
+    new_input->index = arg->arg_index;
+    new_input->within_quotes = arg->within_quotes;
+    new_input->next = NULL;
+
+    if (*head == NULL)
+        *head = new_input;
+    else
+    {
+        current = *head;
+        while (current->next != NULL)
+            current = current->next;
+        current->next = new_input;
+    }
+
+    arg->arg_index++;
+    arg->arg = malloc(arg->string_len * sizeof(char));
+    arg->arg_len = 0;
+}
+
+static void handle_less_than(t_arg *arg, t_input **head, int *i, const char *operator)
+{
+    t_input *new_input;
+    t_input *current;
+
+    if (arg->arg_len > 0)
+        add_new_input(arg, head);
+    new_input = malloc(sizeof(t_input));
+    new_input->input = ft_strdup(operator);
+    new_input->index = arg->arg_index;
+    new_input->within_quotes = arg->within_quotes;
+    new_input->next = NULL;
+    if (*head == NULL)
+        *head = new_input;
+    else
+    {
+        t_input *current = *head;
+        while (current->next != NULL)
+            current = current->next;
+        current->next = new_input;
+    }
+    arg->arg_index++;
+    (*i)++;
+    if(ft_strlen(operator) == 2)
+        (*i)++;
+    arg->prev_was_pipe = 1;
 }
 
 /* Parses the string character by character.
@@ -115,9 +172,7 @@ It stores the parsed arguments and operators in the args struct. */
 static void parse_aux(t_arg *arg, char *str, int *i, t_input **head)
 {
     char c;
-    int prev_was_pipe;
 
-    prev_was_pipe = 0;
     while (*i < arg->string_len && arg->arg_len < arg->string_len)
     {
         c = str[*i];
@@ -131,89 +186,44 @@ static void parse_aux(t_arg *arg, char *str, int *i, t_input **head)
             break;
         if (!arg->in_quotes && c == '<' && str[*i + 1] == '<')
         {
-            if (arg->arg_len > 0)
-            {
-                arg->arg[arg->arg_len] = '\0';
-
-                t_input *new_input = malloc(sizeof(t_input));
-                new_input->input = arg->arg;
-                new_input->index = arg->arg_index;
-                new_input->within_quotes = arg->within_quotes;
-                new_input->next = NULL;
-
-                if (*head == NULL)
-                {
-                    *head = new_input;
-                }
-                else
-                {
-                    t_input *current = *head;
-                    while (current->next != NULL)
-                        current = current->next;
-                    current->next = new_input;
-                }
-
-                arg->arg_index++;
-                arg->arg = malloc(arg->string_len * sizeof(char));
-                arg->arg_len = 0;
-            }
-            t_input *new_input = malloc(sizeof(t_input));
-            new_input->input = ft_strdup("<<");
-            new_input->index = arg->arg_index;
-            new_input->within_quotes = arg->within_quotes;
-            new_input->next = NULL;
-
-            if (*head == NULL)
-            {
-                *head = new_input;
-            }
-            else
-            {
-                t_input *current = *head;
-                while (current->next != NULL)
-                    current = current->next;
-                current->next = new_input;
-            }
-
-            arg->arg_index++;
-            (*i)++;
-            (*i)++;
-            prev_was_pipe = 1;
+            handle_less_than(arg, head, i, "<<");
+            continue;
+        }
+        if (!arg->in_quotes && c == '<')
+        {
+            handle_less_than(arg, head, i, "<");
+            continue;
+        }
+        if (!arg->in_quotes && c == '>' && str[*i + 1] == '>')
+        {
+            handle_less_than(arg, head, i, ">>");
+            continue;
+        }
+        if (!arg->in_quotes && c == '>')
+        {
+            handle_less_than(arg, head, i, ">");
+            continue;
+        }
+        if (!arg->in_quotes && c == '|' && str[*i + 1] == '|')
+        {
+            handle_less_than(arg, head, i, "||");
+            continue;
+        }
+        if (!arg->in_quotes && c == '|')
+        {
+            handle_less_than(arg, head, i, "|");
             continue;
         }
         arg->arg[arg->arg_len++] = c;
         (*i)++;
-        prev_was_pipe = 0;
+        arg->prev_was_pipe = 0;
     }
     if (arg->arg_len > 0)
-    {
-        arg->arg[arg->arg_len] = '\0';
-
-        t_input *new_input = malloc(sizeof(t_input));
-        new_input->input = arg->arg;
-        new_input->index = arg->arg_index;
-        new_input->within_quotes = arg->within_quotes;
-        new_input->next = NULL;
-
-        if (*head == NULL)
-        {
-            *head = new_input;
-        }
-        else
-        {
-            t_input *current = *head;
-            while (current->next != NULL)
-                current = current->next;
-            current->next = new_input;
-        }
-
-        arg->arg_index++;
-        arg->arg = malloc(arg->string_len * sizeof(char));
-        arg->arg_len = 0;
-    }
-    else if (!prev_was_pipe)
+        add_new_input(arg, head);
+    else if (!arg->prev_was_pipe)
         free(arg->arg);
 }
+
 
 /* This is the main function for parsing arguments from a string.
 It initializes the args struct, creates an iterator i, and starts 

@@ -57,13 +57,13 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		input = parse_dollar(input, &minishell->environment);
 		minishell->input = parse_arguments(input);
-		if (!is_quote_parsed_valid(minishell->input))
+		/*if (!is_quote_parsed_valid(minishell->input))
 		{
 			free(minishell->prompt->prompt_full);
 			free(input);
 			free_input_list(&minishell->input);
 			continue ;
-		}
+		}*/
 /* 		if (has_valid_redirections(&minishell->input->input) == 0)
 		{
 			free(input);
