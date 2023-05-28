@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/26 22:30:17 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:56:42 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_prompt
 
 typedef struct s_input
 {
-	char			*input;
+	char			*token;
 	int				index;
 	int				within_quotes;
 	struct s_input	*next;
@@ -146,25 +146,26 @@ int					is_quote_parsed_valid(t_input *input);
 char				*print_prompt(t_prompt *prompt_full);
 
 /* parse_args */
-int					create_arg(t_arg *arg);
 t_input				*parse_arguments(char *string);
 
 /* parse_arg_utils1.c */
+int					start_arg(t_arg *arg, char *str);
+int					update_arg(t_arg *arg);
 bool				handle_quotes(t_arg *arg, char c, int *i);
+bool				is_operator(const char *input);
+void				free_arg(t_input *head);
 
 /* parse_arg_utils2.c */
 
-
 /* parse_arg_utils3.c */
-
-
 
 /* parse_utils.c */
 char				*parse_dollar(char *input, t_env **environment);
 
 /* utils_1.c */
 void				free_parsed(char **parsed);
-void				free_input_list(t_input **head);
+void				free_token_list(t_input **head);
+char				**create_token_array_2d(t_input *input);
 
 /* utils_2.c */
 int					count_words(char *str);

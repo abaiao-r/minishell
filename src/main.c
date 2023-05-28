@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/26 20:12:43 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:23:02 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ int	main(int argc, char **argv, char **env)
 			free_env_list(&minishell->environment);
 			free(minishell->prompt->prompt_full);
 			free(minishell->prompt);
-			free(minishell);
+			free_token_list(&minishell->input);
+			free(minishell->input);
 			printf("exit\n");
 			return (0);
 		}
@@ -72,14 +73,14 @@ int	main(int argc, char **argv, char **env)
 		} */
 		while (minishell->input)
 		{
-			printf("arg[%d] and within_quotes[%d]: %s\n", minishell->input->index, minishell->input->within_quotes, minishell->input->input);
+			printf("arg[%d] and within_quotes[%d]: %s\n", minishell->input->index, minishell->input->within_quotes, minishell->input->token);
 			minishell->input = minishell->input->next;
 		}
-		/* status = exe_commands(&minishell->input->input); */
+		/* status = exe_commands(&minishell->input->token); */
 		//status = exe_cmd(quote_parsed, input, i, &minishell->environment);
     	free(minishell->prompt->prompt_full);
 		free(input);
-		free_input_list(&minishell->input);
+		free_token_list(&minishell->input);
 		/* if (status == EXIT)
 		{
 			printf("\nexit");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_quote_parsed_valid.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:42:39 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/26 20:54:23 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/28 18:32:48 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,16 @@ int	is_quote_parsed_valid(t_input *input)
 	current = input;
 	while (current)
 	{
-		if (is_special_character(current->input) && is_within_quotes(current)
+		if (is_special_character(current->token) && is_within_quotes(current)
 			&& is_end_of_input(current))
-			return (show_special_str_error(current->input));
-		if (ft_strcmp(current->input, "||") == 0 && is_within_quotes(current))
-			return (show_special_str_error(current->input));
-		if (current->next && is_special_character(current->input)
+			return (show_special_str_error(current->token));
+		if (ft_strcmp(current->token, "||") == 0 && is_within_quotes(current))
+			return (show_special_str_error(current->token));
+		if (current->next && is_special_character(current->token)
 			&& is_within_quotes(current) && \
-			is_special_character(current->next->input)
+			is_special_character(current->next->token)
 			&& is_within_quotes(current->next))
-			return (show_special_str_error(current->input));
+			return (show_special_str_error(current->token));
 		current = current->next;
 	}
 	return (1);

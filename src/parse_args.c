@@ -3,257 +3,154 @@
 /*                                                        :::      ::::::::   */
 /*   parse_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/26 22:27:05 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:00:15 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	update_quote_flags(char current_char, int *flag_single_quotes,
-		int *flag_double_quotes)
+/* Adds a new input string (arg->arg) to the linked list (t_input) 
+with corresponding index and quote information. If the list is empty, 
+the new input becomes the head. Otherwise, it is appended to the end 
+of the list.*/
+static void	add_token_node(t_arg *arg, t_input **head)
 {
-	if (current_char == '\'' && *flag_double_quotes == 0)
+	t_input	*current;
+	t_input	*new_input;
+
+	arg->arg[arg->arg_len] = '\0';
+	new_input = malloc(sizeof(t_input));
+	new_input->token = arg->arg;
+	new_input->index = arg->arg_index;
+	new_input->within_quotes = arg->within_quotes;
+	new_input->next = NULL;
+	if (*head == NULL)
+		*head = new_input;
+	else
 	{
-		if (*flag_single_quotes == 0)
-			*flag_single_quotes = 1;
-		else
-			*flag_single_quotes = 0;
+		current = *head;
+		while (current->next != NULL)
+			current = current->next;
+		current->next = new_input;
 	}
-	else if (current_char == '\"' && *flag_single_quotes == 0)
-	{
-		if (*flag_double_quotes == 0)
-			*flag_double_quotes = 1;
-		else
-			*flag_double_quotes = 0;
-	}
+	arg->arg_index++;
+	arg->arg = malloc(arg->string_len * sizeof(char));
+	arg->arg_len = 0;
 }
 
-int	ft_count_args(char *str)
+/* Handles the special case when encountering a < operator. Creates 
+a new input node with the operator as the input string and adds it to 
+the linked list. Increments the argument index and updates the current 
+index (i) accordingly. Handles the case when the operator is a double 
+symbol (e.g., <<) by incrementing i an extra time. */
+static void	add_tokken_node_pipex(t_arg *arg, t_input **head, int *i,
+		const char *operator)
+{
+	t_input	*new_input;
+	t_input	*current;
+
+	if (arg->arg_len > 0)
+		add_token_node(arg, head);
+	new_input = malloc(sizeof(t_input));
+	new_input->token = ft_strdup(operator);
+	new_input->index = arg->arg_index;
+	new_input->within_quotes = arg->within_quotes;
+	new_input->next = NULL;
+	if (*head == NULL)
+		*head = new_input;
+	else
+	{
+		current = *head;
+		while (current->next != NULL)
+			current = current->next;
+		current->next = new_input;
+	}
+	arg->arg_index++;
+	(*i)++;
+	if (ft_strlen(operator) == 2)
+		(*i)++;
+	arg->prev_was_pipe = 1;
+}
+
+/* Processes each character in the input string by checking if it
+is an operator. If the character is within quotes and matches an 
+operator, it calls add_tokken_node_pipex. Otherwise, it adds 
+the character to the current argument string (arg->arg) and updates 
+the argument length (arg->arg_len), index (arg->arg_index), and 
+the previous pipe flag (arg->prev_was_pipe). */
+static void	process_argument(t_arg *arg, char *str, int *i, t_input **head)
+{
+	arg->operator[0] = arg->c;
+	if (arg->c == str[*i + 1])
+		arg->operator[1] = str[*i + 1];
+	else
+		arg->operator[1] = '\0';
+	if (!arg->in_quotes && is_operator(arg->operator))
+	{
+		add_tokken_node_pipex(arg, head, i, arg->operator);
+		return ;
+	}
+	arg->arg[arg->arg_len++] = arg->c;
+	(*i)++;
+	arg->prev_was_pipe = 0;
+}
+
+/* Iterates over the input string, character by character, and calls 
+handle_quotes to handle quotation marks. If the character is not 
+within quotes and is a whitespace, it breaks the loop. Otherwise, it 
+processes the argument by calling process_argument. After the loop, if 
+there is a non-empty argument, it adds it to the linked list using 
+add_new_input. If there was no previous pipe, it frees the memory allocated 
+for the argument string. */
+static void	parse_aux(t_arg *arg, char *str, int *i, t_input **head)
+{
+	while (*i < arg->string_len && arg->arg_len < arg->string_len)
+	{
+		arg->c = str[*i];
+		if (handle_quotes(arg, arg->c, i))
+		{
+			if (arg->in_quotes == 1 && arg->within_quotes == 0)
+				arg->within_quotes = 1;
+			continue ;
+		}
+		if (!arg->in_quotes && ft_isspace(arg->c))
+			break ;
+		process_argument(arg, str, i, head);
+	}
+	if (arg->arg_len > 0)
+		add_token_node(arg, head);
+	else if (!arg->prev_was_pipe)
+		free(arg->arg);
+}
+
+/* The main function that parses the input string. It initializes variables, 
+creates an empty linked list, and iterates through the input string. 
+For each iteration, it creates a new argument, skips whitespace, and calls 
+parse_aux to process the argument and add it to the linked list. Returns the 
+head of the linked list containing parsed arguments. */
+t_input	*parse_arguments(char *string)
 {
 	int		i;
-	int		wc;
-	int		flag_single_quotes;
-	int		flag_double_quotes;
+	t_arg	arg;
+	t_input	*head;
 
-	flag_single_quotes = 0;
-	flag_double_quotes = 0;
-	wc = 0;
+	head = NULL;
+	if (!start_arg(&arg, string))
+		return (NULL);
 	i = 0;
-	while (str[i])
+	while (i < arg.string_len)
 	{
-		while (ft_isspace(str[i]))
-			i++;
-		if (str[i] == '\'' || str[i] == '\"')
+		if (!update_arg(&arg))
 		{
-			update_quote_flags(str[i], &flag_single_quotes, &flag_double_quotes);
-			i++;
+			free_arg(head);
+			return (NULL);
 		}
-		if (str[i])
-			wc++;
-		while (flag_single_quotes == 1 || flag_double_quotes == 1)
-		{
-			if (str[i] == '\'' || str[i] == '\"')
-				update_quote_flags(str[i], &flag_single_quotes, &flag_double_quotes);
+		while (i < arg.string_len && ft_isspace(string[i]))
 			i++;
-		}
-		while (str[i] && !ft_isspace(str[i]))
-		{
-			if((str[i] == '|' || str[i] == '>' || str[i] == '<') && flag_double_quotes == 0 && flag_single_quotes == 0)
-			{
-				wc++;
-				i++;
-			}
-			if(((str[i] == '|' && str[i + 1] == '|') || (str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<')) && (flag_double_quotes == 0 && flag_single_quotes == 0))
-			{
-				wc++;
-				i++;
-				i++;
-			}
-			i++;
-		}
+		parse_aux(&arg, string, &i, &head);
 	}
-	return (wc);
+	return (head);
 }
-
-/* main to test ft_count_args */
-/* int	main(void)
-{
-	char	str1[] = " echo \"a'|'\"echo b";
-	
-	printf("%d\n", ft_count_args(str1));
-} */
-
-static int	create_parsed(t_arg *arg, char *str)
-{
-	arg->arg_index = 0;
-	arg->string_len = ft_strlen(str);
-	return (1);
-}
-
-/* This function initializes an argument structure. It allocates memory for 
-the argument string, sets the initial argument length, and initializes the 
-quote type. */
-int	create_arg(t_arg *arg)
-{
-	arg->arg = malloc((arg->string_len + 1) * sizeof(char));
-	if (!arg->arg)
-		return (0);
-	arg->arg_len = 0;
-	arg->in_quotes = 0;
-	arg->within_quotes = 0;
-	arg->quote_type = '\0';
-    arg->prev_was_pipe = 0;
-    arg->c = '\0';
-    arg->operator[0] = '\0';
-    arg->operator[1] = '\0';
-    arg->operator[2] = '\0';
-	return (1);
-}
-
-
-void add_new_input(t_arg *arg, t_input **head)
-{
-    t_input *current;
-
-    arg->arg[arg->arg_len] = '\0';
-
-    t_input *new_input = malloc(sizeof(t_input));
-    new_input->input = arg->arg;
-    new_input->index = arg->arg_index;
-    new_input->within_quotes = arg->within_quotes;
-    new_input->next = NULL;
-
-    if (*head == NULL)
-        *head = new_input;
-    else
-    {
-        current = *head;
-        while (current->next != NULL)
-            current = current->next;
-        current->next = new_input;
-    }
-
-    arg->arg_index++;
-    arg->arg = malloc(arg->string_len * sizeof(char));
-    arg->arg_len = 0;
-}
-
-static void handle_less_than(t_arg *arg, t_input **head, int *i, const char *operator)
-{
-    t_input *new_input;
-    t_input *current;
-
-    if (arg->arg_len > 0)
-        add_new_input(arg, head);
-    new_input = malloc(sizeof(t_input));
-    new_input->input = ft_strdup(operator);
-    new_input->index = arg->arg_index;
-    new_input->within_quotes = arg->within_quotes;
-    new_input->next = NULL;
-    if (*head == NULL)
-        *head = new_input;
-    else
-    {
-        current = *head;
-        while (current->next != NULL)
-            current = current->next;
-        current->next = new_input;
-    }
-    arg->arg_index++;
-    (*i)++;
-    if(ft_strlen(operator) == 2)
-        (*i)++;
-    arg->prev_was_pipe = 1;
-}
-
-/* Parses the string character by character.
-It handles quotes, whitespace, redirection operators,
-and pipe operators by calling the respective functions.
-It stores the parsed arguments and operators in the args struct. */
-static bool is_operator(const char *input)
-{
-    const char *operators[] = {"<<", "<", ">>", ">", "||", "|"};
-    size_t num_operators = sizeof(operators) / sizeof(operators[0]);
-    size_t i;
-
-    i = 0;
-    while (i < num_operators)
-    {
-       if(ft_strcmp(input, operators[i]) == 0)
-        return true;
-       i++;
-    }
-    return false;
-}
-
-static void parse_aux(t_arg *arg, char *str, int *i, t_input **head)
-{
-    while (*i < arg->string_len && arg->arg_len < arg->string_len)
-    {
-        arg->c = str[*i];
-        if (handle_quotes(arg, arg->c, i))
-        {
-            if (arg->in_quotes == 1 && arg->within_quotes == 0)
-                arg->within_quotes = 1;
-            continue;
-        }
-        if (!arg->in_quotes && ft_isspace(arg->c))
-            break;
-        arg->operator[0] = arg->c;
-        if(arg->c == str[*i + 1])
-            arg->operator[1] = str[*i + 1];
-        else
-            arg->operator[1] = '\0';
-        if (!arg->in_quotes && is_operator(arg->operator))
-        {
-            handle_less_than(arg, head, i, arg->operator);
-            continue;
-        }   
-        arg->arg[arg->arg_len++] = arg->c;
-        (*i)++;
-        arg->prev_was_pipe = 0;
-    }   
-    if (arg->arg_len > 0)
-        add_new_input(arg, head);
-    else if (!arg->prev_was_pipe)
-        free(arg->arg);
-}
-
-/* This is the main function for parsing arguments from a string.
-It initializes the args struct, creates an iterator i, and starts 
-a loop to process the string. Inside the loop, it creates a new arg 
-struct, skips leading spaces, calls parse_aux to extract the argument 
-from the string, and stores it in the linked list. Finally, it returns the head of the linked list. */
-t_input *parse_arguments(char *string)
-{
-    int i;
-    t_arg arg;
-    t_input *head;
-
-    head = NULL;
-    if (!create_parsed(&arg, string))
-        return NULL;
-    i = 0;
-    while (i < arg.string_len)
-    {
-        if (!create_arg(&arg))
-        {
-            t_input *current = head;
-            while (current != NULL)
-            {
-                t_input *next = current->next;
-                free(current);
-                current = next;
-            }
-            return NULL;
-        }
-        while (i < arg.string_len && ft_isspace(string[i]))
-            i++;
-        parse_aux(&arg, string, &i, &head);
-    }
-    return head;
-}
-

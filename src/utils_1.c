@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/26 14:47:26 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/28 19:55:47 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_parsed(char **parsed)
 	free(parsed);
 }
 
-void	free_input_list(t_input **head)
+void	free_token_list(t_input **head)
 {
 	t_input	**node;
 	t_input	*next_node;
@@ -36,9 +36,30 @@ void	free_input_list(t_input **head)
 	while (*node != NULL)
 	{
 		next_node = (*node)->next;
-		free((*node)->input);
+		free((*node)->token);
 		free(*node);
 		*node = next_node;
 	}
 	*head = NULL;
+}
+
+char	**create_token_array_2d(t_input *input)
+{
+	t_input	*temp;
+	int		i;
+	int		count;
+	char	**token_2d;
+
+	temp = input;
+	count = ft_lstsize(temp) + 1;
+	token_2d = (char **)malloc(sizeof(char *) * count);
+	i = 0;
+	while (temp)
+	{
+		token_2d[i] = temp->token;
+		i++;
+		temp = temp->next;
+	}
+	token_2d[i] = NULL;
+	return (token_2d);
 }
