@@ -79,6 +79,7 @@ typedef struct s_arg
 	char			quote_type;
 	int				prev_was_pipe;
 	char			c;
+	char			operator[3];
 }					t_arg;
 
 typedef struct s_dollar_data

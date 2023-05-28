@@ -107,6 +107,9 @@ int	create_arg(t_arg *arg)
 	arg->quote_type = '\0';
     arg->prev_was_pipe = 0;
     arg->c = '\0';
+    arg->operator[0] = '\0';
+    arg->operator[1] = '\0';
+    arg->operator[2] = '\0';
 	return (1);
 }
 
@@ -154,7 +157,7 @@ static void handle_less_than(t_arg *arg, t_input **head, int *i, const char *ope
         *head = new_input;
     else
     {
-        t_input *current = *head;
+        current = *head;
         while (current->next != NULL)
             current = current->next;
         current->next = new_input;
@@ -170,6 +173,22 @@ static void handle_less_than(t_arg *arg, t_input **head, int *i, const char *ope
 It handles quotes, whitespace, redirection operators,
 and pipe operators by calling the respective functions.
 It stores the parsed arguments and operators in the args struct. */
+static bool is_operator(const char *input)
+{
+    const char *operators[] = {"<<", "<", ">>", ">", "||", "|"};
+    size_t num_operators = sizeof(operators) / sizeof(operators[0]);
+    size_t i;
+
+    i = 0;
+    while (i < num_operators)
+    {
+       if(ft_strcmp(input, operators[i]) == 0)
+        return true;
+       i++;
+    }
+    return false;
+}
+
 static void parse_aux(t_arg *arg, char *str, int *i, t_input **head)
 {
     while (*i < arg->string_len && arg->arg_len < arg->string_len)
@@ -181,48 +200,27 @@ static void parse_aux(t_arg *arg, char *str, int *i, t_input **head)
                 arg->within_quotes = 1;
             continue;
         }
-        if (!arg->in_quotes && ft_isspace(c))
+        if (!arg->in_quotes && ft_isspace(arg->c))
             break;
-        if (!arg->in_quotes && arg->c == '<' && str[*i + 1] == '<')
+        arg->operator[0] = arg->c;
+        if(arg->c == str[*i + 1])
+            arg->operator[1] = str[*i + 1];
+        else
+            arg->operator[1] = '\0';
+        if (!arg->in_quotes && is_operator(arg->operator))
         {
-            handle_less_than(arg, head, i, "<<");
+            handle_less_than(arg, head, i, arg->operator);
             continue;
-        }
-        if (!arg->in_quotes && arg->c == '<')
-        {
-            handle_less_than(arg, head, i, "<");
-            continue;
-        }
-        if (!arg->in_quotes && arg->c == '>' && str[*i + 1] == '>')
-        {
-            handle_less_than(arg, head, i, ">>");
-            continue;
-        }
-        if (!arg->in_quotes && arg->c == '>')
-        {
-            handle_less_than(arg, head, i, ">");
-            continue;
-        }
-        if (!arg->in_quotes && arg->c == '|' && str[*i + 1] == '|')
-        {
-            handle_less_than(arg, head, i, "||");
-            continue;
-        }
-        if (!arg->in_quotes && arg->c == '|')
-        {
-            handle_less_than(arg, head, i, "|");
-            continue;
-        }
+        }   
         arg->arg[arg->arg_len++] = arg->c;
         (*i)++;
         arg->prev_was_pipe = 0;
-    }
+    }   
     if (arg->arg_len > 0)
         add_new_input(arg, head);
     else if (!arg->prev_was_pipe)
         free(arg->arg);
 }
-
 
 /* This is the main function for parsing arguments from a string.
 It initializes the args struct, creates an iterator i, and starts 
@@ -238,7 +236,6 @@ t_input *parse_arguments(char *string)
     head = NULL;
     if (!create_parsed(&arg, string))
         return NULL;
-
     i = 0;
     while (i < arg.string_len)
     {
@@ -253,13 +250,10 @@ t_input *parse_arguments(char *string)
             }
             return NULL;
         }
-
         while (i < arg.string_len && ft_isspace(string[i]))
             i++;
-
         parse_aux(&arg, string, &i, &head);
     }
-
     return head;
 }
 
