@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/28 19:00:15 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/28 20:59:27 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	add_token_node(t_arg *arg, t_input **head)
 		current->next = new_input;
 	}
 	arg->arg_index++;
-	arg->arg = malloc(arg->string_len * sizeof(char));
+	//arg->arg = malloc(arg->string_len * sizeof(char));
 	arg->arg_len = 0;
 }
 
