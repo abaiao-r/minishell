@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/28 20:17:16 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/28 23:03:54 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,24 @@ void	sig_handler(int signum)
 
 int	main(int argc, char **argv, char **env)
 {
-	char	*input;
-/* 	int		status; */
+	char		*input;
+	int			status;
+	char		**token_2d;
 	t_minishell	*minishell;
-	//t_env	*environment;
 
-	(void) argc;
-	(void) argv;
+	//t_env	*environment;
+	(void)argc;
+	(void)argv;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	minishell->environment = parse_env(env);
 	minishell->prompt = ft_calloc(1, sizeof(t_prompt));
-	//execute_pipe((char*[]){"echo", "hello", NULL}, 2, (char*[]){"/bin/grep", "h", NULL}, 2);
+	minishell->input = ft_calloc(1, sizeof(t_input));
+	//execute_pipe((char*[]){"echo", "hello", NULL}, 2, (char*[]){"/bin/grep","h", NULL}, 2);
 	//exit(0);
 	while (1)
 	{
-		minishell->input = ft_calloc(1, sizeof(t_input));
 		input = print_prompt(minishell->prompt);
 		if (!input)
 		{
@@ -65,27 +66,35 @@ int	main(int argc, char **argv, char **env)
 			free_token_list(&minishell->input);
 			continue ;
 		}
-/* 		if (has_valid_redirections(&minishell->input->input) == 0)
+		/* 		if (has_valid_redirections(&minishell->input->input) == 0)
 		{
 			free(input);
 			free_input_list(&minishell->input);
 			continue ;
 		} */
-		while (minishell->input)
+		t_input *teste = minishell->input;
+		while (teste)
 		{
-			printf("arg[%d] and within_quotes[%d]: %s\n", minishell->input->index, minishell->input->within_quotes, minishell->input->token);
-			minishell->input = minishell->input->next;
+			printf("arg[%d] and within_quotes[%d]: %s\n", teste->index, teste->within_quotes, teste->token);
+			teste = teste->next;
 		}
 		/* status = exe_commands(&minishell->input->token); */
-		//status = exe_cmd(quote_parsed, input, i, &minishell->environment);
-    	free(minishell->prompt->prompt_full);
+		token_2d = create_token_array_2d(minishell->input);
+		int i=0;
+		while (token_2d[i])
+		{
+			printf("arg[%d]: %s\n", i, token_2d[i]);
+			i++;
+		}
+		status = exe_cmd(token_2d, input, 4, &minishell->environment);
+		free(minishell->prompt->prompt_full);
 		free(input);
 		free_token_list(&minishell->input);
-		/* if (status == EXIT)
+		if (status == EXIT)
 		{
 			printf("\nexit");
 			break ;
-		} */
+		}
 	}
 	rl_clear_history();
 	free_env_list(&minishell->environment);
