@@ -3,6 +3,7 @@
         "minishell.h": "c",
         "typeinfo": "c",
         "history.h": "c",
-        "stat.h": "c"
+        "stat.h": "c",
+        "random": "c"
     }
 }

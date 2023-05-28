@@ -106,6 +106,7 @@ int	create_arg(t_arg *arg)
 	arg->within_quotes = 0;
 	arg->quote_type = '\0';
     arg->prev_was_pipe = 0;
+    arg->c = '\0';
 	return (1);
 }
 
@@ -171,12 +172,10 @@ and pipe operators by calling the respective functions.
 It stores the parsed arguments and operators in the args struct. */
 static void parse_aux(t_arg *arg, char *str, int *i, t_input **head)
 {
-    char c;
-
     while (*i < arg->string_len && arg->arg_len < arg->string_len)
     {
-        c = str[*i];
-        if (handle_quotes(arg, c, i))
+        arg->c = str[*i];
+        if (handle_quotes(arg, arg->c, i))
         {
             if (arg->in_quotes == 1 && arg->within_quotes == 0)
                 arg->within_quotes = 1;
@@ -184,37 +183,37 @@ static void parse_aux(t_arg *arg, char *str, int *i, t_input **head)
         }
         if (!arg->in_quotes && ft_isspace(c))
             break;
-        if (!arg->in_quotes && c == '<' && str[*i + 1] == '<')
+        if (!arg->in_quotes && arg->c == '<' && str[*i + 1] == '<')
         {
             handle_less_than(arg, head, i, "<<");
             continue;
         }
-        if (!arg->in_quotes && c == '<')
+        if (!arg->in_quotes && arg->c == '<')
         {
             handle_less_than(arg, head, i, "<");
             continue;
         }
-        if (!arg->in_quotes && c == '>' && str[*i + 1] == '>')
+        if (!arg->in_quotes && arg->c == '>' && str[*i + 1] == '>')
         {
             handle_less_than(arg, head, i, ">>");
             continue;
         }
-        if (!arg->in_quotes && c == '>')
+        if (!arg->in_quotes && arg->c == '>')
         {
             handle_less_than(arg, head, i, ">");
             continue;
         }
-        if (!arg->in_quotes && c == '|' && str[*i + 1] == '|')
+        if (!arg->in_quotes && arg->c == '|' && str[*i + 1] == '|')
         {
             handle_less_than(arg, head, i, "||");
             continue;
         }
-        if (!arg->in_quotes && c == '|')
+        if (!arg->in_quotes && arg->c == '|')
         {
             handle_less_than(arg, head, i, "|");
             continue;
         }
-        arg->arg[arg->arg_len++] = c;
+        arg->arg[arg->arg_len++] = arg->c;
         (*i)++;
         arg->prev_was_pipe = 0;
     }
