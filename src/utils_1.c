@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/29 14:48:14 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:29:59 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,20 @@ void	free_token_list(t_input **head)
 		free(node);
 		node = next_node;
 	}
-	// free(*head);
-	// *head = 0;
 }
 
 int	ft_token_lstsize(t_input *lst)
 {
-	int	i;
+	int		i;
+	t_input	*temp;
 
+	temp = lst;
 	i = 0;
-	if (!lst)
-	{
+	if (!temp)
 		return (0);
-	}
-	while (lst != NULL)
+	while (temp != NULL)
 	{
-		lst = lst->next;
+		temp = temp->next;
 		i++;
 	}
 	return (i);

@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/29 17:14:09 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:29:57 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **env)
 			printf("token_2d[%d]: %s\n", i, token_2d[i]);
 			i++;
 		}
-		status = exe_cmd(token_2d, input, 4, &minishell->environment);
+		status = exe_cmd(token_2d, input, ft_token_lstsize(minishell->input), &minishell->environment);
 		free(input);
 		free_parsed(token_2d);
 		free_token_list(&minishell->input);

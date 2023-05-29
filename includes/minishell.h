@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/29 16:03:50 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:26:41 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ char				*parse_dollar(char *input, t_env **environment);
 /* utils_1.c */
 void				free_parsed(char **parsed);
 void				free_token_list(t_input **head);
+int					ft_token_lstsize(t_input *lst);
 char				**create_token_array_2d(t_input *input);
 
 /* utils_2.c */
