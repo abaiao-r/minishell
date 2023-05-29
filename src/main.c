@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/29 15:36:18 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:14:09 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,39 +29,35 @@ int	main(int argc, char **argv, char **env)
 	int			status;
 	char		**token_2d;
 	t_minishell	*minishell;
-	char *prompt;
 
-	//t_env	*environment;
 	(void)argc;
 	(void)argv;
-	prompt = NULL;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	minishell->environment = parse_env(env);
-	// minishell->prompt = ft_calloc(1, sizeof(t_prompt));
+	minishell->prompt = ft_calloc(1, sizeof(t_prompt));
 	// minishell->input = ft_calloc(1, sizeof(t_input));
 	//execute_pipe((char*[]){"echo", "hello", NULL}, 2, (char*[]){"/bin/grep","h", NULL}, 2);
 	//exit(0);
 	while (1)
 	{
 
-		input = print_prompt(&prompt);
-		free(prompt);
-/* 		free(minishell->prompt->prompt_full);
-		free(minishell->prompt); */
+		input = print_prompt(&minishell->prompt);
+		/* free(prompt); */
 		if (!input)
 		{
 			free_env_list(&minishell->environment);
-			free(minishell);
+			free(minishell->prompt->prompt_full);
 			printf("exit\n");
-			return (0);
+			break ;
 		}
 		add_history(input);
 		if (!is_valid_input(input))
 		{
 			free(input);
 			free_token_list(&minishell->input);
+			free(minishell->prompt->prompt_full);
 			continue ;
 		}
 		input = parse_dollar(input, &minishell->environment);
@@ -69,7 +65,9 @@ int	main(int argc, char **argv, char **env)
 		if (!is_quote_parsed_valid(minishell->input))
 		{
 			free(input);
+			free_parsed(token_2d);
 			free_token_list(&minishell->input);
+			free(minishell->prompt->prompt_full);
 			continue ;
 		}
 		/* 		if (has_valid_redirections(&minishell->input->input) == 0)
@@ -81,7 +79,7 @@ int	main(int argc, char **argv, char **env)
 		t_input *teste = minishell->input;
 		while (teste)
 		{
-			printf("arg[%d] and within_quotes[%d]: %s\n", teste->index, teste->within_quotes, teste->token);
+			printf("token[%d] and within_quotes[%d]: %s\n", teste->index, teste->within_quotes, teste->token);
 			teste = teste->next;
 		}
 		/* status = exe_commands(&minishell->input->token); */
@@ -89,13 +87,14 @@ int	main(int argc, char **argv, char **env)
 		int i=0;
 		while (token_2d[i])
 		{
-			printf("arg[%d]: %s\n", i, token_2d[i]);
+			printf("token_2d[%d]: %s\n", i, token_2d[i]);
 			i++;
 		}
 		status = exe_cmd(token_2d, input, 4, &minishell->environment);
 		free(input);
 		free_parsed(token_2d);
 		free_token_list(&minishell->input);
+		free(minishell->prompt->prompt_full);
 		if (status == EXIT)
 		{
 			printf("exit\n");
@@ -104,6 +103,7 @@ int	main(int argc, char **argv, char **env)
 	}
 	rl_clear_history();
 	free_env_list(&minishell->environment);
+	free(minishell->prompt);
 	free(minishell);
 	return (0);
 }
