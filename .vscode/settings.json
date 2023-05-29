@@ -4,6 +4,8 @@
         "typeinfo": "c",
         "history.h": "c",
         "stat.h": "c",
-        "random": "c"
+        "random": "c",
+        "fcntl.h": "c",
+        "errno.h": "c"
     }
 }

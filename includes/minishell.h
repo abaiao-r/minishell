@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/28 19:56:42 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/29 15:36:25 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-typedef struct s_prompt
-{
-	char			*prompt_full;
-}					t_prompt;
+// typedef struct s_prompt
+// {
+// 	char			*prompt_full;
+// }					t_prompt;
 
 typedef struct s_input
 {
@@ -64,7 +64,7 @@ typedef struct s_input
 typedef struct s_minishell
 {
 	t_env			*environment;
-	t_prompt		*prompt;
+	// t_prompt		*prompt;
 	t_input			*input;
 }					t_minishell;
 
@@ -143,7 +143,7 @@ int					show_export(t_env **environment);
 int					is_quote_parsed_valid(t_input *input);
 
 /* print_prompt.c */
-char				*print_prompt(t_prompt *prompt_full);
+char				*print_prompt(char **prompt_full);
 
 /* parse_args */
 t_input				*parse_arguments(char *string);

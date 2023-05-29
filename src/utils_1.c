@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/28 22:53:02 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/29 14:48:14 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,19 @@ void	free_parsed(char **parsed)
 
 void	free_token_list(t_input **head)
 {
-	t_input	**node;
+	t_input	*node;
 	t_input	*next_node;
 
-	node = head;
-	while (*node != NULL)
+	node = *head;
+	while (node != NULL)
 	{
-		next_node = (*node)->next;
-		free((*node)->token);
-		free(*node);
-		*node = next_node;
+		next_node = (node)->next;
+		free((node)->token);
+		free(node);
+		node = next_node;
 	}
-	*head = NULL;
+	// free(*head);
+	// *head = 0;
 }
 
 int	ft_token_lstsize(t_input *lst)
