@@ -6,7 +6,7 @@
 #    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/05/29 19:17:28 by abaiao-r         ###   ########.fr        #
+#    Updated: 2023/05/30 20:00:35 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ OBJDIR = ./objs
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c \
 	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c $(SRCDIR)/exe.c \
 	   $(SRCDIR)/env_utils.c $(SRCDIR)/export_utils.c $(SRCDIR)/export.c $(SRCDIR)/is_quote_parsed_valid.c \
-	   $(SRCDIR)/unset.c $(SRCDIR)/pipe.c $(SRCDIR)/parse_args.c $(SRCDIR)/parse_args_utils1.c \
-	   $(SRCDIR)/parse_args_utils2.c $(SRCDIR)/parse_args_utils3.c $(SRCDIR)/parse_dollar.c $(SRCDIR)/utils_3.c
+	   $(SRCDIR)/unset.c $(SRCDIR)/pipe.c $(SRCDIR)/parse_args.c $(SRCDIR)/parse_pipe_or_redirection.c \
+	   $(SRCDIR)/parse_args_utils1.c $(SRCDIR)/parse_dollar.c $(SRCDIR)/utils_3.c
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/28 20:59:27 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/05/30 20:09:21 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ static void	add_token_node(t_arg *arg, t_input **head)
 		current->next = new_input;
 	}
 	arg->arg_index++;
-	//arg->arg = malloc(arg->string_len * sizeof(char));
 	arg->arg_len = 0;
 }
 
@@ -46,7 +45,7 @@ a new input node with the operator as the input string and adds it to
 the linked list. Increments the argument index and updates the current 
 index (i) accordingly. Handles the case when the operator is a double 
 symbol (e.g., <<) by incrementing i an extra time. */
-static void	add_tokken_node_pipex(t_arg *arg, t_input **head, int *i,
+/* static void	add_token_node_pipex(t_arg *arg, t_input **head, int *i,
 		const char *operator)
 {
 	t_input	*new_input;
@@ -73,26 +72,27 @@ static void	add_tokken_node_pipex(t_arg *arg, t_input **head, int *i,
 	if (ft_strlen(operator) == 2)
 		(*i)++;
 	arg->prev_was_pipe = 1;
-}
+} */
 
 /* Processes each character in the input string by checking if it
-is an operator. If the character is within quotes and matches an 
+is an operator. If the character is not within quotes and matches an 
 operator, it calls add_tokken_node_pipex. Otherwise, it adds 
 the character to the current argument string (arg->arg) and updates 
 the argument length (arg->arg_len), index (arg->arg_index), and 
 the previous pipe flag (arg->prev_was_pipe). */
 static void	process_argument(t_arg *arg, char *str, int *i, t_input **head)
 {
+	(void)head;
 	arg->operator[0] = arg->c;
 	if (arg->c == str[*i + 1])
 		arg->operator[1] = str[*i + 1];
 	else
 		arg->operator[1] = '\0';
-	if (!arg->in_quotes && is_operator(arg->operator))
+/* 	if (!arg->in_quotes && is_operator(arg->operator))
 	{
-		add_tokken_node_pipex(arg, head, i, arg->operator);
+		add_token_node_pipex(arg, head, i, arg->operator);
 		return ;
-	}
+	} */
 	arg->arg[arg->arg_len++] = arg->c;
 	(*i)++;
 	arg->prev_was_pipe = 0;

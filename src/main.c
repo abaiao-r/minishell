@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/29 17:29:57 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/30 19:58:12 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	main(int argc, char **argv, char **env)
 	{
 
 		input = print_prompt(&minishell->prompt);
-		/* free(prompt); */
 		if (!input)
 		{
 			free_env_list(&minishell->environment);
@@ -54,13 +53,13 @@ int	main(int argc, char **argv, char **env)
 		}
 		add_history(input);
 		if (!is_valid_input(input))
-		{
+		{	
 			free(input);
-			free_token_list(&minishell->input);
 			free(minishell->prompt->prompt_full);
 			continue ;
 		}
 		input = parse_dollar(input, &minishell->environment);
+		input = parse_pipe_or_redirection(input);
 		minishell->input = parse_arguments(input);
 		if (!is_quote_parsed_valid(minishell->input))
 		{
@@ -84,11 +83,14 @@ int	main(int argc, char **argv, char **env)
 		}
 		/* status = exe_commands(&minishell->input->token); */
 		token_2d = create_token_array_2d(minishell->input);
-		int i=0;
-		while (token_2d[i])
+		if(token_2d)
 		{
-			printf("token_2d[%d]: %s\n", i, token_2d[i]);
-			i++;
+			int i=0;
+			while (token_2d[i])
+			{
+				printf("token_2d[%d]: %s\n", i, token_2d[i]);
+				i++;
+			}
 		}
 		status = exe_cmd(token_2d, input, ft_token_lstsize(minishell->input), &minishell->environment);
 		free(input);

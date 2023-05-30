@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 23:38:59 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/29 17:50:13 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/30 16:15:54 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ void	free_arg(t_input *head)
 	while (current != NULL)
 	{
 		next = current->next;
+		free(current->token);
 		free(current);
 		current = next;
 	}

@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/29 17:26:41 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/30 19:55:56 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,17 @@ typedef struct s_dollar_data
 	int				flag_single_quotes;
 }					t_dollar_data;
 
+typedef struct s_por_data
+{
+	size_t	input_len;
+	size_t	replacement_len;
+	int		flag_single_quotes;
+	int		flag_double_quotes;
+	char	*replacement;
+	int		start;
+	int		end;
+}			t_por_data;
+
 /* commands.c */
 void				echo_aux(char **args, int num_args, int flag);
 int					echo(char **input, int num_tokens);
@@ -155,9 +166,8 @@ bool				handle_quotes(t_arg *arg, char c, int *i);
 bool				is_operator(const char *input);
 void				free_arg(t_input *head);
 
-/* parse_arg_utils2.c */
-
-/* parse_arg_utils3.c */
+/* parse_pipe_or_redirection */
+char				*parse_pipe_or_redirection(char *input);
 
 /* parse_utils.c */
 char				*parse_dollar(char *input, t_env **environment);
