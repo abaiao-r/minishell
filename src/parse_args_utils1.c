@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 23:38:59 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/30 16:15:54 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/30 20:27:40 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	update_arg(t_arg *arg)
 	arg->in_quotes = 0;
 	arg->within_quotes = 0;
 	arg->quote_type = '\0';
-	arg->prev_was_pipe = 0;
 	arg->c = '\0';
 	arg->operator[0] = '\0';
 	arg->operator[1] = '\0';
@@ -61,31 +60,6 @@ bool	handle_quotes(t_arg *arg, char c, int *i)
 		arg->quote_type = '\0';
 		(*i)++;
 		return (true);
-	}
-	return (false);
-}
-
-/*  Checks if the given input string matches any of the predefined 
-operators. Returns true if there is a match, false otherwise.*/
-bool	is_operator(const char *input)
-{
-	const char	*operators[6];
-	size_t		num_operators;
-	size_t		i;
-
-	operators[0] = "<<";
-	operators[1] = "<";
-	operators[2] = ">>";
-	operators[3] = ">";
-	operators[4] = "||";
-	operators[5] = "|";
-	num_operators = sizeof(operators) / sizeof(operators[0]);
-	i = 0;
-	while (i < num_operators)
-	{
-		if (ft_strcmp(input, operators[i]) == 0)
-			return (true);
-		i++;
 	}
 	return (false);
 }

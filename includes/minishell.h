@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/30 19:55:56 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/05/30 20:33:20 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ typedef struct s_arg
 	int				in_quotes;
 	int				within_quotes;
 	char			quote_type;
-	int				prev_was_pipe;
 	char			c;
 	char			operator[3];
 }					t_arg;
