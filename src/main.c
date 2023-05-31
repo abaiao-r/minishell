@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **env)
 			break ;
 		}
 		add_history(input);
-		if (!is_valid_input(input))
+		if (!is_quotes_special_char_valid(input))
 		{	
 			free(input);
 			free(minishell->prompt->prompt_full);
@@ -61,7 +61,7 @@ int	main(int argc, char **argv, char **env)
 		input = parse_dollar(input, &minishell->environment);
 		input = parse_pipe_or_redirection(input);
 		minishell->input = parse_arguments(input);
-		if (!is_quote_parsed_valid(minishell->input))
+		if (!is_pipe_or_redirection_valid(minishell->input))
 		{
 			free(input);
 			free_parsed(token_2d);

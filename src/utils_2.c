@@ -88,7 +88,7 @@ int	show_quotes_error(void)
 	return (0);
 }
 
-int	is_valid_input(char *input)
+int	is_quotes_special_char_valid(char *input)
 {
 	int		flag_quote;
 	char	quote_type;

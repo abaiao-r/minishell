@@ -149,8 +149,8 @@ t_env				*sort_alphabet_env_list(t_env **head);
 void				print_export(t_env **head);
 int					show_export(t_env **environment);
 
-/* is_quote_parsed */
-int					is_quote_parsed_valid(t_input *input);
+/* is_pipe_or_redirection_valid */
+int					is_pipe_or_redirection_valid(t_input *input);
 
 /* print_prompt.c */
 char				*print_prompt(t_prompt **prompt_full);
@@ -182,7 +182,7 @@ int					count_words(char *str);
 char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
-int					is_valid_input(char *input);
+int					is_quotes_special_char_valid(char *input);
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);

@@ -41,7 +41,7 @@ static int	is_within_quotes(const t_input *current)
 	return (current->within_quotes == 0);
 }
 
-int	is_quote_parsed_valid(t_input *input)
+int	is_pipe_or_redirection_valid(t_input *input)
 {
 	t_input	*current;
 
