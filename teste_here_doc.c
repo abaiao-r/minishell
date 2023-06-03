@@ -154,7 +154,8 @@ void execute_command(char* command)
     }
 }
 
-void execute_commands(char** commands, int num_commands) {
+void execute_commands(char** commands, int num_commands)
+{
     int pipe_fd[2];  // Pipe file descriptors
     int in_fd = 0;   // Input file descriptor for the first command
 

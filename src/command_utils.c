@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/03 18:06:22 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/03 22:38:29 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*find_executable(char *cmd)
 		ft_strncpy(executable, path, path_end - path);
 		executable[path_end - path] = '/';
 		ft_strcpy(executable + (path_end - path) + 1, cmd);
-		printf("executable: %s\n", executable);
+		//printf("executable: %s\n", executable);
 		if (!access(executable, X_OK))
 			return (executable);
 		free(executable);
@@ -80,8 +80,8 @@ char	**get_cmd(char **input, char c)
 
 int	exe_shell_cmd(char **args, int num_tokens)
 {
-	pid_t	pid;
-	int		status;
+	//pid_t	pid;
+	//int		status;
 	char	**bash_args;
 
 	if (!args)
@@ -89,62 +89,42 @@ int	exe_shell_cmd(char **args, int num_tokens)
 		printf("NULL shell cmd\n");
 		return (NO_EXIT);
 	}
-	pid = fork();
-	if (pid == 0)
+	bash_args = malloc(sizeof(char *) * (num_tokens + 1));
+	if (!bash_args)
+		return (NO_EXIT);
+	int i = 0;
+	while (i < num_tokens)
 	{
-		bash_args = malloc(sizeof(char *) * (num_tokens + 1));
-		if (!bash_args)
-			return (NO_EXIT);
-		int i = 0;
-		while (i < num_tokens)
-		{
-			bash_args[i] = args[i];
-			i++;
-		}
-		bash_args[i] = NULL;
-		bash_args[0] = find_executable(bash_args[0]);
-        execve(bash_args[0], bash_args, NULL);
-		//execve("/bin/bash", (char *[]){"/bin/bash", "-c", cmd, NULL}, NULL);
-		perror("execve");
-		exit(EXIT_FAILURE);
+		bash_args[i] = args[i];
+		i++;
 	}
-	else if (pid < 0)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		// parent process
-		do {
-			waitpid(pid, &status, WUNTRACED);
-		}
-		while (!WIFEXITED(status) && !WIFSIGNALED(status));
-	}
-	return (NO_EXIT);
+	bash_args[i] = NULL;
+	bash_args[0] = find_executable(bash_args[0]);
+	execve(bash_args[0], bash_args, NULL);
+	perror("execve");
+	exit(EXIT_FAILURE);
 }
 
-int	exe_cmd(char **parsed, char *input, int num_tokens, t_env **environment)
+int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
 {
-	(void) input;
-	if (!parsed || !*parsed || num_tokens <= 0)
+	if (!tokens || !*tokens || num_tokens <= 0)
 		return (1);
-	if (ft_strcmp(parsed[0], "echo") == 0)
-		return (echo(parsed, num_tokens));
-	else if (ft_strcmp(parsed[0], "cd") == 0)
-		return (change_dir(parsed, num_tokens));
-	else if (ft_strcmp(parsed[0], "pwd") == 0)
+	if (ft_strcmp(tokens[0], "echo") == 0)
+		return (echo(tokens, num_tokens));
+	else if (ft_strcmp(tokens[0], "cd") == 0)
+		return (change_dir(tokens, num_tokens));
+	else if (ft_strcmp(tokens[0], "pwd") == 0)
 		return (pwd());
-	else if (ft_strcmp(parsed[0], "export") == 0)
-		return (export(parsed, num_tokens, environment));
-	else if (ft_strcmp(parsed[0], "unset") == 0)
-		return (ft_unset(parsed, num_tokens, environment));
-	else if (ft_strcmp(parsed[0], "env") == 0)
-		return (show_env(environment));
-	else if (ft_strcmp(parsed[0], "exit") == 0)
+	else if (ft_strcmp(tokens[0], "export") == 0)
+		return (export(tokens, num_tokens, &(minishell->environment)));
+	else if (ft_strcmp(tokens[0], "unset") == 0)
+		return (ft_unset(tokens, num_tokens, &(minishell->environment)));
+	else if (ft_strcmp(tokens[0], "env") == 0)
+		return (show_env(&(minishell->environment)));
+	else if (ft_strcmp(tokens[0], "exit") == 0)
 		return (EXIT);
 	else
-		return (exe_shell_cmd(parsed, num_tokens));
+		return (exe_shell_cmd(tokens, num_tokens));
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */

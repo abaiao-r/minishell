@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/03 16:44:06 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/03 22:39:28 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ int					change_dir(char **input, int num_tokens);
 /* command_utils.c */
 char				*find_executable(char *cmd);
 char				**get_cmd(char **input, char c);
-int					exe_cmd(char **parsed, char *input, int num_tokens,
-						t_env **environment);
+int					exe_cmd(char **tokens, int num_tokens, t_minishell *minishell);
 void				exe_command(char **parsed);
 void				exe_executable(char **input);
+int					exe_shell_cmd(char **args, int num_tokens);
 
 /* env.c */
 void				add_env_node(char *var_name, char *var_value, int i,
