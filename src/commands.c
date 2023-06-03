@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/29 17:33:16 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/03 16:52:02 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	echo_aux(char **args, int num_args, int flag)
 	int	i;
 
 	i = 0;
-	while (args[i] && i <= num_args)
+	while (args[i] && i < num_args)
 	{
 		printf("%s", args[i]);
 		if (i + 1 != num_args)

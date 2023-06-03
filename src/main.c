@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/30 19:58:12 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/03 16:25:24 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	main(int argc, char **argv, char **env)
 				i++;
 			}
 		}
-		status = exe_cmd(token_2d, input, ft_token_lstsize(minishell->input), &minishell->environment);
+		minishell->tokens = token_2d;
+		status = exe_commands(minishell);
 		free(input);
 		free_parsed(token_2d);
 		free_token_list(&minishell->input);

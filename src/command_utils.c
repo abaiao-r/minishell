@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/22 14:49:49 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/03 18:06:22 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ char	*find_executable(char *cmd)
 	path = getenv("PATH");
 	if (!path)
 		return (NULL);
+	if (ft_strchr(cmd, '/'))
+	{
+		if (!access(cmd, X_OK))
+			return (cmd);
+		return (NULL);
+	}
 	while (*path)
 	{
 		path_end = ft_strchr(path, ':');
@@ -72,76 +78,11 @@ char	**get_cmd(char **input, char c)
 	return (cmd);
 }
 
-/* Tentei por isto a funcionar mas depois explico o problema */
-/* void	execute_pipe(char **args)
-{
-	int		pipefd[2];
-	pid_t	pid1, pid2;
-	char	**args_cpy;
-	char	**cmd1;
-	char	**cmd2;
-
-	args_cpy = args;
-	cmd1 = get_cmd(args);
-	cmd1 = 1;
-    if (pipe(pipefd) < 0) {
-        perror("pipe");
-        exit(EXIT_FAILURE);
-    }
-
-    pid1 = fork();
-    if (pid1 < 0) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }
-
-    if (pid1 == 0) {
-        // Child 1 code
-        close(pipefd[0]); // Close unused read end
-        dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to the write end of the pipe
-        close(pipefd[1]); // Close write end
-        char *cmd1 = find_executable(args[0]);
-        if (cmd1 == NULL) {
-            fprintf(stderr, "Command not found: %s\n", args[0]);
-            exit(EXIT_FAILURE);
-        }
-        execve(cmd1, {arg[0], NULL}, NULL);
-        perror(cmd1);
-        exit(EXIT_FAILURE);
-    }
-
-    pid2 = fork();
-    if (pid2 < 0) {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }
-
-    if (pid2 == 0) {
-        // Child 2 code
-        close(pipefd[1]); // Close unused write end
-        dup2(pipefd[0], STDIN_FILENO); // Redirect stdin to the read end of the pipe
-        close(pipefd[0]); // Close read end
-        char *cmd2 = find_executable(args[2]);
-        if (cmd2 == NULL) {
-            fprintf(stderr, "Command not found: %s\n", args[2]);
-            exit(EXIT_FAILURE);
-        }
-        execve(cmd2, args + 2, NULL);
-        perror(cmd2);
-        exit(EXIT_FAILURE);
-    }
-
-    // Parent code
-    close(pipefd[0]);
-    close(pipefd[1]);
-    waitpid(pid1, NULL, 0);
-    waitpid(pid2, NULL, 0);
-} */
-
-int	exe_shell_cmd(char **args)
+int	exe_shell_cmd(char **args, int num_tokens)
 {
 	pid_t	pid;
 	int		status;
+	char	**bash_args;
 
 	if (!args)
 	{
@@ -151,7 +92,18 @@ int	exe_shell_cmd(char **args)
 	pid = fork();
 	if (pid == 0)
 	{
-        execve(args[0], args, NULL);
+		bash_args = malloc(sizeof(char *) * (num_tokens + 1));
+		if (!bash_args)
+			return (NO_EXIT);
+		int i = 0;
+		while (i < num_tokens)
+		{
+			bash_args[i] = args[i];
+			i++;
+		}
+		bash_args[i] = NULL;
+		bash_args[0] = find_executable(bash_args[0]);
+        execve(bash_args[0], bash_args, NULL);
 		//execve("/bin/bash", (char *[]){"/bin/bash", "-c", cmd, NULL}, NULL);
 		perror("execve");
 		exit(EXIT_FAILURE);
@@ -192,7 +144,7 @@ int	exe_cmd(char **parsed, char *input, int num_tokens, t_env **environment)
 	else if (ft_strcmp(parsed[0], "exit") == 0)
 		return (EXIT);
 	else
-		return (exe_shell_cmd(parsed));
+		return (exe_shell_cmd(parsed, num_tokens));
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */

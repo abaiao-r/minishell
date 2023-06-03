@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/30 20:33:20 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/03 16:44:06 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <assert.h>
 
 typedef struct s_env
 {
@@ -66,6 +67,7 @@ typedef struct s_minishell
 	t_env			*environment;
 	t_prompt		*prompt;
 	t_input			*input;
+	char			**tokens;
 }					t_minishell;
 
 typedef struct s_arg
@@ -192,7 +194,7 @@ int					ft_unset(char **input, int num_tokens, t_env **environment);
 void				execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2,
 						int cmd2_num_tokens);
 int					count_tokens(char **args);
-int					exe_commands(char **args);
+int					exe_commands(t_minishell *minishell);
 
 /* utils_3.c */
 int					is_redirection(char *str);
