@@ -10,70 +10,56 @@
 #define MAX_COMMANDS 10
 #define MAX_COMMAND_LENGTH 100
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <string.h>
+
+#define MAX_ARGS 100
+#define MAX_COMMANDS 10
+#define MAX_COMMAND_LENGTH 100
+
+char* ft_strjoin(const char *s1, const char *s2)
+{
+    char* str;
+    size_t len_s1 = strlen(s1);
+    size_t len_s2 = strlen(s2);
+    size_t total_len = len_s1 + len_s2;
+    str = (char*)malloc(total_len + 1);
+    if (!str)
+    {
+        return NULL;
+    }
+    strcpy(str, s1);
+    strcpy(str + len_s1, s2);
+    return str;
+}
+
 char* get_command_path(char* command)
 {
     char* path = NULL;
-    //printf("which %s", command);
 
-    int fd[2];
-    if (pipe(fd) < 0)
+    // Tokenize the PATH environment variable
+    char* path_env = getenv("PATH");
+    char* path_token = strtok(path_env, ":");
+    while (path_token != NULL)
     {
-        perror("pipe failed");
-        exit(1);
-    }
+        // Construct the full command path
+        char* command_path = ft_strjoin(path_token, "/");
+        command_path = ft_strjoin(command_path, command);
 
-    pid_t pid = fork();
-
-    if (pid < 0)
-    {
-        perror("fork failed");
-        exit(1);
-    } else if (pid == 0)
-    {
-        // Child process
-
-        // Close the read end of the pipe
-        close(fd[0]);
-
-        // Redirect output to the pipe
-        dup2(fd[1], STDOUT_FILENO);
-        close(fd[1]);
-
-        // Execute the "which" command
-        char* arguments[] = {"which", command, NULL};
-        char* envp[] = {NULL}; // Empty environment array
-        execve("/usr/bin/which", arguments, envp);
-        perror("execve failed");
-        exit(1);
-    } 
-    else
-    {
-        // Parent process
-
-        // Close the write end of the pipe
-        close(fd[1]);
-
-        // Read the output of the command from the pipe
-        char result[MAX_COMMAND_LENGTH];
-        ssize_t bytes_read = read(fd[0], result, sizeof(result) - 1);
-        if (bytes_read > 0)
+        // Check if the command path is executable
+        if (access(command_path, X_OK) == 0)
         {
-            // Null-terminate the result string
-            result[bytes_read] = '\0';
-
-            // Remove the trailing newline character
-            result[strcspn(result, "\n")] = '\0';
-
-            // Allocate memory for the path and copy the result
-            path = (char*)malloc(strlen(result) + 1);
-            strcpy(path, result);
+            path = command_path;
+            break;
         }
 
-        // Close the read end of the pipe
-        close(fd[0]);
-
-        // Wait for the child process to finish
-        wait(NULL);
+        free(command_path);
+        path_token = strtok(NULL, ":");
     }
 
     return path;
