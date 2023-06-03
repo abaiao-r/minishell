@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/18 21:59:16 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/03 17:51:26 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,109 +19,6 @@
 #include <sys/wait.h>
 
 #define MAX_COMMAND_LENGTH 1024
-
-/* void run_commands(char** commands) {
-    int num_commands = 1;
-    char* command;
-    char** commands_copy = commands;
-    char* token = strtok(commands_copy, "|");
-
-    while (token != NULL) {
-        num_commands++;
-        token = strtok(NULL, "|");
-    }
-	printf("num_commands: %d\n", num_commands);
-    int pipes[num_commands - 1][2];
-    int i, j = 0;
-    int input_fd = 0;
-    pid_t pid;
-
-    for (i = 0; i < num_commands; i++) {
-        if (pipe(pipes[i]) < 0) {
-            perror("pipe");
-            exit(EXIT_FAILURE);
-        }
-
-        command = commands[j];
-        j++;
-
-        char** args = malloc(sizeof(char*) * 100);
-        int k = 0;
-        char* token = strtok(command, " ");
-
-        while (token != NULL) {
-            if (strcmp(token, "<") == 0) {
-                token = strtok(NULL, " ");
-                input_fd = open(token, O_RDONLY);
-                dup2(input_fd, STDIN_FILENO);
-                close(input_fd);
-            }
-            else if (strcmp(token, ">") == 0) {
-                token = strtok(NULL, " ");
-                int output_fd = open(token, O_CREAT|O_WRONLY|O_TRUNC, 0644);
-                dup2(output_fd, STDOUT_FILENO);
-                close(output_fd);
-            }
-            else if (strcmp(token, ">>") == 0) {
-                token = strtok(NULL, " ");
-                int output_fd = open(token, O_CREAT|O_WRONLY|O_APPEND, 0644);
-                dup2(output_fd, STDOUT_FILENO);
-                close(output_fd);
-            }
-            else {
-                args[k] = strdup(token);
-                k++;
-            }
-            token = strtok(NULL, " ");
-        }
-        args[k] = NULL;
-
-        pid = fork();
-        if (pid < 0) {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
-        else if (pid == 0) {
-            if (i == 0 && num_commands > 1) {
-                dup2(pipes[i][1], STDOUT_FILENO);
-                close(pipes[i][0]);
-                close(pipes[i][1]);
-            }
-            else if (i == num_commands - 1 && num_commands > 1) {
-                dup2(input_fd, STDIN_FILENO);
-                close(pipes[i - 1][1]);
-                close(pipes[i - 1][0]);
-            }
-            else {
-                dup2(pipes[i][1], STDOUT_FILENO);
-                dup2(pipes[i - 1][0], STDIN_FILENO);
-                close(pipes[i][0]);
-                close(pipes[i][1]);
-                close(pipes[i - 1][0]);
-                close(pipes[i - 1][1]);
-            }
-            execvp(args[0], args);
-            perror("execvp");
-            exit(EXIT_FAILURE);
-        }
-        else {
-            if (i == num_commands - 1 && num_commands > 1) {
-                waitpid(pid, NULL, 0);
-            }
-        }
-
-        for (k = 0; k < 100; k++) {
-            if (args[k] != NULL) {
-                free(args[k]);
-            }
-            else {
-                break;
-            }
-        }
-        free(args);
-    }
-} */
-
 
 char	**get_next_cmd(char **args)
 {
@@ -173,125 +70,160 @@ char	*get_next_redirection(char **args)
 	return (NULL);
 }
 
-/* void	handle_pipe(char *strs, int n_tokens)
+/* void	redirect(char **args, int num_tokens, int *in_fd, t_minishell *minishell)
 {
-	int		pipe_fd[2];
-	pid_t	pid1;
-	pid_t	pid2;
+	pid_t	pid;
+	int		pipefd[2];
 
-	if (pipe(pipe_fd) == -1)
+	if (pipe(pipefd) == -1)
 	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
+		perror("Error");
+		exit(1);
 	}
-	pid1 = fork();
-	if (pid1 == -1)
+	//exe cmd
+
+	close(pipefd[1]);
+	if (*in_fd != 0)
+		close(*in_fd);
+	*in_fd = pipefd[0];
+	pid = fork();
+	if (pid == -1)
+		exit(1);
+	if (pid == 0)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (pid1 == 0)
-	{
-		close(pipe_fd[0]);
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-		exe_cmd(args, NULL, n_tokens, NULL);
+		close(pipefd[0]);
+		printf("EXECUTED 1\n");
+		dup2(pipefd[1], STDOUT_FILENO);
+		// echo hello 
+		// write(pipefd[1], input, strlen(input)); 
+		exe_cmd(minishell, args, num_tokens, *in_fd, pipefd[1]);
+		exit(0);
+		// grep h 
+		// execve(grep h) -> 
 	}
 	else
 	{
-		pid2 = fork();
-		if (pid2 == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		if (pid2 == 0)
-		{
-			close(pipe_fd[1]);
-			dup2(pipe_fd[0], STDIN_FILENO); 
-			close(pipe_fd[0]);
-			exe_cmd(args + n_tokens + 1, NULL, count_tokens(args + n_tokens + 1), NULL);
-		}
-		else
-		{
-			close(pipe_fd[0]);
-			close(pipe_fd[1]);
-			waitpid(pid1, NULL, 0);
-			waitpid(pid2, NULL, 0);
-		}
+		close(pipefd[1]);
+		dup2(pipefd[0], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
 	}
 } */
 
-int	exe_commands(char **args)
+int	cmd_has_pipe(char **args)
 {
-	int		n_tokens;
-	int		status;
-	//int		pipe[2];
-	char	*symbol;
-
-		
 	while (*args)
 	{
-		n_tokens = count_tokens(args);
-		print_command(args, n_tokens);
-		printf("n_tokens: %d\n", n_tokens);
+		if (!strncmp(*args, "|", 1))
+			return (1);
+		args++;
+	}
+	return (0);
+}
+
+void redirect_2(char** commands) {
+    int pipe_fd[2];
+    int in_fd = 0; // Input file descriptor for the first command
+    int i = 0;
+	int	has_pipe;
+
+    while (*commands)
+    {
+		has_pipe = cmd_has_pipe(commands);
+        // Create pipe for inter-process communication
+        if (has_pipe)
+        {
+            if (pipe(pipe_fd) < 0)
+            {
+                perror("pipe failed");
+                exit(1);
+            }
+        }
+		printf("pipe tokens: %d\n", count_tokens(commands));
+        pid_t pid = fork();
+
+        if (pid < 0)
+        {
+            perror("fork failed");
+            exit(1);
+        }
+        else if (pid == 0)
+        {
+            // Child process
+
+            // Redirect input from the previous command or file
+            if (i != 0)
+            {
+                dup2(in_fd, STDIN_FILENO);
+                close(in_fd);
+            }
+
+            // Redirect output to the next command or file
+            if (has_pipe)
+            {
+                dup2(pipe_fd[1], STDOUT_FILENO);
+                close(pipe_fd[0]);
+                close(pipe_fd[1]);
+            }
+            exe_cmd(commands, NULL, count_tokens(commands), NULL);
+            exit(0);  // Exit child process after executing the command
+        } 
+        else
+        {
+            // Parent process
+
+            // Close the previous pipe's write end
+            if (i > 0)
+            {
+                close(in_fd);
+            }
+
+            // Close the current pipe's read end
+            if (has_pipe)
+            {
+                close(pipe_fd[1]);
+                in_fd = pipe_fd[0];
+            }
+			wait(NULL);
+        }
+        i++;
+		commands = get_next_cmd(commands);
+    }
+}
+
+int	exe_commands(t_minishell *minishell)
+{
+	//int		num_tokens;
+	//int		status;
+	//int		in_fd;
+	//char	*symbol;
+	char	**args;
+
+	args = minishell->tokens;
+	//in_fd = STDIN_FILENO;
+	/* while (*(args))
+	{
+		num_tokens = count_tokens(args);
+		print_command((args), num_tokens);
+		printf("n_tokens: %d\n", num_tokens);
 		symbol = get_next_redirection(args);
 		if (symbol)
 		{
 			printf("next redirection: %s\n", symbol);
-			//status = handle_pipe(args, n_tokens);
+			redirect(args, num_tokens, &in_fd, minishell);
 		}
 		else
-			status = exe_cmd(args, NULL, n_tokens, NULL);
-		if (n_tokens == 1 && status == EXIT)
+		{
+			// grep h
+			printf("no redirection\n");
+			// execve(grep h)
+			status = exe_cmd(minishell, args, num_tokens);
+		}
+		if (num_tokens == 1 && status == EXIT)
 			return (EXIT);
 		args = get_next_cmd(args);
-	}
+		printf("next command: %s\n", *(args));
+	} */
+	//redirect_2(args);
+	exe_cmd(args, NULL, count_tokens(args), NULL);
 	return (NO_EXIT);
 }
-
-/* void	execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens)
-{
-	int		pipe_fd[2];
-	pid_t	pid1;
-
-	(void) cmd1;
-	(void) cmd1_num_tokens;
-	(void) cmd2;
-	(void) cmd2_num_tokens;
-	if (pipe(pipe_fd) == -1)
-	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
-	}
-	pid1 = fork();
-	if (pid1 == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid1 == 0)
-	{
-		close(pipe_fd[0]);
-		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[1]);
-		printf("exe cmd1\n");
-		exe_cmd(cmd1, NULL, cmd1_num_tokens, NULL);
-		exit(0);
-	}
-	close(pipe_fd[1]);
-	dup2(pipe_fd[0], STDIN_FILENO);
-	waitpid(pid1, NULL, 0);
-	printf("exe cmd2\n");
-	for (int i = 0; cmd2[i] != NULL; i++)
-		printf("str: %s\n", cmd2[i]);
-	exe_cmd(cmd2, NULL, cmd2_num_tokens, NULL);
-	close(pipe_fd[0]);
-} */
-
-/* 
-int main()
-{
-	execute_pipe("echo hello", "grep hello");
-	//execute_pipe("ls -l", "grep myfile.txt");
-} */
