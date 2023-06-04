@@ -344,10 +344,23 @@ void execute_commands(char** commands, int num_commands)
                             free(line);
                         }
 
+                        // Close the temporary file
+                        close(temp_fd);
+
+                        // Reopen the temporary file for reading
+                        temp_fd = open(temp_file, O_RDONLY);
+                        if (temp_fd < 0)
+                        {
+                            perror("open failed");
+                            exit(1);
+                        }
+
                         // Set the temporary file as input for the command
-                        lseek(temp_fd, 0, SEEK_SET);
                         dup2(temp_fd, STDIN_FILENO);
                         close(temp_fd);
+
+                        // Remove the temporary file
+                        unlink(temp_file);
                     }
                 }
 
