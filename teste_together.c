@@ -19,6 +19,28 @@
 #define MAX_COMMAND_LENGTH 100
 #define BUFFER_SIZE 1024
 
+char* ft_strtok(char* str, const char* delim)
+{
+    static char* next_token = NULL;
+
+    if (str != NULL)
+        next_token = str;
+    if (next_token == NULL)
+        return (NULL);
+    size_t delim_len = strlen(delim);
+    char* token_start = next_token;
+    char* token_end = strstr(next_token, delim);
+
+    if (token_end != NULL)
+    {
+        next_token = token_end + delim_len;
+        *token_end = '\0';
+    }
+    else
+        next_token = NULL;
+    return (token_start);
+}
+
 size_t	ft_strlen_gnl(char *s)
 {
 	size_t	i;
@@ -169,7 +191,7 @@ char* get_command_path(char* command)
 
     // Tokenize the PATH environment variable
     char* path_env = getenv("PATH");
-    char* path_token = strtok(path_env, ":");
+    char* path_token = ft_strtok(path_env, ":");
     while (path_token != NULL)
     {
         // Construct the full command path
@@ -184,7 +206,7 @@ char* get_command_path(char* command)
         }
 
         free(command_path);
-        path_token = strtok(NULL, ":");
+        path_token = ft_strtok(NULL, ":");
     }
 
     return path;
@@ -196,11 +218,11 @@ void execute_command(char* command)
     int arg_count = 0;
 
     // Tokenize the command string
-    char* token = strtok(command, " \t\n");
+    char* token = ft_strtok(command, " \t\n");
     while (token != NULL) {
         arguments[arg_count] = token;
         arg_count++;
-        token = strtok(NULL, " \t\n");
+        token = ft_strtok(NULL, " \t\n");
     }
 
     arguments[arg_count] = NULL; // Set last argument to NULL for execve
@@ -286,28 +308,28 @@ void execute_commands(char** commands, int num_commands)
             char* arguments[100];
             int arg_count = 0;
 
-            char* token = strtok(command, " ");
+            char* token = ft_strtok(command, " ");
             while (token != NULL)
             {
                 if (strcmp(token, "<") == 0)
                 {
-                    char* file = strtok(NULL, " ");
+                    char* file = ft_strtok(NULL, " ");
                     redirect_input(file);
                 }
                 else if (strcmp(token, ">") == 0)
                 {
-                    char* file = strtok(NULL, " ");
+                    char* file = ft_strtok(NULL, " ");
                     redirect_output(file, 0);
                 }
                 else if (strcmp(token, ">>") == 0)
                 {
-                    char* file = strtok(NULL, " ");
+                    char* file = ft_strtok(NULL, " ");
                     redirect_output(file, 1);
                 }
                 else if (strcmp(token, "<<") == 0)
                 {
                     // Handle "<<" input redirection
-                    char* delimiter = strtok(NULL, " ");
+                    char* delimiter = ft_strtok(NULL, " ");
                     if (delimiter != NULL)
                     {
                         // Create a temporary file
@@ -368,7 +390,7 @@ void execute_commands(char** commands, int num_commands)
                 {
                     arguments[arg_count++] = token;
                 }
-                token = strtok(NULL, " ");
+                token = ft_strtok(NULL, " ");
             }
 
             arguments[arg_count] = NULL; // Set last argument to NULL for execve
@@ -376,7 +398,7 @@ void execute_commands(char** commands, int num_commands)
             // Get the executable path from the PATH environment variable
             char* path = getenv("PATH");
             char* path_copy = strdup(path);
-            char* path_token = strtok(path_copy, ":");
+            char* path_token = ft_strtok(path_copy, ":");
 
             while (path_token != NULL)
             {
@@ -390,7 +412,7 @@ void execute_commands(char** commands, int num_commands)
                     exit(1);
                 }
                 free(executable_path);
-                path_token = strtok(NULL, ":");
+                path_token = ft_strtok(NULL, ":");
             }
 
             printf("Command '%s' not found\n", arguments[0]);
@@ -434,12 +456,12 @@ int main(void)
     input[strcspn(input, "\n")] = '\0';  // Remove trailing newline
 
     // Tokenize the input into commands
-    char* token = strtok(input, "|");
+    char* token = ft_strtok(input, "|");
     while (token != NULL)
     {
         commands[num_commands] = token;
         num_commands++;
-        token = strtok(NULL, "|");
+        token = ft_strtok(NULL, "|");
     }
 
     execute_commands(commands, num_commands);
