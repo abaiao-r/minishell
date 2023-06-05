@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/05 22:56:18 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:52:37 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,9 +256,6 @@ void	handle_redirections(char **tokens)
 	char	*file;
 	int	i;
 
-	/* for (int j = 0; tokens[j]; j++)
-		fprintf(stderr, "%s ", tokens[j]);
-	fprintf(stderr, "\n"); */
 	i = 0;
 	while (tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
@@ -277,10 +274,8 @@ void	handle_redirections(char **tokens)
 			file = tokens[i + 1];
 			redirect_output(file, 0);
 		}
-		//fprintf(stderr, "--%s-- i: %d ", tokens[i], i);
 		i++;
 	}
-	//fprintf(stderr, "\n");
 }
 
 // echo hello > file.txt | cat file.txt
@@ -289,7 +284,9 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 {
 	int pipe_fd[2];  // Pipe file descriptors
 	int in_fd = 0;   // Input file descriptor for the first command
+	char **cmds;
 
+	cmds = NULL;
 	(void) minishell;
 	for (int i = 0; i < num_commands; i++)
 	{
@@ -299,10 +296,10 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 				exit(1);
 			}
 		}
-		char **cmds = get_command_without_redirects(commands);
-		for (int j = 0; cmds[j]; j++)
+		cmds = get_command_without_redirects(commands);
+		/* for (int j = 0; cmds[j]; j++)
 			printf("cmd: %s\n", cmds[j]);
-		printf("----\n");
+		printf("----\n"); */
 		pid_t pid = fork();
 		if (pid < 0) {
 			perror("fork failed");
@@ -325,6 +322,7 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 			handle_redirections(commands);
 			if (exe_cmd(cmds, count_arguments(cmds), minishell) == -1)
 				exe_shell_cmd(cmds, count_arguments(cmds));
+			free(cmds);
 			exit(1);
 		}
 		else
@@ -349,6 +347,7 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 		wait(NULL);
 		num_commands--;
 	}
+	free(cmds);
 }
 
 int	exe_commands(t_minishell *minishell)

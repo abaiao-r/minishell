@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/05 21:27:38 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:47:48 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*find_executable(char *cmd)
 		if (!path_end)
 			path_end = path + ft_strlen(path);
 		executable = malloc(path_end - path + ft_strlen(cmd) + 2);
+		if (!executable)
+			return (NULL);
 		ft_strncpy(executable, path, path_end - path);
 		executable[path_end - path] = '/';
 		ft_strcpy(executable + (path_end - path) + 1, cmd);
@@ -78,15 +80,13 @@ char	**get_cmd(char **input, char c)
 	return (cmd);
 }
 
-/* int	exe_shell_cmd(char **args, int num_tokens)
+int	exe_shell_cmd(char **args, int num_tokens)
 {
-	//pid_t	pid;
-	//int		status;
 	char	**bash_args;
 
 	if (!args)
 	{
-		printf("NULL shell cmd\n");
+		perror("NULL shell cmd\n");
 		return (NO_EXIT);
 	}
 	bash_args = malloc(sizeof(char *) * (num_tokens + 1));
@@ -100,13 +100,24 @@ char	**get_cmd(char **input, char c)
 	}
 	bash_args[i] = NULL;
 	bash_args[0] = find_executable(bash_args[0]);
-	
-	execve(bash_args[0], bash_args, NULL);
-	perror("execve");
+	if (!bash_args[0])
+	{
+		free(bash_args);
+		perror("Command not found");
+		return (NO_EXIT);
+	}
+	if (access(bash_args[0], X_OK) == 0)
+	{
+		execve(bash_args[0], bash_args, NULL);
+		perror("execve failed");
+		exit(EXIT_FAILURE);
+	}
+	free(bash_args);
+	perror("Command not found");
 	exit(EXIT_FAILURE);
-} */
+}
 
-int	exe_shell_cmd(char **args, int num_tokens)
+/* int	exe_shell_cmd(char **args, int num_tokens)
 {
 	char* path = getenv("PATH");
 	char* path_copy = strdup(path);
@@ -126,7 +137,7 @@ int	exe_shell_cmd(char **args, int num_tokens)
 		path_token = strtok(NULL, ":");
 	}
 	return (EXIT_FAILURE);
-}
+} */
 
 
 
