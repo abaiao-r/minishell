@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 14:17:58 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/03/15 15:29:08 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/03 13:55:05 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
+
 /* int	main(void)
 {
 	char *line;
