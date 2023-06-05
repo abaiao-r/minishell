@@ -19,28 +19,6 @@
 #define MAX_COMMAND_LENGTH 100
 #define BUFFER_SIZE 1024
 
-char* ft_strtok(char* str, const char* delim)
-{
-    static char* next_token = NULL;
-
-    if (str != NULL)
-        next_token = str;
-    if (next_token == NULL)
-        return (NULL);
-    size_t delim_len = strlen(delim);
-    char* token_start = next_token;
-    char* token_end = strstr(next_token, delim);
-
-    if (token_end != NULL)
-    {
-        next_token = token_end + delim_len;
-        *token_end = '\0';
-    }
-    else
-        next_token = NULL;
-    return (token_start);
-}
-
 size_t	ft_strlen_gnl(char *s)
 {
 	size_t	i;
@@ -151,37 +129,32 @@ char* ft_strjoin(char const *s1, char const *s2)
     return str;
 }
 
-void redirect_input(char* file)
-{
-    int fd = open(file, O_RDONLY);
-    if (fd < 0)
-    {
+void redirect_input(const char* input_file) {
+    int fd = open(input_file, O_RDONLY);
+    if (fd < 0) {
         perror("open failed");
         exit(1);
     }
-    dup2(fd, STDIN_FILENO);
+
+    dup2(fd, 0); // Redirect stdin to the file
     close(fd);
 }
 
-void redirect_output(char* file, int append)
-{
+void redirect_output(const char* output_file, int append) {
     int flags = O_WRONLY | O_CREAT;
-
-    if (append)
-    {
+    if (append) {
         flags |= O_APPEND;
-    }
-    else
-    {
+    } else {
         flags |= O_TRUNC;
     }
-    int fd = open(file, flags, 0666);
-    if (fd < 0)
-    {
+
+    int fd = open(output_file, flags, 0644);
+    if (fd < 0) {
         perror("open failed");
         exit(1);
     }
-    dup2(fd, STDOUT_FILENO);
+
+    dup2(fd, 1); // Redirect stdout to the file
     close(fd);
 }
 
@@ -191,7 +164,7 @@ char* get_command_path(char* command)
 
     // Tokenize the PATH environment variable
     char* path_env = getenv("PATH");
-    char* path_token = ft_strtok(path_env, ":");
+    char* path_token = strtok(path_env, ":");
     while (path_token != NULL)
     {
         // Construct the full command path
@@ -206,7 +179,7 @@ char* get_command_path(char* command)
         }
 
         free(command_path);
-        path_token = ft_strtok(NULL, ":");
+        path_token = strtok(NULL, ":");
     }
 
     return path;
@@ -218,11 +191,11 @@ void execute_command(char* command)
     int arg_count = 0;
 
     // Tokenize the command string
-    char* token = ft_strtok(command, " \t\n");
+    char* token = strtok(command, " \t\n");
     while (token != NULL) {
         arguments[arg_count] = token;
         arg_count++;
-        token = ft_strtok(NULL, " \t\n");
+        token = strtok(NULL, " \t\n");
     }
 
     arguments[arg_count] = NULL; // Set last argument to NULL for execve
@@ -308,89 +281,75 @@ void execute_commands(char** commands, int num_commands)
             char* arguments[100];
             int arg_count = 0;
 
-            char* token = ft_strtok(command, " ");
+            char* token = strtok(command, " ");
             while (token != NULL)
             {
                 if (strcmp(token, "<") == 0)
                 {
-                    char* file = ft_strtok(NULL, " ");
+                    char* file = strtok(NULL, " ");
                     redirect_input(file);
                 }
                 else if (strcmp(token, ">") == 0)
                 {
-                    char* file = ft_strtok(NULL, " ");
+                    char* file = strtok(NULL, " ");
                     redirect_output(file, 0);
                 }
                 else if (strcmp(token, ">>") == 0)
                 {
-                    char* file = ft_strtok(NULL, " ");
+                    char* file = strtok(NULL, " ");
                     redirect_output(file, 1);
                 }
-                else if (strcmp(token, "<<") == 0)
-                {
-                    // Handle "<<" input redirection
-                    char* delimiter = ft_strtok(NULL, " ");
-                    if (delimiter != NULL)
-                    {
-                        // Create a temporary file
-                        char temp_file[] = "/tmp/tempfileXXXXXX";
-                        int temp_fd = mkstemp(temp_file);
-                        if (temp_fd < 0)
-                        {
-                            perror("mkstemp failed");
-                            exit(1);
-                        }
+                else         if (strcmp(token, "<<") == 0) {
+            // Handle "<<" input redirection
+            char* delimiter = strtok(NULL, " \t\n");
+            if (delimiter != NULL) {
+                // Read input from the user until the delimiter is found
+                char* line = NULL;
+                char* temp_input = NULL;
+                size_t temp_input_len = 0;
+                ssize_t read_len;
 
-                        // Write input to the temporary file until the delimiter is found
-                        char* line = NULL;
-                        int found_delimiter = 0;
-
-                        while (!found_delimiter)
-                        {
-                            line = get_next_line(STDIN_FILENO);
-                            line[strcspn(line, "\n")] = '\0';  // Read input line using get_next_line
-                            if (line == NULL)
-                            {
-                                perror("get_next_line failed");
-                                exit(1);
-                            }
-                            if (strcmp(line, delimiter) == 0)
-                            {
-                                found_delimiter = 1;
-                            }
-                            else
-                            {
-                                strcat(line, "\n");  // Add newline character
-                                write(temp_fd, line, strlen(line));
-                            }
-                            free(line);
-                        }
-
-                        // Close the temporary file
-                        close(temp_fd);
-
-                        // Reopen the temporary file for reading
-                        temp_fd = open(temp_file, O_RDONLY);
-                        if (temp_fd < 0)
-                        {
-                            perror("open failed");
-                            exit(1);
-                        }
-
-                        // Set the temporary file as input for the command
-                        dup2(temp_fd, STDIN_FILENO);
-                        close(temp_fd);
-
-                        // Remove the temporary file
-                        unlink(temp_file);
+                while ((read_len = getline(&line, &temp_input_len, stdin)) != -1) {
+                    if (strcmp(line, delimiter) == 0) {
+                        free(line);
+                        break;
                     }
+                    temp_input = ft_strjoin(temp_input, line);
+                    free(line);
                 }
+
+                if (temp_input == NULL) {
+                    printf("Invalid input redirection\n");
+                    exit(1);
+                }
+
+                // Create a temporary file
+                char temp_file[] = "/tmp/tempfileXXXXXX";
+                int temp_fd = mkstemp(temp_file);
+                if (temp_fd < 0) {
+                    perror("mkstemp failed");
+                    exit(1);
+                }
+
+                // Write the temporary input to the file
+                write(temp_fd, temp_input, strlen(temp_input));
+
+                // Close the temporary file
+                close(temp_fd);
+
+                // Set the temporary file as input for the command
+                redirect_input(temp_file);
+
+                // Remove the temporary file
+                unlink(temp_file);
+            }
+        }
 
                 else
                 {
                     arguments[arg_count++] = token;
                 }
-                token = ft_strtok(NULL, " ");
+                token = strtok(NULL, " ");
             }
 
             arguments[arg_count] = NULL; // Set last argument to NULL for execve
@@ -398,7 +357,7 @@ void execute_commands(char** commands, int num_commands)
             // Get the executable path from the PATH environment variable
             char* path = getenv("PATH");
             char* path_copy = strdup(path);
-            char* path_token = ft_strtok(path_copy, ":");
+            char* path_token = strtok(path_copy, ":");
 
             while (path_token != NULL)
             {
@@ -412,7 +371,7 @@ void execute_commands(char** commands, int num_commands)
                     exit(1);
                 }
                 free(executable_path);
-                path_token = ft_strtok(NULL, ":");
+                path_token = strtok(NULL, ":");
             }
 
             printf("Command '%s' not found\n", arguments[0]);
@@ -456,12 +415,12 @@ int main(void)
     input[strcspn(input, "\n")] = '\0';  // Remove trailing newline
 
     // Tokenize the input into commands
-    char* token = ft_strtok(input, "|");
+    char* token = strtok(input, "|");
     while (token != NULL)
     {
         commands[num_commands] = token;
         num_commands++;
-        token = ft_strtok(NULL, "|");
+        token = strtok(NULL, "|");
     }
 
     execute_commands(commands, num_commands);
