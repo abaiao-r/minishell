@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/03 22:38:29 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/05 16:59:00 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	exe_shell_cmd(char **args, int num_tokens)
 	}
 	bash_args[i] = NULL;
 	bash_args[0] = find_executable(bash_args[0]);
+	
 	execve(bash_args[0], bash_args, NULL);
 	perror("execve");
 	exit(EXIT_FAILURE);
@@ -108,7 +109,7 @@ int	exe_shell_cmd(char **args, int num_tokens)
 int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
 {
 	if (!tokens || !*tokens || num_tokens <= 0)
-		return (1);
+		return (-1);
 	if (ft_strcmp(tokens[0], "echo") == 0)
 		return (echo(tokens, num_tokens));
 	else if (ft_strcmp(tokens[0], "cd") == 0)
@@ -124,7 +125,7 @@ int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
 	else if (ft_strcmp(tokens[0], "exit") == 0)
 		return (EXIT);
 	else
-		return (exe_shell_cmd(tokens, num_tokens));
+		return (-1);
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */

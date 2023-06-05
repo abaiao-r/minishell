@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/03 16:25:24 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:45:32 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ int	main(int argc, char **argv, char **env)
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	minishell->environment = parse_env(env);
 	minishell->prompt = ft_calloc(1, sizeof(t_prompt));
-	// minishell->input = ft_calloc(1, sizeof(t_input));
-	//execute_pipe((char*[]){"echo", "hello", NULL}, 2, (char*[]){"/bin/grep","h", NULL}, 2);
-	//exit(0);
 	while (1)
 	{
 
@@ -51,8 +48,9 @@ int	main(int argc, char **argv, char **env)
 			printf("exit\n");
 			break ;
 		}
-		add_history(input);
-		if (!is_quotes_special_char_valid(input))
+		if (*input)
+			add_history(input);
+		if (!*input || !is_quotes_special_char_valid(input))
 		{	
 			free(input);
 			free(minishell->prompt->prompt_full);
@@ -69,12 +67,6 @@ int	main(int argc, char **argv, char **env)
 			free(minishell->prompt->prompt_full);
 			continue ;
 		}
-		/* 		if (has_valid_redirections(&minishell->input->input) == 0)
-		{
-			free(input);
-			free_input_list(&minishell->input);
-			continue ;
-		} */
 		t_input *teste = minishell->input;
 		while (teste)
 		{

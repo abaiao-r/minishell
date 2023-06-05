@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/03 23:00:08 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/05 17:39:42 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,6 @@ void	handle_redirections(char **tokens)
 		else if (!ft_strncmp(tokens[i], ">>", 2))
 		{
 			file = tokens[i + 1];
-
 			redirect_output(file, 1);
 		}
 		else if (!ft_strncmp(tokens[i], ">", 1))
@@ -280,70 +279,68 @@ void	handle_redirections(char **tokens)
 	}
 }
 
+// echo hello > file.txt | cat file.txt
+// "echo", "hello", NULL
 void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 {
 	int pipe_fd[2];  // Pipe file descriptors
 	int in_fd = 0;   // Input file descriptor for the first command
 
 	(void) minishell;
-	//printf("num_commands: %d\n", num_commands);
-	for (int i = 0; i < num_commands; i++) {
-		// Create pipe for inter-process communication
+	for (int i = 0; i < num_commands; i++)
+	{
 		if (i < num_commands - 1) {
 			if (pipe(pipe_fd) < 0) {
 				perror("pipe failed");
 				exit(1);
 			}
 		}
-
-		
-		//printf("n_args: %d\n", count_arguments(commands));
 		char **cmds = get_command_without_redirects(commands);
 		/* for (int j = 0; cmds[j]; j++)
 			printf("cmd: %s\n", cmds[j]); */
-
-			
 		pid_t pid = fork();
 		if (pid < 0) {
 			perror("fork failed");
 			exit(1);
-		} else if (pid == 0) {
-			// Child process
-
+		} else if (pid == 0)
+		{
 			// Redirect input from the previous command or file
-			if (i != 0) {
+			if (i != 0)
+			{
 				dup2(in_fd, STDIN_FILENO);
 				close(in_fd);
 			}
-
 			// Redirect output to the next command or file
-			if (i < num_commands - 1) {
+			if (i < num_commands - 1)
+			{
 				dup2(pipe_fd[1], STDOUT_FILENO);
 				close(pipe_fd[0]);
 				close(pipe_fd[1]);
 			}
 			handle_redirections(commands);
-			exe_cmd(cmds, count_arguments(cmds), minishell);
+			if (exe_cmd(cmds, count_arguments(cmds), minishell) == -1)
+				exe_shell_cmd(cmds, count_arguments(cmds));
 			exit(1);
 		}
 		else
 		{
 			// Parent process
 			// Close the previous pipe's write end
-			
-			if (i > 0) {
+			if (i > 0)
+			{
 				close(in_fd);
 			}
-
 			// Close the current pipe's read end
-			if (i < num_commands - 1) {
+			if (i < num_commands - 1)
+			{
 				close(pipe_fd[1]);
 				in_fd = pipe_fd[0];
 			}
 		}
 		commands = get_next_cmd(commands);
 	}
-	while (num_commands > 0) {
+	while (num_commands > 0)
+	{
 		wait(NULL);
 		num_commands--;
 	}
@@ -386,6 +383,12 @@ int	exe_commands(t_minishell *minishell)
 	int		num_commands;
 	
 	num_commands = count_commands(minishell->tokens);
-	redirect_3(minishell->tokens, num_commands, minishell);
+	// if built in or count_commands > 1
+		// exe redirections
+	// else
+		// exe_cmd
+	// 
+	if (num_commands > 1 || exe_cmd(minishell->tokens, count_tokens(minishell->tokens), minishell) == -1)
+		redirect_3(minishell->tokens, num_commands, minishell);
 	return (NO_EXIT);
 }
