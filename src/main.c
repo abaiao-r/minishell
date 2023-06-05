@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/05 17:45:32 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/05 18:01:42 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+void	free_resources(t_minishell *minishell, char *input)
+{
+	free(input);
+	free_parsed(minishell->tokens);
+	free_token_list(&minishell->input);
+	free(minishell->prompt->prompt_full);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -45,7 +53,6 @@ int	main(int argc, char **argv, char **env)
 		{
 			free_env_list(&minishell->environment);
 			free(minishell->prompt->prompt_full);
-			printf("exit\n");
 			break ;
 		}
 		if (*input)
@@ -61,35 +68,34 @@ int	main(int argc, char **argv, char **env)
 		minishell->input = parse_arguments(input);
 		if (!is_pipe_or_redirection_valid(minishell->input))
 		{
-			free(input);
-			free_parsed(token_2d);
-			free_token_list(&minishell->input);
-			free(minishell->prompt->prompt_full);
+			free_resources(minishell, input);
 			continue ;
 		}
 		t_input *teste = minishell->input;
 		while (teste)
 		{
-			printf("token[%d] and within_quotes[%d]: %s\n", teste->index, teste->within_quotes, teste->token);
+			//printf("token[%d] and within_quotes[%d]: %s\n", teste->index, teste->within_quotes, teste->token);
 			teste = teste->next;
 		}
 		/* status = exe_commands(&minishell->input->token); */
 		token_2d = create_token_array_2d(minishell->input);
-		if(token_2d)
+		minishell->tokens = token_2d;
+		if (!minishell->tokens)
+		{
+			free_resources(minishell, input);
+			continue ;
+		}
+		if (token_2d)
 		{
 			int i=0;
 			while (token_2d[i])
 			{
-				printf("token_2d[%d]: %s\n", i, token_2d[i]);
+				//printf("token_2d[%d]: %s\n", i, token_2d[i]);
 				i++;
 			}
 		}
-		minishell->tokens = token_2d;
 		status = exe_commands(minishell);
-		free(input);
-		free_parsed(token_2d);
-		free_token_list(&minishell->input);
-		free(minishell->prompt->prompt_full);
+		free_resources(minishell, input);
 		if (status == EXIT)
 		{
 			printf("exit\n");

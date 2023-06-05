@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/05 17:39:42 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/05 18:10:47 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -388,7 +388,17 @@ int	exe_commands(t_minishell *minishell)
 	// else
 		// exe_cmd
 	// 
-	if (num_commands > 1 || exe_cmd(minishell->tokens, count_tokens(minishell->tokens), minishell) == -1)
+	int		status;
+
+	if (num_commands > 1)
 		redirect_3(minishell->tokens, num_commands, minishell);
+	if (num_commands == 1)
+	{
+		status = exe_cmd(minishell->tokens, count_tokens(minishell->tokens), minishell);
+		if (status == EXIT)
+			return (EXIT);
+		if (status == -1)
+			redirect_3(minishell->tokens, num_commands, minishell);
+	}
 	return (NO_EXIT);
 }
