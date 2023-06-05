@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/05 18:10:47 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/05 22:56:18 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void redirect_input(char* file)
 	if (fd < 0)
 	{
 		perror("open failed");
+		fprintf(stderr, "file: %s\n", file);
 		exit(1);
 	}
 	dup2(fd, STDIN_FILENO);
@@ -47,6 +48,7 @@ void redirect_output(char* file, int append)
 	if (fd < 0)
 	{
 		perror("open failed");
+		fprintf(stderr, "file: %s\n", file);
 		exit(1);
 	}
 	dup2(fd, STDOUT_FILENO);
@@ -242,10 +244,7 @@ char	**get_command_without_redirects(char **tokens)
 		else if (is_redirection(*tokens))
 			redirect_flag = 1;
 		else
-		{
 			command[i++] = *tokens;
-			num_args++;
-		}
 		tokens++;
 	}
 	command[i] = NULL;
@@ -257,8 +256,11 @@ void	handle_redirections(char **tokens)
 	char	*file;
 	int	i;
 
+	/* for (int j = 0; tokens[j]; j++)
+		fprintf(stderr, "%s ", tokens[j]);
+	fprintf(stderr, "\n"); */
 	i = 0;
-	while (tokens[i])
+	while (tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
 		if (!ft_strncmp(tokens[i], "<", 1))
 		{
@@ -275,8 +277,10 @@ void	handle_redirections(char **tokens)
 			file = tokens[i + 1];
 			redirect_output(file, 0);
 		}
+		//fprintf(stderr, "--%s-- i: %d ", tokens[i], i);
 		i++;
 	}
+	//fprintf(stderr, "\n");
 }
 
 // echo hello > file.txt | cat file.txt
@@ -296,8 +300,9 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 			}
 		}
 		char **cmds = get_command_without_redirects(commands);
-		/* for (int j = 0; cmds[j]; j++)
-			printf("cmd: %s\n", cmds[j]); */
+		for (int j = 0; cmds[j]; j++)
+			printf("cmd: %s\n", cmds[j]);
+		printf("----\n");
 		pid_t pid = fork();
 		if (pid < 0) {
 			perror("fork failed");

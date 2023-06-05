@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/05 16:59:00 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/05 21:27:38 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	**get_cmd(char **input, char c)
 	return (cmd);
 }
 
-int	exe_shell_cmd(char **args, int num_tokens)
+/* int	exe_shell_cmd(char **args, int num_tokens)
 {
 	//pid_t	pid;
 	//int		status;
@@ -104,7 +104,31 @@ int	exe_shell_cmd(char **args, int num_tokens)
 	execve(bash_args[0], bash_args, NULL);
 	perror("execve");
 	exit(EXIT_FAILURE);
+} */
+
+int	exe_shell_cmd(char **args, int num_tokens)
+{
+	char* path = getenv("PATH");
+	char* path_copy = strdup(path);
+	char* path_token = strtok(path_copy, ":");
+
+	(void) num_tokens;
+	while (path_token != NULL) {
+		char* executable_path = ft_strjoin(path_token, "/");
+		executable_path = ft_strjoin(executable_path, args[0]);
+		if (access(executable_path, X_OK) == 0) {
+			execve(executable_path, args, NULL);
+			perror("execve failed");
+			free(executable_path);
+			exit(1);
+		}
+		free(executable_path);
+		path_token = strtok(NULL, ":");
+	}
+	return (EXIT_FAILURE);
 }
+
+
 
 int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
 {
