@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:49:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/06 13:11:36 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:53:02 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 		free(minishell->prompt->prompt_full);
 		return (INVALID);
 	}
+	input = parse_dollar_question(input, minishell->exit_status);
 	input = parse_dollar(input, &minishell->environment);
 	input = parse_pipe_or_redirection(input);
 	minishell->input = parse_arguments(input);

@@ -50,76 +50,6 @@ char* ft_strtok(char* str, const char* delim)
     return token_start;
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	size_t	j;
-	char	*str;
-
-	if (start >= (unsigned int)ft_strlen(s))
-		return ((char *)ft_calloc(1, sizeof(char)));
-	if ((unsigned int)ft_strlen(s) - start - 1 < (unsigned int)len)
-		len = (unsigned int)ft_strlen(&s[start]);
-	str = (char *)malloc(sizeof(*s) * (len + 1));
-	if (!str)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s[i])
-	{
-		if (i >= start && j < len)
-		{
-			str[j] = s[i];
-			j++;
-		}
-		i++;
-	}
-	str[j] = 0;
-	return (str);
-}
-
-static int	count_words(char const *s, char c)
-{
-	int	count;
-	int	i;
-
-	i = 0;
-	count = 0;
-	while (s[i])
-	{
-		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	size_t	i;
-	size_t	j;
-	size_t	start;
-	size_t	count;
-	char	**split;
-
-	count = count_words((char *)s, c);
-	split = malloc(sizeof(char *) * (count + 1));
-	if (!s || !(split))
-		return (0);
-	i = 0;
-	j = 0;
-	while (s[i] && j < count)
-	{
-		while (s[i] == c && s[i])
-			i++;
-		start = i;
-		while (s[i] != c && s[i])
-			i++;
-		split[j++] = ft_substr(s, start, i - start);
-	}
-	split[count] = 0;
-	return (split);
-}
 
 size_t	ft_strlen_gnl(char *s)
 {
@@ -531,20 +461,27 @@ int main(void)
     char* commands[MAX_COMMANDS];
     int num_commands = 0;
 
-    printf("Enter commands: ");
-    fgets(input, sizeof(input), stdin);
-    input[strcspn(input, "\n")] = '\0';  // Remove trailing newline
+    while (1) {
+        printf("Enter commands: ");
+        if (fgets(input, sizeof(input), stdin) == NULL) {
+            // Ctrl + D (EOF) was pressed
+            break;
+        }
+        input[strcspn(input, "\n")] = '\0';  // Remove trailing newline
 
-    // Tokenize the input into commands
-    char* token = strtok(input, "|");
-    while (token != NULL)
-    {
-        commands[num_commands] = token;
-        num_commands++;
-        token = ft_strtok(NULL, "|");
+        // Tokenize the input into commands
+        char* token = strtok(input, "|");
+        while (token != NULL)
+        {
+            commands[num_commands] = token;
+            num_commands++;
+            token = ft_strtok(NULL, "|");
+        }
+
+        execute_commands(commands, num_commands);
+
+        num_commands = 0;  // Reset the command count for the next iteration
     }
 
-    execute_commands(commands, num_commands);
-
-    return (0);
+    return 0;
 }

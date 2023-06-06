@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/06 16:06:22 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:33:31 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define FAILURE -1
 
 # include "../libft/libft.h"
+# include <assert.h>
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
@@ -43,7 +44,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <assert.h>
 
 typedef struct s_env
 {
@@ -71,6 +71,7 @@ typedef struct s_minishell
 	t_env			*environment;
 	t_prompt		*prompt;
 	t_input			*input;
+	int				exit_status;
 	char			*input_str;
 	char			**tokens;
 	int				in;
@@ -104,14 +105,14 @@ typedef struct s_dollar_data
 
 typedef struct s_por_data
 {
-	size_t	input_len;
-	size_t	replacement_len;
-	int		flag_single_quotes;
-	int		flag_double_quotes;
-	char	*replacement;
-	int		start;
-	int		end;
-}			t_por_data;
+	size_t			input_len;
+	size_t			replacement_len;
+	int				flag_single_quotes;
+	int				flag_double_quotes;
+	char			*replacement;
+	int				start;
+	int				end;
+}					t_por_data;
 
 /* commands.c */
 void				echo_aux(char **args, int num_args, int flag);
@@ -122,7 +123,8 @@ int					change_dir(char **input, int num_tokens);
 /* command_utils.c */
 char				*find_executable(char *cmd);
 char				**get_cmd(char **input, char c);
-int					exe_cmd(char **tokens, int num_tokens, t_minishell *minishell);
+int					exe_cmd(char **tokens, int num_tokens,
+						t_minishell *minishell);
 void				exe_command(char **parsed);
 void				exe_executable(char **input);
 int					exe_shell_cmd(char **args, int num_tokens);
@@ -174,6 +176,9 @@ bool				handle_quotes(t_arg *arg, char c, int *i);
 bool				is_operator(const char *input);
 void				free_arg(t_input *head);
 
+/* parse_dollar_question */
+char				*parse_dollar_question(char *input, int exit_status);
+
 /* parse_pipe_or_redirection */
 char				*parse_pipe_or_redirection(char *input);
 
@@ -184,8 +189,8 @@ char				*parse_dollar(char *input, t_env **environment);
 void				free_parsed(char **parsed);
 void				free_token_list(t_input **head);
 int					ft_token_lstsize(t_input *lst);
-char				**create_token_array_2d(t_input *input,
-						t_minishell *minishell);
+char	**create_token_array_2d(t_input *input,
+								t_minishell *minishell);
 
 /* utils_2.c */
 int					count_words(char *str);

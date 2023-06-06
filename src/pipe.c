@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/06 17:16:42 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:29:33 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,7 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 	int pipe_fd[2];  // Pipe file descriptors
 	int in_fd = 0;   // Input file descriptor for the first command
 	char **cmds;
+	int status;
 
 	cmds = NULL;
 	(void) minishell;
@@ -354,7 +355,8 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 	}
 	while (num_commands > 0)
 	{
-		wait(NULL);
+		wait(&status);
+		minishell->exit_status = WEXITSTATUS(status);
 		num_commands--;
 	}
 }
