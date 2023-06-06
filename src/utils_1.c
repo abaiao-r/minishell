@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/29 20:46:14 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/06 13:54:42 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,27 +59,27 @@ int	ft_token_lstsize(t_input *lst)
 	return (i);
 }
 
-char	**create_token_array_2d(t_input *input)
+char	**create_token_array_2d(t_input *input, t_minishell *minishell)
 {
 	t_input	*temp;
-	t_input	*current;
 	int		i;
-	int		count;
 	char	**token_2d;
 
 	if (!input)
 		return (NULL);
-	current = input;
-	count = ft_token_lstsize(current) + 1;
-	token_2d = (char **)malloc(sizeof(char *) * count);
+	token_2d = (char **) malloc(sizeof(char *) * (ft_token_lstsize(input) + 1));
 	if (!token_2d)
+	{
+		free_input_resources(minishell);
 		return (NULL);
+	}
 	temp = input;
 	i = 0;
 	while (temp)
 	{
-		token_2d[i] = ft_strdup(temp->token);
-		i++;
+		token_2d[i++] = ft_strdup(temp->token);
+		if (!token_2d[i - 1])
+			return (NULL);
 		temp = temp->next;
 	}
 	token_2d[i] = NULL;

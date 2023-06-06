@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/05 23:52:37 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/06 14:02:17 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,6 +329,7 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 		{
 			// Parent process
 			// Close the previous pipe's write end
+			free(cmds);
 			if (i > 0)
 			{
 				close(in_fd);
@@ -347,60 +348,25 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 		wait(NULL);
 		num_commands--;
 	}
-	free(cmds);
 }
 
 int	exe_commands(t_minishell *minishell)
 {
-	/* int		num_tokens;
-	int		status;
-	char	*symbol;
-	char	**args;
+	int	num_commands;
+	int	status;
 
-	args = minishell->tokens;
-	while (*(args))
-	{
-		num_tokens = count_tokens(args);
-		print_command((args), num_tokens);
-		//printf("n_tokens: %d\n", num_tokens);
-		symbol = get_next_redirection(args);
-		if (symbol && !ft_strncmp(symbol, "|", 1))
-		{
-			printf("next pipe: %s\n", symbol);
-			redirect_2(args, minishell);
-			//args = get_next_cmd(args);
-		}
-		else
-		{
-			// grep h
-			//printf("no redirection\n");
-			// execve(grep h)
-			status = exe_cmd(minishell, num_tokens, &(minishell->environment));
-		}
-		if (num_tokens == 1 && status == EXIT)
-			return (EXIT);
-		args = get_next_cmd(args);
-		//printf("next command: %s\n", *(args));
-	} */
-	//redirect_2(args);
-	//exe_cmd(args, NULL, count_tokens(args), NULL);
-	int		num_commands;
-	
 	num_commands = count_commands(minishell->tokens);
-	// if built in or count_commands > 1
-		// exe redirections
-	// else
-		// exe_cmd
-	// 
-	int		status;
-
 	if (num_commands > 1)
 		redirect_3(minishell->tokens, num_commands, minishell);
 	if (num_commands == 1)
 	{
-		status = exe_cmd(minishell->tokens, count_tokens(minishell->tokens), minishell);
+		status = exe_cmd(minishell->tokens, count_tokens(minishell->tokens),
+				minishell);
 		if (status == EXIT)
-			return (EXIT);
+		{
+			free_minishell(minishell);
+			exit(EXIT_SUCCESS);
+		}
 		if (status == -1)
 			redirect_3(minishell->tokens, num_commands, minishell);
 	}

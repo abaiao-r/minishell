@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/03 22:39:28 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/06 13:26:02 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 # define NO_EXIT 1
 # define PROMPT_SIZE 1024
 # define MAX_ARGS 1024
+
+# define VALID 0
+# define INVALID 1
+# define FAILURE -1
 
 # include "../libft/libft.h"
 # include <dirent.h>
@@ -67,6 +71,7 @@ typedef struct s_minishell
 	t_env			*environment;
 	t_prompt		*prompt;
 	t_input			*input;
+	char			*input_str;
 	char			**tokens;
 }					t_minishell;
 
@@ -177,7 +182,8 @@ char				*parse_dollar(char *input, t_env **environment);
 void				free_parsed(char **parsed);
 void				free_token_list(t_input **head);
 int					ft_token_lstsize(t_input *lst);
-char				**create_token_array_2d(t_input *input);
+char				**create_token_array_2d(t_input *input,
+						t_minishell *minishell);
 
 /* utils_2.c */
 int					count_words(char *str);
@@ -199,5 +205,10 @@ int					exe_commands(t_minishell *minishell);
 /* utils_3.c */
 int					is_redirection(char *str);
 int					has_valid_redirections(char **args);
+int					validate_and_load_data(t_minishell *minishell, char *input);
+void				free_input_resources(t_minishell *minishell);
+void				free_minishell(t_minishell *minishell);
+void				sig_handler(int signum);
+t_minishell			*init_minishell(char **env);
 
 #endif
