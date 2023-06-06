@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/06 14:02:17 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/06 17:16:42 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,30 +55,42 @@ void redirect_output(char* file, int append)
 	close(fd);
 }
 
-char	**get_next_cmd(char **args)
+t_input	*get_next_cmd(t_input *input)
 {
-	while (*args)
+	while (input)
 	{
-		if (!ft_strncmp(*args, "|", 1))
-			return (args + 1);
-		args++;
+		if (!ft_strncmp(input->token, "|", 1) && !input->within_quotes)
+			return (input->next);
+		input = input->next;
 	}
-	return (args);
+	return (input);
 }
 
-int	count_tokens(char **args)
+int	count_tokens_str(char **args)
 {
 	int		i;
 
 	i = 0;
 	while (*args)
 	{
-		if (is_redirection(*args))
-			return (i);
 		args++;
 		i++;
 	}
 	return (i);
+}
+
+int	count_tokens_lst(t_input *input)
+{
+	int	num_tokens;
+
+	num_tokens = 0;
+	while (input && !ft_strncmp(input->token, "|", 1) && !input->within_quotes)
+	{
+		if (is_redirection(input->token) && !input->within_quotes)
+			return (num_tokens);
+		input = input->next;
+	}
+	return (num_tokens);
 }
 
 void	print_command(char **args, int n_tokens)
@@ -116,16 +128,16 @@ int	cmd_has_pipe(char **args)
 	return (0);
 }
 
-int	count_commands(char **args)
+int	count_commands_lst(t_input *input)
 {
 	int	n_commands;
 
 	n_commands = 0;
-	while (*args)
+	while (input)
 	{
-		if (!strncmp(*args, "|", 1))
+		if (!ft_strncmp(input->token, "|", 1) && !input->within_quotes)
 			n_commands++;
-		args++;
+		input = input->next;
 	}
 	return (n_commands + 1);
 }
@@ -149,7 +161,7 @@ void redirect_2(char** commands, t_minishell *minishell) {
 				exit(1);
 			}
 		}
-		printf("%s %d\n", *commands, count_tokens(commands));
+		printf("%s %d\n", *commands, count_tokens_str(commands));
 		pid_t pid = fork();
 
 		if (pid < 0)
@@ -175,7 +187,7 @@ void redirect_2(char** commands, t_minishell *minishell) {
 				close(pipe_fd[0]);
 				close(pipe_fd[1]);
 			}
-			exe_cmd(NULL, count_tokens(commands), &(minishell->environment));
+			exe_cmd(NULL, count_tokens_str(commands), &(minishell->environment));
 			exit(0);  // Exit child process after executing the command
 		} 
 		else
@@ -203,84 +215,81 @@ void redirect_2(char** commands, t_minishell *minishell) {
 }
  */
 
-int	count_arguments(char **args)
+int	count_arguments(t_input *input)
 {
 	int		num_args;
 	int		redirect_flag;
 
 	num_args = 0;
 	redirect_flag = 0;
-	while (*args && ft_strncmp(*args, "|", 1))
+	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->within_quotes))
 	{
 		if (redirect_flag)
 			redirect_flag = 0;
-		else if (is_redirection(*args))
+		else if (is_redirection(input->token) && !input->within_quotes)
 			redirect_flag = 1;
 		else
 			num_args++;
-		args++;
+		input = input->next;
 	}
 	return (num_args);
 }
 
-char	**get_command_without_redirects(char **tokens)
+char	**get_command_without_redirects(t_input *input)
 {
 	char	**command;
 	int		num_args;
 	int		redirect_flag;
 	int		i;
 
-	num_args = count_arguments(tokens);
+	num_args = count_arguments(input);
 	command = malloc(sizeof(char *) * (num_args + 1));
 	if (!command)
 		return (NULL);
-	num_args = 0;
 	redirect_flag = 0;
 	i = 0;
-	while (*tokens && ft_strncmp(*tokens, "|", 1))
+	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->within_quotes))
 	{
 		if (redirect_flag)
 			redirect_flag = 0;
-		else if (is_redirection(*tokens))
+		else if (is_redirection(input->token) && !input->within_quotes)
 			redirect_flag = 1;
 		else
-			command[i++] = *tokens;
-		tokens++;
+			command[i++] = input->token;
+		input = input->next;
 	}
 	command[i] = NULL;
 	return (command);
 }
 
-void	handle_redirections(char **tokens)
+void	handle_redirections(t_input *input)
 {
 	char	*file;
-	int	i;
 
-	i = 0;
-	while (tokens[i] && ft_strncmp(tokens[i], "|", 1))
+	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->within_quotes))
 	{
-		if (!ft_strncmp(tokens[i], "<", 1))
+		if (!ft_strncmp(input->token, "<", 1))
 		{
-			file = tokens[i + 1];
+			file = input->next->token;
 			redirect_input(file);
 		}
-		else if (!ft_strncmp(tokens[i], ">>", 2))
+		else if (!ft_strncmp(input->token, ">>", 2))
 		{
-			file = tokens[i + 1];
+			file = input->next->token;
 			redirect_output(file, 1);
 		}
-		else if (!ft_strncmp(tokens[i], ">", 1))
+		else if (!ft_strncmp(input->token, ">", 1))
 		{
-			file = tokens[i + 1];
+			file = input->next->token;
 			redirect_output(file, 0);
 		}
-		i++;
+		input = input->next;
 	}
 }
 
 // echo hello > file.txt | cat file.txt
 // "echo", "hello", NULL
-void redirect_3(char** commands, int num_commands, t_minishell *minishell)
+void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 {
 	int pipe_fd[2];  // Pipe file descriptors
 	int in_fd = 0;   // Input file descriptor for the first command
@@ -296,7 +305,7 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 				exit(1);
 			}
 		}
-		cmds = get_command_without_redirects(commands);
+		cmds = get_command_without_redirects(input);
 		/* for (int j = 0; cmds[j]; j++)
 			printf("cmd: %s\n", cmds[j]);
 		printf("----\n"); */
@@ -319,9 +328,9 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 				close(pipe_fd[0]);
 				close(pipe_fd[1]);
 			}
-			handle_redirections(commands);
-			if (exe_cmd(cmds, count_arguments(cmds), minishell) == -1)
-				exe_shell_cmd(cmds, count_arguments(cmds));
+			handle_redirections(input);
+			if (exe_cmd(cmds, count_tokens_str(cmds), minishell) == -1)
+				exe_shell_cmd(cmds, count_tokens_str(cmds));
 			free(cmds);
 			exit(1);
 		}
@@ -341,7 +350,7 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 				in_fd = pipe_fd[0];
 			}
 		}
-		commands = get_next_cmd(commands);
+		input = get_next_cmd(input);
 	}
 	while (num_commands > 0)
 	{
@@ -350,25 +359,48 @@ void redirect_3(char** commands, int num_commands, t_minishell *minishell)
 	}
 }
 
+void	save_fds(t_minishell *minishell)
+{
+	minishell->in = dup(STDIN_FILENO);
+	minishell->out = dup(STDOUT_FILENO);
+}
+
+void	reset_fds(t_minishell *minishell)
+{
+	dup2(minishell->in, STDIN_FILENO);
+	dup2(minishell->out, STDOUT_FILENO);
+	close(minishell->in);
+	close(minishell->out);
+}
+
 int	exe_commands(t_minishell *minishell)
 {
-	int	num_commands;
-	int	status;
+	int		num_commands;
+	int		status;
+	char	**tokens;
 
-	num_commands = count_commands(minishell->tokens);
+	num_commands = count_commands_lst(minishell->input);
 	if (num_commands > 1)
-		redirect_3(minishell->tokens, num_commands, minishell);
+		redirect_3(minishell->input, num_commands, minishell);
 	if (num_commands == 1)
 	{
-		status = exe_cmd(minishell->tokens, count_tokens(minishell->tokens),
+		save_fds(minishell);
+		tokens = get_command_without_redirects(minishell->input);
+		handle_redirections(minishell->input);
+		status = exe_cmd(tokens, count_tokens_str(tokens),
 				minishell);
 		if (status == EXIT)
 		{
+			reset_fds(minishell);
 			free_minishell(minishell);
+			free(tokens);
 			exit(EXIT_SUCCESS);
 		}
 		if (status == -1)
-			redirect_3(minishell->tokens, num_commands, minishell);
+			redirect_3(minishell->input, num_commands, minishell);
+		else
+			reset_fds(minishell);
+		free(tokens);
 	}
 	return (NO_EXIT);
 }

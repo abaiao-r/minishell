@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/06 13:26:02 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/06 16:06:22 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ typedef struct s_minishell
 	t_input			*input;
 	char			*input_str;
 	char			**tokens;
+	int				in;
+	int				out;
 }					t_minishell;
 
 typedef struct s_arg
