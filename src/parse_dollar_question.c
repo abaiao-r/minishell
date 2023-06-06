@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 19:04:29 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/06 22:08:25 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/06 22:32:05 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	find_dollar(char *input)
 		if (input[i] == '\'' || input[i] == '\"')
 			update_quote_flags(input[i], &(flag_single_quotes),
 				&(flag_double_quotes));
-		if (input[i] == '$' && flag_single_quotes == 0)
+		if (input[i] == '$' && flag_single_quotes == 0 && input[i + 1] == '?')
 			return (i);
 		i++;
 	}

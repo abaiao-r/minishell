@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:56:16 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/06 19:31:15 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/06 22:27:50 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ char	*parse_dollar(char *input, t_env **environment)
 		if (input[i] == '\'' || input[i] == '\"')
 			update_quote_flags(input[i], &(dollar_data->flag_single_quotes),
 				&(dollar_data->flag_double_quotes));
-		if (input[i] == '$')
+		if (input[i] == '$' && input[i + 1] != '?')
 			replace_dollar_var(&input, environment, dollar_data, &i);
 		else
 			i++;
