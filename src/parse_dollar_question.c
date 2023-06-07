@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 19:04:29 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/06 22:32:05 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/07 15:31:02 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static int	find_dollar(char *input)
 	}
 	return (-1);
 }
-
 
 /* Replaces "$?" in input with the exit_status value
 Returns the modified input string with replaced value
