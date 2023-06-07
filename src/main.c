@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/07 18:20:30 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/07 20:37:33 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		input = print_prompt(&minishell->prompt);
 		response = validate_and_load_data(minishell, input);
-		if (response == FAILURE)
-			break ;
-		else if (response == INVALID)
+		if (response == INVALID)
 			continue ;
 		minishell->tokens = create_token_array_2d(minishell->input, minishell);
 		if (!minishell->tokens)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:49:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/07 19:56:48 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/07 20:43:12 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,8 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 {
 	if (!input)
 	{
-		free(minishell->prompt->prompt_full);
-		printf("exit\n");
-		return (FAILURE);
+		free_minishell(minishell);
+		exit(EXIT_SUCCESS);
 	}
 	if (*input)
 		add_history(input);
@@ -125,7 +124,7 @@ void	free_input_resources(t_minishell *minishell)
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);
 	free(minishell->prompt->prompt_full);
-	/* 	minishell->input_str = NULL;
+	/* minishell->input_str = NULL;
 	minishell->tokens = NULL;
 	minishell->input = NULL;
 	minishell->prompt->prompt_full = NULL; */
@@ -134,6 +133,7 @@ void	free_input_resources(t_minishell *minishell)
 void	free_minishell(t_minishell *minishell)
 {
 	rl_clear_history();
+	free_input_resources(minishell);
 	free_env_list(&minishell->environment);
 	free(minishell->prompt);
 	free(minishell);
