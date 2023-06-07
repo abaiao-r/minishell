@@ -6,9 +6,10 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:49:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/07 20:43:12 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/07 20:48:14 by quackson        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
@@ -124,7 +125,7 @@ void	free_input_resources(t_minishell *minishell)
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);
 	free(minishell->prompt->prompt_full);
-	/* minishell->input_str = NULL;
+	/* 	minishell->input_str = NULL;
 	minishell->tokens = NULL;
 	minishell->input = NULL;
 	minishell->prompt->prompt_full = NULL; */

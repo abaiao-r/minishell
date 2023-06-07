@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/06 21:29:33 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/07 20:26:52 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -394,8 +394,9 @@ int	exe_commands(t_minishell *minishell)
 		if (status == EXIT)
 		{
 			reset_fds(minishell);
-			free_minishell(minishell);
 			free(tokens);
+			free_input_resources(minishell);
+			printf("exit\n");
 			exit(EXIT_SUCCESS);
 		}
 		if (status == -1)
