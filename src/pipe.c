@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/07 20:26:52 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/08 00:11:14 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,11 @@ char	**get_command_without_redirects(t_input *input)
 		else if (is_redirection(input->token) && !input->within_quotes)
 			redirect_flag = 1;
 		else
-			command[i++] = input->token;
+		{
+			command[i++] = ft_strdup(input->token);
+			if (!command[i - 1])
+				return (NULL);
+		}
 		input = input->next;
 	}
 	command[i] = NULL;
@@ -306,7 +310,6 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 				exit(1);
 			}
 		}
-		cmds = get_command_without_redirects(input);
 		/* for (int j = 0; cmds[j]; j++)
 			printf("cmd: %s\n", cmds[j]);
 		printf("----\n"); */
@@ -317,6 +320,7 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 		} else if (pid == 0)
 		{
 			// Redirect input from the previous command or file
+			cmds = get_command_without_redirects(input);
 			if (i != 0)
 			{
 				dup2(in_fd, STDIN_FILENO);
@@ -332,14 +336,14 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 			handle_redirections(input);
 			if (exe_cmd(cmds, count_tokens_str(cmds), minishell) == -1)
 				exe_shell_cmd(cmds, count_tokens_str(cmds));
-			free(cmds);
-			exit(1);
+			free_parsed(cmds);
+			free_minishell(minishell);
+			exit(EXIT_FAILURE);
 		}
 		else
 		{
 			// Parent process
 			// Close the previous pipe's write end
-			free(cmds);
 			if (i > 0)
 			{
 				close(in_fd);
@@ -388,13 +392,16 @@ int	exe_commands(t_minishell *minishell)
 	{
 		save_fds(minishell);
 		tokens = get_command_without_redirects(minishell->input);
+		if (!tokens)
+			return (NO_EXIT);
 		handle_redirections(minishell->input);
 		status = exe_cmd(tokens, count_tokens_str(tokens),
 				minishell);
+		free_parsed(tokens);
 		if (status == EXIT)
 		{
 			reset_fds(minishell);
-			free(tokens);
+			free_parsed(tokens);
 			free_input_resources(minishell);
 			printf("exit\n");
 			exit(EXIT_SUCCESS);
@@ -403,7 +410,7 @@ int	exe_commands(t_minishell *minishell)
 			redirect_3(minishell->input, num_commands, minishell);
 		else
 			reset_fds(minishell);
-		free(tokens);
 	}
+	//printf("exitddddddddd\n");
 	return (NO_EXIT);
 }
