@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:49:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/07 15:55:41 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/07 19:56:48 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	has_valid_redirections(char **args)
 	}
 	while (args[i])
 	{
-		if (is_redirection(args[i])
-			&& (!args[i + 1] || is_redirection(args[i + 1])))
+		if (is_redirection(args[i]) && (!args[i + 1] || is_redirection(args[i
+					+ 1])))
 		{
 			show_redirection_error(args[i]);
 			return (0);
@@ -59,14 +59,34 @@ int	has_valid_redirections(char **args)
 	}
 	return (1);
 }
+
+int	ft_is_input_only_whitespaces(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (ft_isprint(str[i]) && !ft_isspace(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	validate_and_load_data(t_minishell *minishell, char *input)
 {
 	if (!input)
+	{
+		free(minishell->prompt->prompt_full);
+		printf("exit\n");
 		return (FAILURE);
+	}
 	if (*input)
 		add_history(input);
-	if (!*input || !is_quotes_special_char_valid(input))
-	{	
+	if (!*input || !is_quotes_special_char_valid(input)
+		|| ft_is_input_only_whitespaces(input))
+	{
 		free(input);
 		free(minishell->prompt->prompt_full);
 		return (INVALID);
@@ -105,15 +125,14 @@ void	free_input_resources(t_minishell *minishell)
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);
 	free(minishell->prompt->prompt_full);
-	minishell->input_str = NULL;
+	/* 	minishell->input_str = NULL;
 	minishell->tokens = NULL;
 	minishell->input = NULL;
-	minishell->prompt->prompt_full = NULL;
+	minishell->prompt->prompt_full = NULL; */
 }
 
 void	free_minishell(t_minishell *minishell)
 {
-	free_input_resources(minishell);
 	rl_clear_history();
 	free_env_list(&minishell->environment);
 	free(minishell->prompt);

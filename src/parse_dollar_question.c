@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 19:04:29 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/07 15:31:02 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/07 19:12:41 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*parse_dollar_question(char *input, int exit_status)
 		return (input);
 	temp = ft_itoa(exit_status);
 	new_input_len = ft_strlen(input) + ft_strlen(temp) - 1;
-	new_input = calloc(new_input_len + 1, sizeof(char));
+	new_input = ft_calloc(new_input_len + 1, sizeof(char));
 	ft_memcpy(new_input, input, dollar_pos);
 	ft_memcpy(new_input + dollar_pos, temp, ft_strlen(temp));
 	ft_memcpy(new_input + dollar_pos + ft_strlen(temp), input + dollar_pos + 2,
