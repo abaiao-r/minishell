@@ -12,7 +12,7 @@
 
 # Compiler settings
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address 
 
 # Directories
 SRCDIR = ./src
@@ -59,6 +59,10 @@ gdb:	all
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+
+valgrind_supp: all
+				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=/workspaces/minishell/readline.supp ./$(NAME)
+
 leak_valgrind: all
 				valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes ./$(NAME)
 

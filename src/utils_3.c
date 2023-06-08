@@ -61,25 +61,12 @@ int	has_valid_redirections(char **args)
 	return (1);
 }
 
-int	ft_is_input_only_whitespaces(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (ft_isprint(str[i]) && !ft_isspace(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int	validate_and_load_data(t_minishell *minishell, char *input)
 {
 	if (!input)
 	{
 		free_minishell(minishell);
+		printf("exit\n");
 		exit(EXIT_SUCCESS);
 	}
 	if (*input)
