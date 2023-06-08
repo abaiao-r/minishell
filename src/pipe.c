@@ -403,6 +403,7 @@ int	exe_commands(t_minishell *minishell)
 			reset_fds(minishell);
 			free_parsed(tokens);
 			free_input_resources(minishell);
+			free_minishell(minishell);
 			printf("exit\n");
 			exit(EXIT_SUCCESS);
 		}

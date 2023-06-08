@@ -126,6 +126,7 @@ void	free_minishell(t_minishell *minishell)
 	free(minishell->prompt);
 	free(minishell);
 }
+
 void	sig_handler(int signum)
 {
 	if (signum == SIGINT)
