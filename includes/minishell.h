@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/06 21:33:31 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/08 16:56:32 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,9 @@ int					parse_input_export(char *input, char **find_var,
 t_env				*sort_alphabet_env_list(t_env **head);
 void				print_export(t_env **head);
 int					show_export(t_env **environment);
+
+/* ft_getenv.c */
+char				*ft_getenv(const char *name, t_env *environment);
 
 /* is_pipe_or_redirection_valid */
 int					is_pipe_or_redirection_valid(t_input *input);

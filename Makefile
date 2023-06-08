@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
+#    By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/07 20:41:58 by quackson         ###   ########.fr        #
+#    Updated: 2023/06/08 17:03:02 by andrefranci      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,10 @@ OBJDIR = ./objs
 
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c \
 	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c $(SRCDIR)/exe.c \
-	   $(SRCDIR)/env_utils.c $(SRCDIR)/export_utils.c $(SRCDIR)/export.c $(SRCDIR)/is_quote_parsed_valid.c \
-	   $(SRCDIR)/unset.c $(SRCDIR)/pipe.c $(SRCDIR)/parse_args.c $(SRCDIR)/parse_pipe_or_redirection.c \
-	   $(SRCDIR)/parse_args_utils1.c $(SRCDIR)/parse_dollar.c $(SRCDIR)/parse_dollar_question.c $(SRCDIR)/utils_3.c
+	   $(SRCDIR)/env_utils.c $(SRCDIR)/export_utils.c $(SRCDIR)/export.c $(SRCDIR)/ft_getenv.c \
+	   $(SRCDIR)/is_quote_parsed_valid.c $(SRCDIR)/unset.c $(SRCDIR)/pipe.c $(SRCDIR)/parse_args.c \
+	   $(SRCDIR)/parse_pipe_or_redirection.c $(SRCDIR)/parse_args_utils1.c $(SRCDIR)/parse_dollar.c \
+	   $(SRCDIR)/parse_dollar_question.c $(SRCDIR)/utils_3.c
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
@@ -61,7 +62,7 @@ valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 valgrind_supp: all
-				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=/workspaces/minishell/readline.supp ./$(NAME)
+				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
 
 leak_valgrind: all
 				valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes ./$(NAME)
