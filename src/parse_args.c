@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_args.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/30 20:27:29 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:03:17 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_input	*parse_arguments(char *string)
 	i = 0;
 	while (i < arg.string_len)
 	{
-		if (!update_arg(&arg))
+		if (!update_arg(&arg, string, &i))
 		{
 			free_arg(head);
 			return (NULL);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_args_utils1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 23:38:59 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/08 00:10:16 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/08 18:05:06 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,31 @@ int	start_arg(t_arg *arg, char *str)
 of the input string. Sets various members of the t_arg structure 
 to their initial values. Returns 1 if memory allocation is successful, 
 0 otherwise. */
-int	update_arg(t_arg *arg)
+int update_arg(t_arg *arg, char *str, int *i)
 {
-	arg->arg = malloc((arg->string_len + 1) * sizeof(char));
-	if (!arg->arg)
-		return (0);
-	arg->arg_len = 0;
-	arg->in_quotes = 0;
-	arg->within_quotes = 0;
-	arg->quote_type = '\0';
-	arg->c = '\0';
-	arg->operator[0] = '\0';
-	arg->operator[1] = '\0';
-	arg->operator[2] = '\0';
-	return (1);
+    arg->arg = malloc((arg->string_len + 1) * sizeof(char));
+    if (!arg->arg)
+        return (0);
+    arg->arg_len = 0;
+    arg->in_quotes = 0;
+    arg->within_quotes = 0;
+    arg->quote_type = '\0';
+    arg->c = '\0';
+    arg->operator[0] = '\0';
+    arg->operator[1] = '\0';
+    arg->operator[2] = '\0';
+
+    // Check if there are more printable characters after the current position
+    int j = (*i) + 1;
+    while (j < arg->string_len && ft_isspace(str[j]))
+        j++;
+    if (j == arg->string_len)
+    {
+        free(arg->arg); // Free the allocated memory
+        arg->arg = NULL;
+    }
+
+    return (1);
 }
 
 /* Checks if the current character is a quote (' or ")

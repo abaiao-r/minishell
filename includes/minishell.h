@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/08 16:56:32 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/08 18:04:44 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ t_input				*parse_arguments(char *string);
 
 /* parse_arg_utils1.c */
 int					start_arg(t_arg *arg, char *str);
-int					update_arg(t_arg *arg);
+int					update_arg(t_arg *arg, char *str, int *i);
 bool				handle_quotes(t_arg *arg, char c, int *i);
 bool				is_operator(const char *input);
 void				free_arg(t_input *head);

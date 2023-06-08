@@ -5,13 +5,6 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <string.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 
 #define MAX_ARGS 100
@@ -143,22 +136,44 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-char* ft_strjoin(char const *s1, char const *s2)
+size_t	ft_strlen(const char *str)
 {
-    char* str;
-    size_t len1 = strlen(s1);
-    size_t len2 = strlen(s2);
-    size_t total_len = len1 + len2 + 1;
+	size_t	i;
 
-    str = (char*)malloc(total_len * sizeof(char));
-    if (!str)
-    {
-        return NULL;
-    }
-    strncpy(str, s1, len1);
-    strncpy(str + len1, s2, len2);
-    str[total_len - 1] = '\0';
-    return str;
+	i = 0;
+	while (str && str[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*str;
+	size_t	i;
+	size_t	j;
+
+	str = (char *)malloc(sizeof(*s1) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!str)
+	{
+		return (NULL);
+	}
+	i = 0;
+	j = 0;
+	while (s1 && s1[i])
+	{
+		str[j++] = s1[i];
+		i++;
+	}
+	i = 0;
+	while ( s2 && s2[i])
+	{
+		str[j++] = s2[i];
+		i++;
+	}
+	str[j] = 0;
+	return (str);
 }
 
 void redirect_input(char* file)
@@ -419,14 +434,16 @@ void execute_commands(char** commands, int num_commands)
                 {
                     execve(executable_path, arguments, NULL);
                     perror("execve failed");
+                    free(path_copy);
                     free(executable_path);
                     exit(1);
                 }
                 free(executable_path);
                 path_token = ft_strtok(NULL, ":");
             }
-            free(path_copy);
+
             printf("Command '%s' not found\n", arguments[0]);
+            free(path_copy);
             exit(1);
         }
         else
@@ -454,7 +471,6 @@ void execute_commands(char** commands, int num_commands)
         wait(NULL);
         num_commands--;
     }
-
 }
 
 int main(void)
@@ -481,6 +497,7 @@ int main(void)
         }
 
         execute_commands(commands, num_commands);
+
         num_commands = 0;  // Reset the command count for the next iteration
     }
 
