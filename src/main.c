@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **env)
 		//print_array_of_strings(minishell->tokens);
 		if (!minishell->tokens)
 			continue ;
-		//exe_commands(minishell);
+		exe_commands(minishell);
 		free_input_resources(minishell);
 	}
 	free_minishell(minishell);
