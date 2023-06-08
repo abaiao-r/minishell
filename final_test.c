@@ -412,8 +412,9 @@ void execute_commands(char** commands, int num_commands)
 
             while (path_token != NULL)
             {
-                char* executable_path = ft_strjoin(path_token, "/");
-                executable_path = ft_strjoin(executable_path, arguments[0]);
+                char* temp = ft_strjoin(path_token, "/");
+                char *executable_path = ft_strjoin(temp, arguments[0]);
+                free(temp);
                 if (access(executable_path, X_OK) == 0)
                 {
                     execve(executable_path, arguments, NULL);
@@ -424,7 +425,7 @@ void execute_commands(char** commands, int num_commands)
                 free(executable_path);
                 path_token = ft_strtok(NULL, ":");
             }
-
+            free(path_copy);
             printf("Command '%s' not found\n", arguments[0]);
             exit(1);
         }
@@ -453,6 +454,7 @@ void execute_commands(char** commands, int num_commands)
         wait(NULL);
         num_commands--;
     }
+
 }
 
 int main(void)
@@ -479,7 +481,6 @@ int main(void)
         }
 
         execute_commands(commands, num_commands);
-
         num_commands = 0;  // Reset the command count for the next iteration
     }
 
