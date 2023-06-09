@@ -44,7 +44,7 @@ int	update_arg(t_arg *arg, char *str, int *i)
 	arg->operator[2] = '\0';
 	while (j < arg->string_len && ft_isspace(str[j]))
 		j++;
-	if (j == arg->string_len)
+	if (j == arg->string_len  && j != 1)
 	{
 		free(arg->arg);
 		arg->arg = NULL;
