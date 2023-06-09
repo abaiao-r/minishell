@@ -72,7 +72,7 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 	if (*input)
 		add_history(input);
 	if (!*input || !is_quotes_special_char_valid(input)
-		|| ft_is_input_only_whitespaces(input))
+		|| ft_is_input_quotes_and_whitespaces(input))
 	{
 		free(input);
 		free(minishell->prompt->prompt_full);

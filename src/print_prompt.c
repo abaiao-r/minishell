@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_prompt.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:37:02 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/29 17:16:35 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/09 13:27:45 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

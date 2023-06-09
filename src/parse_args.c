@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 19:31:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/08 18:03:17 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/09 13:05:45 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ static void	add_token_node(t_arg *arg, t_input **head)
 
 	arg->arg[arg->arg_len] = '\0';
 	new_input = malloc(sizeof(t_input));
+	if (new_input == NULL)
+	{
+		free(arg->arg);
+		return ;
+	}
 	new_input->token = arg->arg;
 	new_input->index = arg->arg_index;
 	new_input->within_quotes = arg->within_quotes;
@@ -79,6 +84,8 @@ static void	parse_aux(t_arg *arg, char *str, int *i, t_input **head)
 	}
 	if (arg->arg_len > 0)
 		add_token_node(arg, head);
+	else
+		free(arg->arg);
 }
 
 /* The main function that parses the input string. It initializes variables, 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
+#    By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/25 12:44:03 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/07 20:00:22 by abaiao-r         ###   ########.fr        #
+#    Updated: 2023/06/09 15:21:29 by andrefranci      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRC = ft_isdigit.c \
 		ft_strcmp.c \
 		ft_strcpy.c \
 		ft_is_input_only_whitespaces.c \
+		ft_is_input_quotes_and_whitespaces.c \
 		ft_printf.c \
 		get_next_line_utils.c \
 		get_next_line.c
