@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../includes/minishell.h"
 
 int	is_redirection(char *str)
@@ -61,6 +60,15 @@ int	has_valid_redirections(char **args)
 	return (1);
 }
 
+static char	*process_input(t_minishell *minishell, char *input)
+{
+	input = parse_dollar_question(input, minishell->exit_status);
+	input = parse_dollar(input, &minishell->environment);
+	input = parse_pipe_or_redirection(input);
+	minishell->input = parse_arguments(input);
+	return (input);
+}
+
 int	validate_and_load_data(t_minishell *minishell, char *input)
 {
 	if (!input)
@@ -78,10 +86,7 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 		free(minishell->prompt->prompt_full);
 		return (INVALID);
 	}
-	input = parse_dollar_question(input, minishell->exit_status);
-	input = parse_dollar(input, &minishell->environment);
-	input = parse_pipe_or_redirection(input);
-	minishell->input = parse_arguments(input);
+	input = process_input(minishell, input);
 	if (!is_pipe_or_redirection_valid(minishell->input))
 	{
 		free_input_resources(minishell);
