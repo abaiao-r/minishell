@@ -61,7 +61,7 @@ Minishell supports a command history feature, allowing you to navigate and repea
 Minishell allows you to execute various commands, either built-in commands or external executables. To execute a command, simply type it in and press Enter. Minishell will search for the appropriate executable based on the PATH variable or the specified path.
 
 ```bash
-minishell > ls -l
+ls -l
 ```
 
 ### Redirection
@@ -69,17 +69,17 @@ Minishell supports input and output redirection. You can redirect input from fil
 
 - `<`: Redirects input from a file.
   ```bash
-  minishell > cat < input.txt
+cat < input.txt
   ```
 
 - `>`: Redirects output to a file, overwriting the file if it already exists.
   ```bash
-  minishell > echo "Hello, world!" > output.txt
+echo "Hello, world!" > output.txt
   ```
 
 - `>>`: Redirects output to a file, appending to the file if it already exists.
   ```bash
-  minishell > echo "Additional content" >> output.txt
+echo "Additional content" >> output.txt
   ```
 
 ### Pipes
@@ -106,37 +106,37 @@ Minishell includes several built-in commands that provide essential functionalit
 
 - `echo`: Displays text or variables.
   ```bash
-  minishell > echo Hello, world!
+echo Hello, world!
   ```
 
 - `cd`: Changes the current working directory.
   ```bash
-  minishell > cd /path/to/directory
+cd /path/to/directory
   ```
 
 - `pwd`: Prints the current working directory.
   ```bash
-  minishell > pwd
+pwd
   ```
 
 - `export`: Sets or modifies environment variables.
   ```bash
-  minishell > export VAR=value
+export VAR=value
   ```
 
 - `unset`: Removes environment variables.
   ```bash
-  minishell > unset VAR
+unset VAR
   ```
 
 - `env`: Displays the current environment variables.
   ```bash
-  minishell > env
+env
   ```
 
 - `exit`: Exits Minishell.
   ```bash
-  minishell > exit
+exit
   ```
 
 Refer to the Minishell project documentation or README for more detailed information on each feature, including examples and usage instructions.
