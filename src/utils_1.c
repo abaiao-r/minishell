@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/08 00:10:59 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/09 17:48:28 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,12 @@ char	**create_token_array_2d(t_input *input, t_minishell *minishell)
 	int		i;
 	char	**token_2d;
 
+	(void) minishell;
 	if (!input)
 		return (NULL);
 	token_2d = (char **) malloc(sizeof(char *) * (ft_token_lstsize(input) + 1));
 	if (!token_2d)
-	{
-		free_input_resources(minishell);
 		return (NULL);
-	}
 	temp = input;
 	i = 0;
 	while (temp)

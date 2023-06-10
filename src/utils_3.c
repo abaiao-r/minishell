@@ -87,14 +87,14 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 	if (!*input || !is_quotes_special_char_valid(input)
 		|| ft_is_input_only_whitespaces(input))
 	{
-		free(input);
-		free(minishell->prompt->prompt_full);
+		free_input_resources(minishell);
 		return (INVALID);
 	}
 	input = parse_dollar_question(input, minishell->exit_status);
 	input = parse_dollar(input, &minishell->environment);
-	input = parse_pipe_or_redirection(input);
-	minishell->input = parse_arguments(input);
+	//input = parse_pipe_or_redirection(input);
+	//minishell->input = parse_arguments(input);
+	minishell->input = new_parse_arguments(input, minishell);
 	if (!is_pipe_or_redirection_valid(minishell->input))
 	{
 		free_input_resources(minishell);
