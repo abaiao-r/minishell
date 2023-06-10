@@ -79,6 +79,7 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 {
 	if (!input)
 	{
+		fprintf(stderr, "BYEEEE\n");
 		free_minishell(minishell);
 		exit(EXIT_SUCCESS);
 	}
@@ -113,6 +114,7 @@ t_minishell	*init_minishell(char **env)
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	minishell->environment = parse_env(env);
 	minishell->prompt = ft_calloc(1, sizeof(t_prompt));
+	minishell->prompt->prompt_full = NULL;
 	minishell->input_str = NULL;
 	minishell->tokens = NULL;
 	minishell->input = NULL;
@@ -121,6 +123,7 @@ t_minishell	*init_minishell(char **env)
 
 void	free_input_resources(t_minishell *minishell)
 {
+	fprintf(stderr, "free_input_resources\n");
 	free(minishell->input_str);
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);

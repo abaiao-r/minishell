@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/09 17:47:53 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/10 18:21:21 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ int	main(int argc, char **argv, char **env)
 		response = validate_and_load_data(minishell, input);
 		if (response == INVALID)
 			continue ;
-		print_list(minishell->input);
 		minishell->tokens = create_token_array_2d(minishell->input, minishell);
 		if (!minishell->tokens)
 		{
 			free_input_resources(minishell);
 			continue ;
 		}
-		print_array_of_strings(minishell->tokens);
+		//print_array_of_strings(minishell->tokens);
 		exe_commands(minishell);
+		printf("main: freeing input resources\n");
 		free_input_resources(minishell);
 	}
 	free_minishell(minishell);

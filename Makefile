@@ -6,13 +6,13 @@
 #    By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/10 17:30:01 by pedgonca         ###   ########.fr        #
+#    Updated: 2023/06/10 18:38:25 by pedgonca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler settings
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -g# -fsanitize=address 
 
 # Directories
 SRCDIR = ./src
@@ -60,6 +60,10 @@ gdb:	all
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+val_gdb: 	all
+			valgrind --vgdb=yes --vgdb-error=0 ./$(NAME) 
+remote_gdb:
+			gdb -ex "target remote | vgdb"
 leak_valgrind: all
 				valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes ./$(NAME)
 
