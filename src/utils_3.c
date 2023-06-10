@@ -74,7 +74,7 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 	if (!input)
 	{
 		free_minishell(minishell);
-		printf("exit CTRL D\n");
+		printf("exit\n");
 		exit(EXIT_SUCCESS);
 	}
 	if (*input)

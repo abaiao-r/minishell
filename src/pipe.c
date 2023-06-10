@@ -401,8 +401,9 @@ int	exe_commands(t_minishell *minishell)
 		if (status == EXIT)
 		{
 			reset_fds(minishell);
-			free_parsed(tokens);
+			//free_parsed(tokens); dois frees nao faz sentido
 			free_input_resources(minishell);
+			free_minishell(minishell);
 			printf("exit\n");
 			exit(EXIT_SUCCESS);
 		}
