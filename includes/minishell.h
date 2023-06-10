@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/08 18:04:44 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/10 22:57:53 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,5 +220,8 @@ void				free_input_resources(t_minishell *minishell);
 void				free_minishell(t_minishell *minishell);
 void				sig_handler(int signum);
 t_minishell			*init_minishell(char **env);
+
+/* new_parser.c */
+t_input				*new_parse_arguments(char *input, t_minishell *minishell);
 
 #endif

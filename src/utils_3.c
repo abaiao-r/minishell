@@ -73,6 +73,7 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 {
 	if (!input)
 	{
+		fprintf(stderr, "BYEEEE\n");
 		free_minishell(minishell);
 		printf("exit\n");
 		exit(EXIT_SUCCESS);
@@ -82,11 +83,14 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 	if (!*input || !is_quotes_special_char_valid(input)
 		|| ft_is_input_quotes_and_whitespaces(input))
 	{
-		free(input);
-		free(minishell->prompt->prompt_full);
+		free_input_resources(minishell);
 		return (INVALID);
 	}
-	input = process_input(minishell, input);
+	input = parse_dollar_question(input, minishell->exit_status);
+	input = parse_dollar(input, &minishell->environment);
+	//input = parse_pipe_or_redirection(input);
+	//minishell->input = parse_arguments(input);
+	minishell->input = new_parse_arguments(input, minishell);
 	if (!is_pipe_or_redirection_valid(minishell->input))
 	{
 		free(input);
@@ -106,6 +110,7 @@ t_minishell	*init_minishell(char **env)
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	minishell->environment = parse_env(env);
 	minishell->prompt = ft_calloc(1, sizeof(t_prompt));
+	minishell->prompt->prompt_full = NULL;
 	minishell->input_str = NULL;
 	minishell->tokens = NULL;
 	minishell->input = NULL;
@@ -114,6 +119,7 @@ t_minishell	*init_minishell(char **env)
 
 void	free_input_resources(t_minishell *minishell)
 {
+	fprintf(stderr, "free_input_resources\n");
 	free(minishell->input_str);
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);

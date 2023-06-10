@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/18 14:41:08 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/08 18:07:21 by andrefranci      ###   ########.fr       */
+/*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
+/*   Updated: 2023/06/10 22:56:04 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_list(t_input *input)
 	while (temp != NULL)
 	{
 		printf("lst: %s  ", temp->token);
-		printf("size:%ld len:%ld\n", sizeof(input->token), ft_strlen(input->token));
+		printf("size:%ld len:%ld\n", sizeof(temp->token), ft_strlen(temp->token));
 		temp = temp->next;
 	}
 }
@@ -53,12 +53,15 @@ int	main(int argc, char **argv, char **env)
 		response = validate_and_load_data(minishell, input);
 		if (response == INVALID)
 			continue ;
-		//print_list(minishell->input);
 		minishell->tokens = create_token_array_2d(minishell->input, minishell);
-		//print_array_of_strings(minishell->tokens);
 		if (!minishell->tokens)
+		{
+			free_input_resources(minishell);
 			continue ;
+		}
+		//print_array_of_strings(minishell->tokens);
 		exe_commands(minishell);
+		printf("main: freeing input resources\n");
 		free_input_resources(minishell);
 	}
 	free_minishell(minishell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/09 19:12:31 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/10 22:55:42 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void redirect_input(char* file)
 	{
 		perror("open failed");
 		fprintf(stderr, "file: %s\n", file);
-		exit(1);
 	}
 	dup2(fd, STDIN_FILENO);
 	close(fd);
@@ -49,7 +48,6 @@ void redirect_output(char* file, int append)
 	{
 		perror("open failed");
 		fprintf(stderr, "file: %s\n", file);
-		exit(1);
 	}
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
@@ -89,6 +87,7 @@ int	count_tokens_lst(t_input *input)
 		if (is_redirection(input->token) && !input->within_quotes)
 			return (num_tokens);
 		input = input->next;
+		//print_list(minishell->input);
 	}
 	return (num_tokens);
 }
@@ -336,7 +335,9 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 			handle_redirections(input);
 			if (exe_cmd(cmds, count_tokens_str(cmds), minishell) == -1)
 				exe_shell_cmd(cmds, count_tokens_str(cmds));
+			fprintf(stderr, "minishell: command not found: %s\n", cmds[0]);
 			free_parsed(cmds);
+			//free_input_resources(minishell);
 			free_minishell(minishell);
 			exit(EXIT_FAILURE);
 		}
@@ -403,13 +404,15 @@ int	exe_commands(t_minishell *minishell)
 			reset_fds(minishell);
 			free_parsed(tokens);
 			free_input_resources(minishell);
-			free_minishell(minishell);
 			printf("exit\n");
 			exit(EXIT_SUCCESS);
 		}
 		if (status == -1)
+		{
+			printf("BEFORE\n");
 			redirect_3(minishell->input, num_commands, minishell);
-		reset_fds(minishell);
+		else
+			reset_fds(minishell);
 	}
 	//printf("exitddddddddd\n");
 	return (NO_EXIT);

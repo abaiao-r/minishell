@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+         #
+#    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/08 18:16:16 by andrefranci      ###   ########.fr        #
+#    Updated: 2023/06/10 22:57:44 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler settings
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address 
+CFLAGS = -Wall -Wextra -Werror -g# -fsanitize=address 
 
 # Directories
 SRCDIR = ./src
@@ -25,7 +25,8 @@ SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/comman
 	   $(SRCDIR)/env_utils.c $(SRCDIR)/export_utils.c $(SRCDIR)/export.c $(SRCDIR)/ft_getenv.c \
 	   $(SRCDIR)/is_quote_parsed_valid.c $(SRCDIR)/unset.c $(SRCDIR)/pipe.c $(SRCDIR)/parse_args.c \
 	   $(SRCDIR)/parse_pipe_or_redirection.c $(SRCDIR)/parse_args_utils1.c $(SRCDIR)/parse_dollar.c \
-	   $(SRCDIR)/parse_dollar_question.c $(SRCDIR)/utils_3.c
+	   $(SRCDIR)/parse_dollar_question.c $(SRCDIR)/utils_3.c $(SRCDIR)/new_parser.c
+	   
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
@@ -60,10 +61,17 @@ gdb:	all
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+<<<<<<< HEAD
 
 valgrind_supp: all
 				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
 
+=======
+val_gdb: 	all
+			valgrind --vgdb=yes --vgdb-error=0 ./$(NAME) 
+remote_gdb:
+			gdb -ex "target remote | vgdb"
+>>>>>>> again_new_parser
 leak_valgrind: all
 				valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes ./$(NAME)
 
