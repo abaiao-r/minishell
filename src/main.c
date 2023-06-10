@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/10 22:56:04 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/10 23:03:32 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	main(int argc, char **argv, char **env)
 		}
 		//print_array_of_strings(minishell->tokens);
 		exe_commands(minishell);
-		printf("main: freeing input resources\n");
 		free_input_resources(minishell);
 	}
 	free_minishell(minishell);

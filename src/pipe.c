@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/10 23:01:46 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/10 23:04:10 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,7 +335,6 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 			handle_redirections(input);
 			if (exe_cmd(cmds, count_tokens_str(cmds), minishell) == -1)
 				exe_shell_cmd(cmds, count_tokens_str(cmds));
-			fprintf(stderr, "minishell: command not found: %s\n", cmds[0]);
 			free_parsed(cmds);
 			//free_input_resources(minishell);
 			free_minishell(minishell);
@@ -409,7 +408,6 @@ int	exe_commands(t_minishell *minishell)
 		}
 		if (status == -1)
 		{
-			printf("BEFORE\n");
 			redirect_3(minishell->input, num_commands, minishell);
 		}
 		reset_fds(minishell);

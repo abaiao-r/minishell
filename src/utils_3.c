@@ -60,7 +60,7 @@ int	has_valid_redirections(char **args)
 	return (1);
 }
 
-static char	*process_input(t_minishell *minishell, char *input)
+char	*process_input(t_minishell *minishell, char *input)
 {
 	input = parse_dollar_question(input, minishell->exit_status);
 	input = parse_dollar(input, &minishell->environment);
@@ -73,9 +73,8 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 {
 	if (!input)
 	{
-		fprintf(stderr, "BYEEEE\n");
 		free_minishell(minishell);
-		printf("exit\n");
+		printf("exit CTRL D\n");
 		exit(EXIT_SUCCESS);
 	}
 	if (*input)
@@ -119,7 +118,7 @@ t_minishell	*init_minishell(char **env)
 
 void	free_input_resources(t_minishell *minishell)
 {
-	fprintf(stderr, "free_input_resources\n");
+	//fprintf(stderr, "free_input_resources\n");
 	free(minishell->input_str);
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);
