@@ -6,7 +6,7 @@
 #    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/10 22:57:44 by quackson         ###   ########.fr        #
+#    Updated: 2023/06/10 23:01:25 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,17 +61,12 @@ gdb:	all
 
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
-<<<<<<< HEAD
-
 valgrind_supp: all
 				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
-
-=======
 val_gdb: 	all
 			valgrind --vgdb=yes --vgdb-error=0 ./$(NAME) 
 remote_gdb:
 			gdb -ex "target remote | vgdb"
->>>>>>> again_new_parser
 leak_valgrind: all
 				valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes ./$(NAME)
 

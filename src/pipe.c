@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/10 22:55:42 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/10 23:01:46 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -411,9 +411,8 @@ int	exe_commands(t_minishell *minishell)
 		{
 			printf("BEFORE\n");
 			redirect_3(minishell->input, num_commands, minishell);
-		else
-			reset_fds(minishell);
+		}
+		reset_fds(minishell);
 	}
-	//printf("exitddddddddd\n");
 	return (NO_EXIT);
 }
