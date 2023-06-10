@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/09 18:41:37 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/10 16:30:45 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void redirect_input(char* file)
 	{
 		perror("open failed");
 		fprintf(stderr, "file: %s\n", file);
-		exit(1);
 	}
 	dup2(fd, STDIN_FILENO);
 	close(fd);
@@ -49,7 +48,6 @@ void redirect_output(char* file, int append)
 	{
 		perror("open failed");
 		fprintf(stderr, "file: %s\n", file);
-		exit(1);
 	}
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
