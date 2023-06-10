@@ -32,7 +32,7 @@ Working on the Minishell project offers valuable experience and showcases skills
 
 ## Getting Started
 
-To get started with Minishell, follow the installation instructions and refer to the project documentation for detailed usage instructions. You can find the documentation [here](/path/to/documentation).
+To get started with Minishell, follow the installation instructions and refer to the project documentation for detailed usage instructions. You can find the documentation [here](documentation).
 
 ## Contributing
 
