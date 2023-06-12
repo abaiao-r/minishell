@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/10 23:03:32 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/12 18:38:10 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		//print_array_of_strings(minishell->tokens);
+		//free(input);
+		//input = NULL;
 		exe_commands(minishell);
 		free_input_resources(minishell);
 	}

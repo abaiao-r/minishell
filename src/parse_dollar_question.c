@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar_question.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 19:04:29 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/07 19:12:41 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/12 19:23:33 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ char	*parse_dollar_question(char *input, int exit_status)
 	ft_memcpy(new_input + dollar_pos + ft_strlen(temp), input + dollar_pos + 2,
 		ft_strlen(input) - dollar_pos - 1);
 	free(input);
+	input = NULL;
 	free(temp);
 	return (new_input);
 }

@@ -71,6 +71,7 @@ char	*process_input(t_minishell *minishell, char *input)
 
 int	validate_and_load_data(t_minishell *minishell, char *input)
 {
+	minishell->input_str = input;
 	if (!input)
 	{
 		free_minishell(minishell);
@@ -87,8 +88,6 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 	}
 	input = parse_dollar_question(input, minishell->exit_status);
 	input = parse_dollar(input, &minishell->environment);
-	//input = parse_pipe_or_redirection(input);
-	//minishell->input = parse_arguments(input);
 	minishell->input = new_parse_arguments(input, minishell);
 	if (!is_pipe_or_redirection_valid(minishell->input))
 	{
@@ -96,7 +95,6 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 		free_input_resources(minishell);
 		return (INVALID);
 	}
-	minishell->input_str = input;
 	return (VALID);
 }
 
@@ -118,7 +116,9 @@ t_minishell	*init_minishell(char **env)
 
 void	free_input_resources(t_minishell *minishell)
 {
-	//fprintf(stderr, "free_input_resources\n");
+	if (!minishell)
+		return ;
+	//if (!minishell->input_str)
 	free(minishell->input_str);
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);
