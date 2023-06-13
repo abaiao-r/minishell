@@ -133,7 +133,7 @@ char	*parse_dollar(char *input, t_env **environment)
 		if (input[i] == '\'' || input[i] == '\"')
 			update_quote_flags(input[i], &(dollar_data->flag_single_quotes),
 				&(dollar_data->flag_double_quotes));
-		if (input[i] == '$' && input[i + 1] != '?')
+		if (input[i] == '$' && input[i + 1] != '?' && input[i + 1] != '\0')
 			replace_dollar_var(&input, environment, dollar_data, &i);
 		else
 			i++;
