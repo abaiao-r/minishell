@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/13 18:29:15 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:15:23 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ void	heredoc(char *delimiter)
 {
 	if (delimiter != NULL)
 	{
+		// Restore the terminal as input
+		int terminal_fd = open("/dev/tty", O_RDONLY);
+		if (terminal_fd < 0) {
+			perror("open failed");
+			exit(1);
+		}
+		dup2(terminal_fd, STDIN_FILENO);
+		close(terminal_fd);
+
 		char temp_file[] = "/tmp/tempfileXXXXXX";
 		// Create a temporary file
 		int temp_fd = mkstemp(temp_file);
@@ -40,8 +49,12 @@ void	heredoc(char *delimiter)
 
 		while (!found_delimiter)
 		{
-			line = get_next_line(STDIN_FILENO);
-			line[strcspn(line, "\n")] = '\0';  // Read input line using get_next_line
+			line = readline("heredoc> ");
+			if (line == NULL)
+			{
+				perror("get_next_line failed");
+				exit(1);
+			}
 			if (line == NULL)
 			{
 				perror("get_next_line failed");
@@ -50,11 +63,12 @@ void	heredoc(char *delimiter)
 			if (strcmp(line, delimiter) == 0)
 			{
 				found_delimiter = 1;
+				//get_next_line(-1);
 			}
 			else
 			{
-				strcat(line, "\n");  // Add newline character
 				write(temp_fd, line, strlen(line));
+				write(temp_fd, "\n", 1);
 			}
 			free(line);
 		}
