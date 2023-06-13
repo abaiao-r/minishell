@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/10 23:04:10 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:29:15 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,70 @@
 
 #define MAX_COMMAND_LENGTH 1024
 
-void redirect_input(char* file)
+// herdoc -> escrevmos as cenas -> close() redirect_input(temp) executamos -> unlink(temp)
+
+void	heredoc(char *delimiter)
+{
+	if (delimiter != NULL)
+	{
+		char temp_file[] = "/tmp/tempfileXXXXXX";
+		// Create a temporary file
+		int temp_fd = mkstemp(temp_file);
+		if (temp_fd < 0)
+		{
+			perror("mkstemp failed");
+			exit(1);
+		}
+
+		// Write input to the temporary file until the delimiter is found
+		char* line = NULL;
+		int found_delimiter = 0;
+
+		while (!found_delimiter)
+		{
+			line = get_next_line(STDIN_FILENO);
+			line[strcspn(line, "\n")] = '\0';  // Read input line using get_next_line
+			if (line == NULL)
+			{
+				perror("get_next_line failed");
+				exit(1);
+			}
+			if (strcmp(line, delimiter) == 0)
+			{
+				found_delimiter = 1;
+			}
+			else
+			{
+				strcat(line, "\n");  // Add newline character
+				write(temp_fd, line, strlen(line));
+			}
+			free(line);
+		}
+
+		// Close the temporary file
+		close(temp_fd);
+
+		// redirec_input(temp_file)
+		// exe_cmd
+		// unlink()
+		// Reopen the temporary file for reading
+		temp_fd = open(temp_file, O_RDONLY);
+		if (temp_fd < 0)
+		{
+			perror("open failed");
+			exit(1);
+		}
+
+		// Set the temporary file as input for the command
+		dup2(temp_fd, STDIN_FILENO);
+		close(temp_fd);
+
+		// Remove the temporary file
+		unlink(temp_file);
+	}
+}
+
+void redirect_input(char *file)
 {
 	int fd = open(file, O_RDONLY);
 	if (fd < 0)
@@ -140,79 +203,6 @@ int	count_commands_lst(t_input *input)
 	}
 	return (n_commands + 1);
 }
-/* 
-void redirect_2(char** commands, t_minishell *minishell) {
-	static int pipe_fd[2];
-	static int in_fd = 0; // Input file descriptor for the first command
-	static int i = 0;
-	//int	has_pipe;
-
-
-	while (*commands)
-	{
-		//has_pipe = cmd_has_pipe(commands);
-		// Create pipe for inter-process communication
-		if (!*(commands + 1))
-		{
-			if (pipe(pipe_fd) < 0)
-			{
-				perror("pipe failed");
-				exit(1);
-			}
-		}
-		printf("%s %d\n", *commands, count_tokens_str(commands));
-		pid_t pid = fork();
-
-		if (pid < 0)
-		{
-			perror("fork failed");
-			exit(1);
-		}
-		else if (pid == 0)
-		{
-			// Child process
-
-			// Redirect input from the previous command or file
-			if (i != 0)
-			{
-				dup2(in_fd, STDIN_FILENO);
-				close(in_fd);
-			}
-
-			// Redirect output to the next command or file
-			if (!*(commands + 1))
-			{
-				dup2(pipe_fd[1], STDOUT_FILENO);
-				close(pipe_fd[0]);
-				close(pipe_fd[1]);
-			}
-			exe_cmd(NULL, count_tokens_str(commands), &(minishell->environment));
-			exit(0);  // Exit child process after executing the command
-		} 
-		else
-		{
-			// Parent process
-
-			// Close the previous pipe's write end
-			if (i > 0)
-			{
-				close(in_fd);
-			}
-
-			// Close the current pipe's read end
-			if (!*(commands + 1))
-			{
-				close(pipe_fd[1]);
-				in_fd = pipe_fd[0];
-			}
-			wait(NULL);
-		}
-		i++;
-		commands = get_next_cmd(commands);
-		printf("next command: %s\n", *(commands));
-	}
-}
- */
 
 int	count_arguments(t_input *input)
 {
@@ -271,7 +261,12 @@ void	handle_redirections(t_input *input)
 
 	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->within_quotes))
 	{
-		if (!ft_strncmp(input->token, "<", 1))
+		if (!ft_strncmp(input->token, "<<", 2))
+		{
+			file = input->next->token;
+			heredoc(file);
+		}
+		else if (!ft_strncmp(input->token, "<", 1))
 		{
 			file = input->next->token;
 			redirect_input(file);
@@ -390,28 +385,30 @@ int	exe_commands(t_minishell *minishell)
 		redirect_3(minishell->input, num_commands, minishell);
 	if (num_commands == 1)
 	{
-		save_fds(minishell);
 		tokens = get_command_without_redirects(minishell->input);
 		if (!tokens)
 			return (NO_EXIT);
-		handle_redirections(minishell->input);
-		status = exe_cmd(tokens, count_tokens_str(tokens),
-				minishell);
-		free_parsed(tokens);
-		if (status == EXIT)
+		if (is_builtin(tokens))
 		{
+			save_fds(minishell);
+			handle_redirections(minishell->input);
+			status = exe_cmd(tokens, count_tokens_str(tokens),
+					minishell);
 			reset_fds(minishell);
-			//free_parsed(tokens); dois frees nao faz sentido
-			free_input_resources(minishell);
-			free_minishell(minishell);
-			printf("exit\n");
-			exit(EXIT_SUCCESS);
+			if (status == EXIT)
+			{
+				//free_parsed(tokens); dois frees nao faz sentido
+				free_input_resources(minishell);
+				free_minishell(minishell);
+				printf("exit\n");
+				exit(EXIT_SUCCESS);
+			}
 		}
-		if (status == -1)
+		else
 		{
 			redirect_3(minishell->input, num_commands, minishell);
 		}
-		reset_fds(minishell);
+		free_parsed(tokens);
 	}
 	return (NO_EXIT);
 }

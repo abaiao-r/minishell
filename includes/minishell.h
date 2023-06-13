@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/10 22:57:53 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:27:17 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,8 +192,8 @@ char				*parse_dollar(char *input, t_env **environment);
 void				free_parsed(char **parsed);
 void				free_token_list(t_input **head);
 int					ft_token_lstsize(t_input *lst);
-char	**create_token_array_2d(t_input *input,
-								t_minishell *minishell);
+char				**create_token_array_2d(t_input *input,
+						t_minishell *minishell);
 
 /* utils_2.c */
 int					count_words(char *str);
@@ -201,6 +201,9 @@ char				*ft_strncpy(char *s1, char *s2, int n);
 char				**ft_split_default(char *str);
 int					show_cmd_error(char *str);
 int					is_quotes_special_char_valid(char *input);
+
+int					is_builtin(char **tokens);
+
 
 /* unset.c */
 int					delete_env_name(t_env **env_list, char *input);

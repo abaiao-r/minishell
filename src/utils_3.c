@@ -49,8 +49,7 @@ int	has_valid_redirections(char **args)
 	}
 	while (args[i])
 	{
-		if (is_redirection(args[i]) && (!args[i + 1] || is_redirection(args[i
-					+ 1])))
+		if (is_redirection(args[i]) && (!args[i + 1] || is_redirection(args[i + 1])))
 		{
 			show_redirection_error(args[i]);
 			return (0);
@@ -86,12 +85,11 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 		free_input_resources(minishell);
 		return (INVALID);
 	}
-	input = parse_dollar_question(input, minishell->exit_status);
-	input = parse_dollar(input, &minishell->environment);
-	minishell->input = new_parse_arguments(input, minishell);
+	minishell->input_str = parse_dollar_question(minishell->input_str, minishell->exit_status);
+	minishell->input_str = parse_dollar(minishell->input_str, &minishell->environment);
+	minishell->input = new_parse_arguments(minishell->input_str, minishell);
 	if (!is_pipe_or_redirection_valid(minishell->input))
 	{
-		free(input);
 		free_input_resources(minishell);
 		return (INVALID);
 	}
@@ -116,9 +114,6 @@ t_minishell	*init_minishell(char **env)
 
 void	free_input_resources(t_minishell *minishell)
 {
-	if (!minishell)
-		return ;
-	//if (!minishell->input_str)
 	free(minishell->input_str);
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);
@@ -147,4 +142,25 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+int	is_builtin(char **tokens)
+{
+	if (!tokens)
+		return (0);
+	if (ft_strcmp(tokens[0], "echo") == 0)
+		return (1);
+	if (ft_strcmp(tokens[0], "cd") == 0)
+		return (1);
+	if (ft_strcmp(tokens[0], "pwd") == 0)
+		return (1);
+	if (ft_strcmp(tokens[0], "export") == 0)
+		return (1);
+	if (ft_strcmp(tokens[0], "unset") == 0)
+		return (1);
+	if (ft_strcmp(tokens[0], "env") == 0)
+		return (1);
+	if (ft_strcmp(tokens[0], "exit") == 0)
+		return (1);
+	return (0);
 }

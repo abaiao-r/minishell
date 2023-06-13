@@ -6,7 +6,6 @@
 #include <fcntl.h>
 #include <string.h>
 
-
 #define MAX_ARGS 100
 #define MAX_COMMANDS 10
 #define MAX_COMMAND_LENGTH 100
@@ -42,7 +41,6 @@ char* ft_strtok(char* str, const char* delim)
 
     return token_start;
 }
-
 
 size_t	ft_strlen_gnl(char *s)
 {
@@ -237,6 +235,11 @@ char* get_command_path(char* command)
     return path;
 }
 
+// echo hello > a heee. redirects
+// echo hello heee
+// cat << EOF > a
+
+
 void execute_command(char* command)
 {
     char* arguments[MAX_ARGS];
@@ -394,6 +397,9 @@ void execute_commands(char** commands, int num_commands)
                         // Close the temporary file
                         close(temp_fd);
 
+						// redirec_input(temp_file)
+						// exe_cmd
+						// unlink()
                         // Reopen the temporary file for reading
                         temp_fd = open(temp_file, O_RDONLY);
                         if (temp_fd < 0)

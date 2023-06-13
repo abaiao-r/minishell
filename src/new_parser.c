@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 00:15:08 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/10 17:11:44 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/13 15:13:39 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,6 @@ int	get_word_len(char *input)
 	return (len);
 }
 
-// TODO EMPTY STRING
 t_input	*new_parse_arguments(char *input, t_minishell *minishell)
 {
 	int		i;
