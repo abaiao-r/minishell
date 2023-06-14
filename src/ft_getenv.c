@@ -6,24 +6,24 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 16:11:44 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/06/08 16:55:13 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/14 18:51:23 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/minishell.h"
+#include "../includes/minishell.h"
 
-char *ft_getenv(const char *name, t_env *environment)
+char	*ft_getenv(const char *name, t_env *environment)
 {
-    t_env *temp;
-    
-    temp = environment;
-    while (temp)
-    {
-        if (ft_strcmp(temp->var_name, name) == 0)
-            return(temp->var_value);
-        temp = temp->next;
-    }
-    return(NULL);
+	t_env	*temp;
+
+	temp = environment;
+	while (temp)
+	{
+		if (ft_strcmp(temp->var_name, name) == 0)
+			return (temp->var_value);
+		temp = temp->next;
+	}
+	return (NULL);
 }
 
 /* main to test ft_get_env */
