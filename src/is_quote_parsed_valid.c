@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:42:39 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:48 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/14 17:01:24 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ is valid. If an invalid combination is found, it calls show_special_str_error
 with the corresponding input element and returns 0. */
 static int	is_special_character(const char *input)
 {
-	return (ft_strcmp(input, ">") == 0 || ft_strcmp(input, ">>") == 0 || \
-			ft_strcmp(input, "<") == 0 || ft_strcmp(input, "<<") == 0 || \
-			ft_strcmp(input, "|") == 0);
+	return (ft_strcmp(input, ">") == 0 || ft_strcmp(input, ">>") == 0 ||
+		ft_strcmp(input, "<") == 0 || ft_strcmp(input, "<<") == 0);
 }
 
 static int	is_end_of_input(const t_input *current)
@@ -48,10 +47,16 @@ int	is_pipe_or_redirection_valid(t_input *input)
 	current = input;
 	while (current)
 	{
-		if (is_special_character(current->token) && is_within_quotes(current)
+		if ((is_special_character(current->token) || ft_strcmp(current->token,
+					"|") == 0) && is_within_quotes(current)
 			&& is_end_of_input(current))
 			return (show_special_str_error(current->token));
-		if (ft_strcmp(current->token, "||") == 0 && is_within_quotes(current))
+		if (is_special_character(current->token) && is_within_quotes(current)
+			&& ft_strcmp(current->next->token, "|") == 0)
+			return (show_special_str_error(current->token));
+		if ((ft_strcmp(current->token, "||") == 0 || (ft_strcmp(current->token,
+						"|") == 0 && ft_strcmp(current->next->token, "|") == 0))
+			&& is_within_quotes(current))
 			return (show_special_str_error(current->token));
 		if (current->next && is_special_character(current->token)
 			&& is_within_quotes(current) && \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 17:56:16 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/13 15:12:51 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 16:03:57 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,8 @@ char	*parse_dollar(char *input, t_env **environment)
 		if (input[i] == '\'' || input[i] == '\"')
 			update_quote_flags(input[i], &(dollar_data->flag_single_quotes),
 				&(dollar_data->flag_double_quotes));
-		if (input[i] == '$' && input[i + 1] != '?' && input[i + 1] != '\0' && !ft_isspace(input[i + 1]))
+		if (input[i] == '$' && input[i + 1] != '?' && input[i + 1] != '\0'
+			&& !ft_isspace(input[i + 1]))
 			replace_dollar_var(&input, environment, dollar_data, &i);
 		else
 			i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar_question.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 19:04:29 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/12 19:23:33 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 17:23:30 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,17 @@ char	*parse_dollar_question(char *input, int exit_status)
 	free(input);
 	input = NULL;
 	free(temp);
+	new_input = parse_dollar_question(new_input, exit_status);
 	return (new_input);
 }
 
 /* main to test parse_dollar question */
 /* int	main(void)
 {
-	char *input = strdup("echo $?3 and goodbye");
+	char *input = strdup("echo $?3 and goodbye $?$?4");
 	int exit_status = 1;
 
-	parse_dollar_question(input, exit_status);
+	input = parse_dollar_question(input, exit_status);
 
 	printf("%s\n", input);
 
