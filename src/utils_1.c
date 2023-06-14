@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/09 17:48:28 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 00:59:15 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,14 @@ void	free_parsed(char **parsed)
 	int	i;
 
 	i = 0;
-	if (!parsed || !parsed[i])
+	if (!parsed)
 		return ;
 	while (parsed[i])
 	{
-		//printf("freeing %s size:%ld len:%ld\n", parsed[i], sizeof(parsed[i]), ft_strlen(parsed[i]));
 		free(parsed[i]);
 		i++;
 	}
-	//printf("%d\n", i);
+	free(parsed[i]);
 	free(parsed);
 }
 

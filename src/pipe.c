@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/14 00:15:23 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 01:16:56 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,36 @@
 
 // herdoc -> escrevmos as cenas -> close() redirect_input(temp) executamos -> unlink(temp)
 
+void restore_stdout(void)
+{
+	int terminal_fd = open("/dev/tty", O_RDWR);
+	if (terminal_fd < 0)
+	{
+		perror("open failed");
+		exit(1);
+	}
+	dup2(terminal_fd, STDOUT_FILENO);
+	close(terminal_fd);
+}
+
+void	restore_stdin(void)
+{
+	int	terminal_fd;
+
+	terminal_fd = open("/dev/tty", O_RDWR);
+	if (terminal_fd < 0)
+	{
+		perror("open failed");
+	}
+	dup2(terminal_fd, STDIN_FILENO);
+	close(terminal_fd);
+}
+
 void	heredoc(char *delimiter)
 {
 	if (delimiter != NULL)
 	{
-		// Restore the terminal as input
-		int terminal_fd = open("/dev/tty", O_RDONLY);
-		if (terminal_fd < 0) {
-			perror("open failed");
-			exit(1);
-		}
-		dup2(terminal_fd, STDIN_FILENO);
-		close(terminal_fd);
+		restore_stdin();
 
 		char temp_file[] = "/tmp/tempfileXXXXXX";
 		// Create a temporary file
@@ -275,22 +293,22 @@ void	handle_redirections(t_input *input)
 
 	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->within_quotes))
 	{
-		if (!ft_strncmp(input->token, "<<", 2))
+		if (!ft_strncmp(input->token, "<<", 2) && !input->within_quotes)
 		{
 			file = input->next->token;
 			heredoc(file);
 		}
-		else if (!ft_strncmp(input->token, "<", 1))
+		else if (!ft_strncmp(input->token, "<", 1) && !input->within_quotes)
 		{
 			file = input->next->token;
 			redirect_input(file);
 		}
-		else if (!ft_strncmp(input->token, ">>", 2))
+		else if (!ft_strncmp(input->token, ">>", 2) && !input->within_quotes)
 		{
 			file = input->next->token;
 			redirect_output(file, 1);
 		}
-		else if (!ft_strncmp(input->token, ">", 1))
+		else if (!ft_strncmp(input->token, ">", 1) && !input->within_quotes)
 		{
 			file = input->next->token;
 			redirect_output(file, 0);
@@ -401,8 +419,17 @@ int	exe_commands(t_minishell *minishell)
 	{
 		tokens = get_command_without_redirects(minishell->input);
 		if (!tokens)
-			return (NO_EXIT);
-		if (is_builtin(tokens))
+		{
+			free_minishell(minishell);
+			exit(EXIT_SUCCESS);
+		}
+		if (!tokens[0])
+		{
+			save_fds(minishell);
+			handle_redirections(minishell->input);
+			reset_fds(minishell);
+		}
+		else if (is_builtin(tokens))
 		{
 			save_fds(minishell);
 			handle_redirections(minishell->input);
@@ -411,8 +438,6 @@ int	exe_commands(t_minishell *minishell)
 			reset_fds(minishell);
 			if (status == EXIT)
 			{
-				//free_parsed(tokens); dois frees nao faz sentido
-				free_input_resources(minishell);
 				free_minishell(minishell);
 				printf("exit\n");
 				exit(EXIT_SUCCESS);

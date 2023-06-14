@@ -146,7 +146,7 @@ void	sig_handler(int signum)
 
 int	is_builtin(char **tokens)
 {
-	if (!tokens)
+	if (!tokens || !tokens[0])
 		return (0);
 	if (ft_strcmp(tokens[0], "echo") == 0)
 		return (1);
