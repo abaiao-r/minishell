@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/14 13:21:26 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 14:53:36 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,5 +244,9 @@ void				ft_lstadd_back_parser(t_input **lst, t_input *new);
 t_input				*new_node(char *str);
 void				add_node(t_input **head, char *str);
 void				free_list(t_input *head);
+
+void				redirect_input(char *file);
+void				redirect_output(char *file, int append);
+void				heredoc(char *delimiter);
 
 #endif

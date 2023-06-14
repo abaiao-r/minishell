@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/14 13:30:52 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 15:10:27 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
-
-#define MAX_COMMAND_LENGTH 1024
-
-void restore_stdout(void)
-{
-	int terminal_fd = open("/dev/tty", O_RDWR);
-	if (terminal_fd < 0)
-	{
-		perror("open failed");
-		exit(1);
-	}
-	dup2(terminal_fd, STDOUT_FILENO);
-	close(terminal_fd);
-}
 
 void	restore_stdin(void)
 {
@@ -44,77 +30,59 @@ void	restore_stdin(void)
 	close(terminal_fd);
 }
 
+int	write_line(char *delimiter, int temp_fd)
+{
+	char	*line;
+
+	line = readline("heredoc> ");
+	if (line == NULL)
+	{
+		perror("get_next_line failed");
+		return (-1);
+	}
+	if (ft_strcmp(line, delimiter) == 0)
+	{
+		free(line);
+		return (1);
+	}
+	else
+	{
+		write(temp_fd, line, ft_strlen(line));
+		write(temp_fd, "\n", 1);
+	}
+	free(line);
+	return (0);
+}
+
 void	heredoc(char *delimiter)
 {
+	char	*temp_file;
+	int		temp_fd;
+
 	if (delimiter != NULL)
 	{
 		restore_stdin();
-
-		char temp_file[] = "/tmp/tempfileXXXXXX";
-		// Create a temporary file
-		int temp_fd = mkstemp(temp_file);
-		if (temp_fd < 0)
-		{
-			perror("mkstemp failed");
-			exit(1);
-		}
-
-		// Write input to the temporary file until the delimiter is found
-		char* line = NULL;
-		int found_delimiter = 0;
-
-		while (!found_delimiter)
-		{
-			line = readline("heredoc> ");
-			if (line == NULL)
-			{
-				perror("get_next_line failed");
-				exit(1);
-			}
-			if (line == NULL)
-			{
-				perror("get_next_line failed");
-				exit(1);
-			}
-			if (strcmp(line, delimiter) == 0)
-			{
-				found_delimiter = 1;
-				//get_next_line(-1);
-			}
-			else
-			{
-				write(temp_fd, line, strlen(line));
-				write(temp_fd, "\n", 1);
-			}
-			free(line);
-		}
-
-		// Close the temporary file
-		close(temp_fd);
-
-		// redirec_input(temp_file)
-		// exe_cmd
-		// unlink()
-		// Reopen the temporary file for reading
-		temp_fd = open(temp_file, O_RDONLY);
+		temp_file = "/tmp/tempfileXXXXXX";
+		temp_fd = open(temp_file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (temp_fd < 0)
 		{
 			perror("open failed");
-			exit(1);
+			return ;
 		}
-
-		// Set the temporary file as input for the command
-		dup2(temp_fd, STDIN_FILENO);
+		while (!write_line(delimiter, temp_fd))
+		{
+		}
 		close(temp_fd);
-
-		// Remove the temporary file
+		redirect_input(temp_file);
 		unlink(temp_file);
 	}
 }
 
-void redirect_input(char *file)
+void	redirect_input(char *file)
 {
-	int fd = open(file, O_RDONLY);
+	int	fd;
+
+	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
 		perror("open failed");
@@ -124,23 +92,20 @@ void redirect_input(char *file)
 	close(fd);
 }
 
-void redirect_output(char* file, int append)
+void	redirect_output(char *file, int append)
 {
-	int flags = O_WRONLY | O_CREAT;
+	int	flags;
+	int	fd;
 
+	flags = O_WRONLY | O_CREAT;
 	if (append)
-	{
 		flags |= O_APPEND;
-	}
 	else
-	{
 		flags |= O_TRUNC;
-	}
-	int fd = open(file, flags, 0666);
+	fd = open(file, flags, 0666);
 	if (fd < 0)
 	{
 		perror("open failed");
-		fprintf(stderr, "file: %s\n", file);
 	}
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
