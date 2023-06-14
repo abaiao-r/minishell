@@ -6,7 +6,7 @@
 #    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/12 18:32:07 by quackson         ###   ########.fr        #
+#    Updated: 2023/06/14 13:07:31 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/comman
 	   $(SRCDIR)/env_utils.c $(SRCDIR)/export_utils.c $(SRCDIR)/export.c $(SRCDIR)/ft_getenv.c \
 	   $(SRCDIR)/is_quote_parsed_valid.c $(SRCDIR)/unset.c $(SRCDIR)/pipe.c $(SRCDIR)/parse_args.c \
 	   $(SRCDIR)/parse_pipe_or_redirection.c $(SRCDIR)/parse_args_utils1.c $(SRCDIR)/parse_dollar.c \
-	   $(SRCDIR)/parse_dollar_question.c $(SRCDIR)/utils_3.c $(SRCDIR)/new_parser.c
+	   $(SRCDIR)/parse_dollar_question.c $(SRCDIR)/utils_3.c $(SRCDIR)/input_parser.c \
+	   $(SRCDIR)/input_parser_utils_1.c $(SRCDIR)/input_parser_utils_2.c
 	   
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

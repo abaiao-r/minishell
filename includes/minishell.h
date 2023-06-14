@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/13 18:27:17 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 13:06:58 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,24 @@ void				free_minishell(t_minishell *minishell);
 void				sig_handler(int signum);
 t_minishell			*init_minishell(char **env);
 
-/* new_parser.c */
+/* input_parser.c */
 t_input				*new_parse_arguments(char *input, t_minishell *minishell);
+void				new_parse_args_aux(t_input **head, char *input, int *i);
+int					get_word_len(char *input);
+
+/* input_parser_utils_1.c */
+void				start_quote(int *single_quote, int *double_quote,
+						int *i, char *input);
+int					is_between_quotes(char *input, int index);
+int					get_redirection_len(char *str);
+char				*get_word(char *input, int start, int end, int *quote_flag);
+void				add_word(t_input **head, char *input, int start, int end);
+
+/* input_parser_utils_1.c */
+t_input				*ft_lstlast_parser(t_input *lst);
+void				ft_lstadd_back_parser(t_input **lst, t_input *new);
+t_input				*new_node(char *str);
+void				add_node(t_input **head, char *str);
+void				free_list(t_input *head);
 
 #endif

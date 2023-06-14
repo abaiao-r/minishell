@@ -59,15 +59,6 @@ int	has_valid_redirections(char **args)
 	return (1);
 }
 
-char	*process_input(t_minishell *minishell, char *input)
-{
-	input = parse_dollar_question(input, minishell->exit_status);
-	input = parse_dollar(input, &minishell->environment);
-	input = parse_pipe_or_redirection(input);
-	minishell->input = parse_arguments(input);
-	return (input);
-}
-
 int	validate_and_load_data(t_minishell *minishell, char *input)
 {
 	minishell->input_str = input;
