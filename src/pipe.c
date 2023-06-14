@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/14 01:16:56 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/14 13:30:52 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 #include <sys/wait.h>
 
 #define MAX_COMMAND_LENGTH 1024
-
-// herdoc -> escrevmos as cenas -> close() redirect_input(temp) executamos -> unlink(temp)
 
 void restore_stdout(void)
 {

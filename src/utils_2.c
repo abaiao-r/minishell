@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:06:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/20 18:02:03 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/14 13:17:31 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,41 +80,6 @@ int	show_special_char_error(char c)
 {
 	printf("bash: syntax error near unexpected token \'%c\'\n", c);
 	return (0);
-}
-
-int	show_quotes_error(void)
-{
-	printf("Error: unclosed quotes\n");
-	return (0);
-}
-
-int	is_quotes_special_char_valid(char *input)
-{
-	int		flag_quote;
-	char	quote_type;
-	int		i;
-
-	i = -1;
-	flag_quote = 0;
-	while (input[++i])
-	{
-		if ((input[i] == ';' || input[i] == '\\') && !flag_quote)
-			return (show_special_char_error(input[i]));
-		if (input[i] == '\'' || input[i] == '\"')
-		{
-			if (flag_quote == 0)
-			{
-				quote_type = input[i];
-				flag_quote = 1;
-			}
-			else if (flag_quote == 1)
-				if (quote_type == input[i])
-					flag_quote = 0;
-		}
-	}
-	if (flag_quote != 0)
-		return (show_quotes_error());
-	return (1);
 }
 
 /* int main(void) 

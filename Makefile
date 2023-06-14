@@ -6,7 +6,7 @@
 #    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/14 13:07:31 by quackson         ###   ########.fr        #
+#    Updated: 2023/06/14 13:20:44 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,13 @@ OBJDIR = ./objs
 # Source Files
 
 SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c \
-	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c $(SRCDIR)/exe.c \
+	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c \
 	   $(SRCDIR)/env_utils.c $(SRCDIR)/export_utils.c $(SRCDIR)/export.c $(SRCDIR)/ft_getenv.c \
-	   $(SRCDIR)/is_quote_parsed_valid.c $(SRCDIR)/unset.c $(SRCDIR)/pipe.c $(SRCDIR)/parse_args.c \
-	   $(SRCDIR)/parse_pipe_or_redirection.c $(SRCDIR)/parse_args_utils1.c $(SRCDIR)/parse_dollar.c \
+	   $(SRCDIR)/is_quote_parsed_valid.c $(SRCDIR)/unset.c $(SRCDIR)/pipe.c \
+	   $(SRCDIR)/parse_pipe_or_redirection.c $(SRCDIR)/parse_dollar.c \
 	   $(SRCDIR)/parse_dollar_question.c $(SRCDIR)/utils_3.c $(SRCDIR)/input_parser.c \
-	   $(SRCDIR)/input_parser_utils_1.c $(SRCDIR)/input_parser_utils_2.c
+	   $(SRCDIR)/input_parser_utils_1.c $(SRCDIR)/input_parser_utils_2.c $(SRCDIR)/utils_4.c \
+	   $(SRCDIR)/utils_5.c $(SRCDIR)/utils_6.c
 	   
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
