@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_quote_parsed_valid.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:42:39 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/14 17:57:28 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/17 17:44:18 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ with the corresponding input element and returns 0. */
 static int	is_special_char(const char *input)
 {
 	return (ft_strcmp(input, ">") == 0 || ft_strcmp(input, ">>") == 0 ||
-		ft_strcmp(input, "<") == 0 || ft_strcmp(input, "<<") == 0);
+			ft_strcmp(input, "<") == 0 || ft_strcmp(input, "<<") == 0);
 }
 
 static int	is_end_input(const t_input *current)
@@ -45,7 +45,7 @@ int	is_pipe_or_redirection_valid(t_input *input)
 	t_input	*current;
 
 	current = input;
-	if (ft_strcmp(current->token, "|") == 0)
+	if (ft_strcmp(current->token, "|") == 0 && current->within_quotes == 0)
 		return (show_str_error(current->token));
 	while (current)
 	{
@@ -55,9 +55,10 @@ int	is_pipe_or_redirection_valid(t_input *input)
 		if (is_special_char(current->token) && is_quotes(current)
 			&& ft_strcmp(current->next->token, "|") == 0)
 			return (show_str_error(current->token));
-		if ((ft_strcmp(current->token, "||") == 0 || (ft_strcmp(current->token,
-						"|") == 0 && ft_strcmp(current->next->token, "|") == 0))
-			&& is_quotes(current))
+		if ((ft_strcmp(current->token, "||") == 0 || ((ft_strcmp(current->token,
+							"|") == 0 && is_quotes(current))
+					&& (ft_strcmp(current->next->token, "|") == 0)
+					&& is_quotes(current))))
 			return (show_str_error(current->token));
 		if (current->next && is_special_char(current->token)
 			&& is_quotes(current) && is_special_char(current->next->token)
