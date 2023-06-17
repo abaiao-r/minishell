@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/14 15:10:27 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:55:11 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,6 +399,7 @@ int	exe_commands(t_minishell *minishell)
 			status = exe_cmd(tokens, count_tokens_str(tokens),
 					minishell);
 			reset_fds(minishell);
+			free_parsed(tokens);
 			if (status == EXIT)
 			{
 				free_minishell(minishell);
@@ -408,9 +409,10 @@ int	exe_commands(t_minishell *minishell)
 		}
 		else
 		{
+			free_parsed(tokens);
 			redirect_3(minishell->input, num_commands, minishell);
 		}
-		free_parsed(tokens);
+		printf("freeing parse");
 	}
 	return (NO_EXIT);
 }

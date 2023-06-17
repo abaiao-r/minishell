@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:09:22 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/14 00:59:15 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/17 14:54:27 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	free_parsed(char **parsed)
 {
 	int	i;
 
-	i = 0;
 	if (!parsed)
 		return ;
+	i = 0;
 	while (parsed[i])
 	{
 		free(parsed[i]);
@@ -26,6 +26,7 @@ void	free_parsed(char **parsed)
 	}
 	free(parsed[i]);
 	free(parsed);
+	parsed = NULL;
 }
 
 void	free_token_list(t_input **head)
