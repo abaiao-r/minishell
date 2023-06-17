@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 17:26:54 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/17 23:17:21 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ int	write_line(char *delimiter, int temp_fd)
 	line = readline("heredoc> ");
 	if (line == NULL)
 	{
-		perror("get_next_line failed");
-		return (-1);
+		return (1);
 	}
 	if (ft_strcmp(line, delimiter) == 0)
 	{
@@ -52,6 +51,12 @@ int	write_line(char *delimiter, int temp_fd)
 	}
 	free(line);
 	return (0);
+}
+
+void	handle_sigint_heredoc(int signum)
+{
+	(void)signum;
+	kill(0, SIGQUIT);
 }
 
 void	heredoc(char *delimiter)
@@ -69,9 +74,13 @@ void	heredoc(char *delimiter)
 			perror("open failed");
 			return ;
 		}
+		signal(SIGINT, handle_sigint_heredoc);
+		g_minishell.in_command = 1;
 		while (!write_line(delimiter, temp_fd))
 		{
 		}
+		g_minishell.in_command = 0;
+		signal(SIGINT, sig_handler);
 		close(temp_fd);
 		redirect_input(temp_file);
 		unlink(temp_file);

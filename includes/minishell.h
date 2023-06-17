@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/17 18:29:59 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/17 20:30:18 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,15 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+extern struct s_global_minishell	g_minishell;
+
+struct s_global_minishell
+{
+	int	in_command;
+	int	sigint;
+	int	sigquit;
+};
 
 typedef struct s_env
 {

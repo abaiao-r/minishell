@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:16:25 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 18:29:39 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/17 23:07:35 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ t_minishell	*init_minishell(char **env)
 	t_minishell	*minishell;
 
 	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, sig_handler);
+	//signal(SIGQUIT, SIG_IGN);
+	g_minishell.in_command = 0;
+	g_minishell.sigint = 0;
+	g_minishell.sigquit = 0;
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	minishell->environment = parse_env(env);
 	//minishell->prompt = ft_calloc(1, sizeof(t_prompt));
