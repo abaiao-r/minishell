@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_prompt.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:37:02 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/09 13:27:45 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/17 16:14:31 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

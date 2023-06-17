@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_4.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:16:25 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/14 13:18:49 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:22:08 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ t_minishell	*init_minishell(char **env)
 	signal(SIGQUIT, SIG_IGN);
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	minishell->environment = parse_env(env);
-	minishell->prompt = ft_calloc(1, sizeof(t_prompt));
-	minishell->prompt->prompt_full = NULL;
+	//minishell->prompt = ft_calloc(1, sizeof(t_prompt));
+	//minishell->prompt->prompt_full = NULL;
 	minishell->input_str = NULL;
 	minishell->tokens = NULL;
 	minishell->input = NULL;
@@ -61,11 +61,11 @@ void	free_input_resources(t_minishell *minishell)
 	free(minishell->input_str);
 	free_parsed(minishell->tokens);
 	free_token_list(&minishell->input);
-	free(minishell->prompt->prompt_full);
+	//free(minishell->prompt->prompt_full);
 	minishell->input_str = NULL;
 	minishell->tokens = NULL;
 	minishell->input = NULL;
-	minishell->prompt->prompt_full = NULL;
+	//minishell->prompt->prompt_full = NULL;
 }
 
 void	free_minishell(t_minishell *minishell)
@@ -73,7 +73,7 @@ void	free_minishell(t_minishell *minishell)
 	rl_clear_history();
 	free_input_resources(minishell);
 	free_env_list(&minishell->environment);
-	free(minishell->prompt);
+	//free(minishell->prompt);
 	free(minishell);
 }
 

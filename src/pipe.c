@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 14:55:11 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:06:53 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,6 +280,8 @@ void	handle_redirections(t_input *input)
 	}
 }
 
+// TODO set follow-fork-mode child
+
 // echo hello > file.txt | cat file.txt
 // "echo", "hello", NULL
 void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
@@ -323,10 +325,12 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 				close(pipe_fd[1]);
 			}
 			handle_redirections(input);
-			if (exe_cmd(cmds, count_tokens_str(cmds), minishell) == -1)
-				exe_shell_cmd(cmds, count_tokens_str(cmds));
+			int	num_tokens = count_tokens_str(cmds);
+			if (is_builtin(cmds))
+				exe_cmd(cmds, num_tokens, minishell);
+			else
+				exe_shell_cmd(cmds, num_tokens);
 			free_parsed(cmds);
-			//free_input_resources(minishell);
 			free_minishell(minishell);
 			exit(EXIT_FAILURE);
 		}
@@ -412,7 +416,6 @@ int	exe_commands(t_minishell *minishell)
 			free_parsed(tokens);
 			redirect_3(minishell->input, num_commands, minishell);
 		}
-		printf("freeing parse");
 	}
 	return (NO_EXIT);
 }

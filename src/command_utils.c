@@ -3,18 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/05 23:47:48 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/17 15:33:17 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/* Para ele aceitar o comando pedido, precisa de ir pesquisar no caminho do bash
-se esse comando existe e se tem permissao para utiliza-lo
-*/
+/*
+ * The function finds the executable path of a given command by searching through the directories
+ * listed in the PATH environment variable.
+ * 
+ * param cmd The command to search for in the system's PATH directories.
+ * 
+ * return The function `find_executable` returns a pointer to a string that represents the path to the
+ * executable file for the given command `cmd`. If the command is not found or cannot be executed, the
+ * function returns `NULL`.
+ */
+
 char	*find_executable(char *cmd)
 {
 	char	*path;

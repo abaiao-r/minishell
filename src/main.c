@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/12 18:38:10 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/17 16:28:33 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **env)
 	minishell = init_minishell(env);
 	while (1)
 	{
-		input = print_prompt(&minishell->prompt);
+		input = readline("\033[1;33mminishell$ \033[0m");
 		response = validate_and_load_data(minishell, input);
 		if (response == INVALID)
 			continue ;
