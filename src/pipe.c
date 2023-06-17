@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 16:06:53 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/17 17:26:54 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,6 +395,7 @@ int	exe_commands(t_minishell *minishell)
 			save_fds(minishell);
 			handle_redirections(minishell->input);
 			reset_fds(minishell);
+			free_parsed(tokens);
 		}
 		else if (is_builtin(tokens))
 		{
