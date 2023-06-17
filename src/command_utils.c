@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 15:33:17 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/17 17:14:24 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,8 @@ int	exe_shell_cmd(char **args, int num_tokens)
 {
 	char	**bash_args;
 
-	if (!args)
-	{
-		perror("NULL shell cmd\n");
+	if (!args || !*args)
 		return (NO_EXIT);
-	}
 	bash_args = malloc(sizeof(char *) * (num_tokens + 1));
 	if (!bash_args)
 		return (NO_EXIT);
