@@ -6,11 +6,13 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 16:28:33 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/17 18:30:22 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	g_in_command;
 
 void	print_list(t_input *input)
 {
@@ -38,6 +40,19 @@ void	print_array_of_strings(char ** strings)
 	}
 }
 
+void	sig_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		clear_history();
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		if (!g_in_command)
+			rl_redisplay();
+	}
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	char		*input;
@@ -50,6 +65,7 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		input = readline("\033[1;33mminishell$ \033[0m");
+		g_in_command = 1;
 		response = validate_and_load_data(minishell, input);
 		if (response == INVALID)
 			continue ;
@@ -64,6 +80,7 @@ int	main(int argc, char **argv, char **env)
 		//input = NULL;
 		exe_commands(minishell);
 		free_input_resources(minishell);
+		g_in_command = 0;
 	}
 	free_minishell(minishell);
 	return (0);

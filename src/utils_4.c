@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:16:25 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 16:22:08 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/17 18:29:39 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,4 @@ void	free_minishell(t_minishell *minishell)
 	free_env_list(&minishell->environment);
 	//free(minishell->prompt);
 	free(minishell);
-}
-
-void	sig_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
 }
