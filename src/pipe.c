@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 23:17:21 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:15:08 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,7 +338,7 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 			if (is_builtin(cmds))
 				exe_cmd(cmds, num_tokens, minishell);
 			else
-				exe_shell_cmd(cmds, num_tokens);
+				exe_shell_cmd(cmds, num_tokens, &(minishell->environment));
 			free_parsed(cmds);
 			free_minishell(minishell);
 			exit(EXIT_FAILURE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 17:51:12 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:21:06 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
  * function returns `NULL`.
  */
 
-char	*find_executable(char *cmd)
+char	*find_executable(char *cmd, t_env **environment)
 {
 	char	*path;
 	char	*path_end;
 	char	*executable;
 
-	path = getenv("PATH");
+	path = ft_getenv("PATH", *environment);
 	if (!path)
 		return (NULL);
 	if (ft_strchr(cmd, '/'))
@@ -88,7 +88,7 @@ char	**get_cmd(char **input, char c)
 	return (cmd);
 }
 
-int	exe_shell_cmd(char **args, int num_tokens)
+int	exe_shell_cmd(char **args, int num_tokens, t_env **environment)
 {
 	char	**bash_args;
 
@@ -104,7 +104,7 @@ int	exe_shell_cmd(char **args, int num_tokens)
 		i++;
 	}
 	bash_args[i] = NULL;
-	bash_args[0] = find_executable(bash_args[0]);
+	bash_args[0] = find_executable(bash_args[0], environment);
 	if (!bash_args[0])
 	{
 		free(bash_args);
@@ -153,7 +153,7 @@ int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
 	if (ft_strcmp(tokens[0], "echo") == 0)
 		return (echo(tokens, num_tokens));
 	else if (ft_strcmp(tokens[0], "cd") == 0)
-		return (change_dir(tokens, num_tokens));
+		return (change_dir(tokens, num_tokens, &(minishell->environment)));
 	else if (ft_strcmp(tokens[0], "pwd") == 0)
 		return (pwd());
 	else if (ft_strcmp(tokens[0], "export") == 0)
@@ -169,14 +169,14 @@ int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
 }
 
 /* Apenas executa um comando. Ainda nao aceita redirecionamento de input/output */
-void	exe_executable(char **input)
+/* void	exe_executable(char **input, t_env **environment)
 {
 	pid_t	pid;
 	int		status;
 	char	*executable;
 
 	// Procura o comando
-	executable = find_executable(input[0]);
+	executable = find_executable(input[0], environment);
 	if (executable == NULL)
 	{
 		fprintf(stderr, "Command not found: %s\n", input[0]);
@@ -204,4 +204,4 @@ void	exe_executable(char **input)
 			waitpid(pid, &status, WUNTRACED);
 		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
 	}
-}
+} */

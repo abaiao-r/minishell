@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 17:29:45 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/18 15:21:23 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	pwd(void)
 	return (NO_EXIT);
 }
 
-int	change_dir(char **input, int num_tokens)
+int	change_dir(char **input, int num_tokens, t_env **environment)
 {
 	char	*dir_path;
 	char	*home_path;
@@ -60,7 +60,7 @@ int	change_dir(char **input, int num_tokens)
 		printf("bash: cd: too many arguments\n");
 		return (NO_EXIT);
 	}
-	home_path = getenv("HOME");
+	home_path = ft_getenv("HOME", *environment);
 	if (home_path == NULL)
 	{
 		printf("Could not get home directory path\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 22:47:24 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/18 14:52:43 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	sig_handler(int signum)
 	}
 }
 
-struct s_global_minishell	g_minishell;
+struct s_global_minishell	g_minishell; //not comply with the norm
 
 int	main(int argc, char **argv, char **env)
 {
