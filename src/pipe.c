@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/04 23:58:20 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/18 15:15:08 by andrefranci      ###   ########.fr       */
+/*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
+/*   Updated: 2023/06/18 15:54:56 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	write_line(char *delimiter, int temp_fd)
 	line = readline("heredoc> ");
 	if (line == NULL)
 	{
-		return (1);
+		return (-1);
 	}
 	if (ft_strcmp(line, delimiter) == 0)
 	{
@@ -63,27 +63,47 @@ void	heredoc(char *delimiter)
 {
 	char	*temp_file;
 	int		temp_fd;
+	pid_t	pid;
 
 	if (delimiter != NULL)
 	{
+		g_minishell.in_command = 1;
 		restore_stdin();
 		temp_file = "/tmp/tempfileXXXXXX";
-		temp_fd = open(temp_file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-		if (temp_fd < 0)
+		pid = fork();
+		if (pid < 0)
 		{
-			perror("open failed");
+			perror("fork failed");
 			return ;
 		}
-		signal(SIGINT, handle_sigint_heredoc);
-		g_minishell.in_command = 1;
-		while (!write_line(delimiter, temp_fd))
+		if (pid == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			temp_fd = open(temp_file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+			if (temp_fd < 0)
+			{
+				perror("open failed");
+				return ;
+			}
+			int status;
+			while (1)
+			{
+				status = write_line(delimiter, temp_fd);
+				if (status == -1 || status == 1)
+					break ;
+			}
+			close(temp_fd);
+			g_minishell.in_command = 0;
+			exit(0);
 		}
-		g_minishell.in_command = 0;
-		signal(SIGINT, sig_handler);
-		close(temp_fd);
+		else
+		{
+			waitpid(pid, NULL, 0);
+		}
 		redirect_input(temp_file);
 		unlink(temp_file);
+		g_minishell.in_command = 0;
 	}
 }
 
@@ -388,6 +408,7 @@ int	exe_commands(t_minishell *minishell)
 	int		status;
 	char	**tokens;
 
+	g_minishell.in_command = 1;
 	num_commands = count_commands_lst(minishell->input);
 	if (num_commands > 1)
 		redirect_3(minishell->input, num_commands, minishell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/18 14:52:43 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/18 15:52:07 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		//print_array_of_strings(minishell->tokens);
-		//free(input);
-		//input = NULL;
 		exe_commands(minishell);
 		free_input_resources(minishell);
 		g_minishell.in_command = 0;
