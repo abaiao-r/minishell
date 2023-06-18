@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/18 15:21:06 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/18 20:00:40 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,17 +151,17 @@ int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
 	if (!tokens || !*tokens || num_tokens <= 0)
 		return (-1);
 	if (ft_strcmp(tokens[0], "echo") == 0)
-		return (echo(tokens, num_tokens));
+		return (echo(&(minishell), num_tokens));
 	else if (ft_strcmp(tokens[0], "cd") == 0)
 		return (change_dir(tokens, num_tokens, &(minishell->environment)));
 	else if (ft_strcmp(tokens[0], "pwd") == 0)
-		return (pwd());
+		return (pwd(&(minishell)));
 	else if (ft_strcmp(tokens[0], "export") == 0)
-		return (export(tokens, num_tokens, &(minishell->environment)));
+		return (export(num_tokens, &(minishell)));
 	else if (ft_strcmp(tokens[0], "unset") == 0)
-		return (ft_unset(tokens, num_tokens, &(minishell->environment)));
-	else if (ft_strcmp(tokens[0], "env") == 0)
-		return (show_env(&(minishell->environment)));
+		return (ft_unset(num_tokens, &(minishell)));
+	else if ((ft_strcmp(tokens[0], "env") == 0))
+		return (show_env(&(minishell), num_tokens));
 	else if (ft_strcmp(tokens[0], "exit") == 0)
 		return (EXIT);
 	else

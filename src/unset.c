@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:29:19 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/06 20:08:09 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:59:41 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,21 @@ int	delete_env_name(t_env **env_list, char *input)
 	return (0);
 }
 
-int	ft_unset(char **input, int num_tokens, t_env **environment)
+int	ft_unset(int num_tokens, t_minishell **minishell)
 {
 	int	i;
 
 	if (num_tokens == 1)
-		return (NO_EXIT);
-	i = 1;
-	while (input[i])
 	{
-		delete_env_name(environment, input[i]);
+		(*minishell)->exit_status = 0;
+		return (NO_EXIT);
+	}
+	i = 1;
+	while ((*minishell)->tokens[i])
+	{
+		delete_env_name(&(*minishell)->environment, (*minishell)->tokens[i]);
 		i++;
 	}
+	(*minishell)->exit_status = 0;
 	return (NO_EXIT);
 }

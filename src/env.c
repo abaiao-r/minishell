@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 00:32:23 by quackson          #+#    #+#             */
-/*   Updated: 2023/05/05 17:11:53 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/18 18:47:58 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,15 @@ t_env	*sort_rank_env_list(t_env **head)
 /* show_env: displays the current environment variables to the user by calling 
 parse_env, printing the environment list with print_env, and then freeing the 
 environment list. */
-int	show_env(t_env **environment)
+int	show_env(t_minishell **minishell, int num_tokens)
 {
-	sort_rank_env_list(environment);
-	print_env(environment);
+	if (num_tokens > 1)
+	{
+		printf("env: \'%s\': No such file or directory", (*minishell)->tokens[1]);
+		(*minishell)->exit_status = 127;
+		return (NO_EXIT);
+	}
+	sort_rank_env_list(&(*minishell)->environment);
+	print_env(&(*minishell)->environment);
 	return (NO_EXIT);
 }

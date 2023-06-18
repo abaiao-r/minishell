@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/18 15:19:42 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/18 20:02:33 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,19 +126,20 @@ typedef struct s_por_data
 /* commands.c */
 void								echo_aux(char **args, int num_args,
 										int flag);
-int									echo(char **input, int num_tokens);
-int									pwd(void);
+int	echo(t_minishell **minishell, int num_tokens);
+int	pwd(t_minishell **minishell);
 int									change_dir(char **input, int num_tokens,
 										t_env **environment);
 
 /* command_utils.c */
-char								*find_executable(char *cmd,
-										t_env **environment);
+char	*find_executable(char *cmd,
+						t_env **environment);
 char								**get_cmd(char **input, char c);
 int									exe_cmd(char **tokens, int num_tokens,
 										t_minishell *minishell);
 void								exe_command(char **parsed);
-void								exe_executable(char **input, t_env **environment);
+void	exe_executable(char **input,
+					t_env **environment);
 int									exe_shell_cmd(char **args, int num_tokens,
 										t_env **environment);
 
@@ -151,7 +152,8 @@ void								create_env_node(char *env_var_str, int i,
 										t_env **environment);
 t_env								*parse_env(char **environ);
 t_env								*sort_rank_env_list(t_env **head);
-int									show_env(t_env **environment);
+int									show_env(t_minishell **minishell,
+										int num_tokens);
 
 /* env.utils.c */
 void								ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -161,8 +163,7 @@ void								free_env_list(t_env **head);
 void								swap_env_nodes(t_env *curr);
 
 /* export.c */
-int									export(char **input, int num_tokens,
-										t_env **environment);
+int	export(int num_tokens, t_minishell **minishell);
 
 void	execute_pipe(char **cmd1,
 					int cmd1_num_tokens,
@@ -232,8 +233,7 @@ int									is_builtin(char **tokens);
 /* unset.c */
 int	delete_env_name(t_env **env_list,
 					char *input);
-int									ft_unset(char **input, int num_tokens,
-										t_env **environment);
+int	ft_unset(int num_tokens, t_minishell **minishell);
 
 /* pipe.c */
 void	execute_pipe(char **cmd1,

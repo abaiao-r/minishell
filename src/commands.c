@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/18 15:21:23 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/18 20:02:14 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,32 @@ void	echo_aux(char **args, int num_args, int flag)
 		printf("\n");
 }
 
-int	echo(char **input, int num_tokens)
+int	echo(t_minishell **minishell, int num_tokens)
 {
 	if (num_tokens == 1)
 		printf("\n");
-	else if (num_tokens > 1 && ft_strcmp(input[1], "-n") != 0)
-		echo_aux(input + 1, num_tokens - 1, NO_FLAG);
-	else if (num_tokens > 2 && ft_strcmp(input[1], "-n") == 0)
-		echo_aux(input + 2, num_tokens - 2, FLAG);
+	else if (num_tokens > 1 && ft_strcmp((*minishell)->tokens[1], "-n") != 0)
+		echo_aux((*minishell)->tokens + 1, num_tokens - 1, NO_FLAG);
+	else if (num_tokens > 2 && ft_strcmp((*minishell)->tokens[1], "-n") == 0)
+		echo_aux((*minishell)->tokens + 2, num_tokens - 2, FLAG);
+	(*minishell)->exit_status = 0;
 	return (NO_EXIT);
 }
 
-int	pwd(void)
+int	pwd(t_minishell **minishell)
 {
 	char	cwd[PWD_SIZE];
 
 	if (getcwd(cwd, sizeof(cwd)))
+	{
+		(*minishell)->exit_status = 0;
 		printf("%s\n", cwd);
+	}
 	else
+	{
+		(*minishell)->exit_status = 1;
 		perror("pwd error");
+	}
 	return (NO_EXIT);
 }
 
