@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser_utils_1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:02:44 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 17:16:48 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:29:42 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* Function: start_quote
+Sets the single_quote or double_quote flags based on the current character.
+single_quote: A pointer to the single_quote flag.
+double_quote: A pointer to the double_quote flag.
+i: The current index in the input string.
+input: The input string. */
 void	start_quote(int *single_quote, int *double_quote, int *i, char *input)
 {
 	if (input[*i] == '\'')
@@ -20,6 +26,11 @@ void	start_quote(int *single_quote, int *double_quote, int *i, char *input)
 		*double_quote = 1;
 }
 
+/* Function: is_between_quotes
+Checks if a specific index in the input string is between quotes.
+input: The input string.
+index: The index to be checked.
+returns: 0 if not between quotes, 1 for single quotes, -1 for double quotes. */
 int	is_between_quotes(char *input, int index)
 {
 	int		single_quote;
@@ -49,6 +60,10 @@ int	is_between_quotes(char *input, int index)
 	return (0);
 }
 
+/* Function: get_redirection_len
+Gets the length of a redirection symbol.
+str: The string to be checked.
+returns: The length of the redirection symbol. */
 int	get_redirection_len(char *str)
 {
 	if (ft_strncmp(str, ">>", 2) == 0)
@@ -64,6 +79,13 @@ int	get_redirection_len(char *str)
 	return (0);
 }
 
+/* Function: get_word
+Extracts a word from the input string, considering quotes.
+input: The input string.
+start: The starting index of the word.
+end: The ending index of the word.
+quote_flag: A pointer to the quote_flag variable.
+returns: The extracted word. */
 char	*get_word(char *input, int start, int end, int *quote_flag)
 {
 	int		in_quotes;
@@ -93,6 +115,12 @@ char	*get_word(char *input, int start, int end, int *quote_flag)
 	return (word);
 }
 
+/* Function: add_word
+Adds a word to the linked list, considering quotes.
+head: A pointer to the head of the linked list.
+input: The input string.
+start: The starting index of the word.
+end: The ending index of the word. */
 void	add_word(t_input **head, char *input, int start, int end)
 {
 	char	*word;

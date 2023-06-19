@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser_utils_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:02:14 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/14 13:07:03 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:28:04 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* Function: ft_lstlast_parser
+Returns the last node of a linked list.
+lst: The head of the linked list.
+returns: The last node of the linked list. */
 t_input	*ft_lstlast_parser(t_input *lst)
 {
 	if (!lst)
@@ -29,6 +33,10 @@ t_input	*ft_lstlast_parser(t_input *lst)
 	return (lst);
 }
 
+/* Function: ft_lstadd_back_parser
+Adds a new node at the end of a linked list.
+lst: A pointer to the head of the linked list.
+new: The new node to be added. */
 void	ft_lstadd_back_parser(t_input **lst, t_input *new)
 {
 	t_input	*last;
@@ -48,6 +56,10 @@ void	ft_lstadd_back_parser(t_input **lst, t_input *new)
 	return ;
 }
 
+/* Function: new_node
+Creates a new node for the linked list.
+str: The string to be assigned to the new node.
+returns: The newly created node. */
 t_input	*new_node(char *str)
 {
 	t_input	*node;
@@ -59,6 +71,10 @@ t_input	*new_node(char *str)
 	return (node);
 }
 
+/* Function: add_node
+Adds a new node with the specified string to the end of the linked list.
+head: A pointer to the head of the linked list.
+str: The string to be assigned to the new node. */
 void	add_node(t_input **head, char *str)
 {
 	t_input	*node;
@@ -67,6 +83,9 @@ void	add_node(t_input **head, char *str)
 	ft_lstadd_back_parser(head, node);
 }
 
+/* Function: free_list
+Frees the memory allocated for a linked list.
+head: The head of the linked list to be freed. */
 void	free_list(t_input *head)
 {
 	t_input	*tmp;
