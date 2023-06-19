@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/18 20:00:40 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/19 14:24:42 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,17 +109,17 @@ int	exe_shell_cmd(char **args, int num_tokens, t_env **environment)
 	{
 		free(bash_args);
 		perror("Command not found");
-		return (NO_EXIT);
+		exit(127);
 	}
 	if (access(bash_args[0], X_OK) == 0)
 	{
 		execve(bash_args[0], bash_args, NULL);
 		perror("execve failed");
-		exit(EXIT_FAILURE);
+		exit(126);
 	}
 	free(bash_args);
 	perror("Command not found");
-	exit(EXIT_FAILURE);
+	exit(127);
 }
 
 /* int	exe_shell_cmd(char **args, int num_tokens)
