@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/19 16:11:32 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:38:06 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,6 @@
 
 extern struct s_global_minishell	g_minishell;
 
-struct								s_global_minishell
-{
-	int								in_command;
-	int								sigint;
-	int								sigquit;
-};
 
 typedef struct s_env
 {
@@ -61,11 +55,6 @@ typedef struct s_env
 	int								rank;
 	struct s_env					*next;
 }									t_env;
-
-typedef struct s_prompt
-{
-	char							*prompt_full;
-}									t_prompt;
 
 typedef struct s_input
 {
@@ -78,7 +67,6 @@ typedef struct s_input
 typedef struct s_minishell
 {
 	t_env							*environment;
-	t_prompt						*prompt;
 	t_input							*input;
 	int								exit_status;
 	char							*input_str;
@@ -86,6 +74,14 @@ typedef struct s_minishell
 	int								in;
 	int								out;
 }									t_minishell;
+
+struct								s_global_minishell
+{
+	int								in_command;
+	int								sigint;
+	int								sigquit;
+	t_minishell						*minishell;
+};
 
 typedef struct s_arg
 {
@@ -176,8 +172,6 @@ int is_pipe_or_redirection_valid(t_input *input);
 t_minishell *init_minishell(char **env);
 int validate_and_load_data(t_minishell *minishell, char *input);
 
-/* print_prompt.c */
-char *print_prompt(t_prompt **prompt_full);
 
 /* parser_2d.c */
 int ft_token_lstsize(t_input *lst);

@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/19 15:35:55 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/19 16:41:39 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	minishell = init_minishell(env);
+	g_minishell.minishell = minishell;
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
