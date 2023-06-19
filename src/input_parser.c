@@ -3,41 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 00:15:08 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/17 17:53:40 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/19 15:54:50 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_input	*new_parse_arguments(char *input, t_minishell *minishell)
-{
-	int		i;
-	t_input	*head;
-
-	head = NULL;
-	i = 0;
-	while (input[i])
-	{
-		if (ft_isspace(input[i]))
-		{
-			i++;
-			continue ;
-		}
-		else if (get_redirection_len(input + i))
-		{
-			add_word(&head, input, i, i + get_redirection_len(input + i));
-			i += get_redirection_len(input + i);
-		}
-		else
-			new_parse_args_aux(&head, input, &i);
-	}
-	if (!head)
-		free_input_resources(minishell);
-	return (head);
-}
 
 void	new_parse_args_aux(t_input **head, char *input, int *i)
 {
@@ -70,4 +44,31 @@ int	get_word_len(char *input)
 		}
 	}
 	return (len);
+}
+
+t_input	*new_parse_arguments(char *input, t_minishell *minishell)
+{
+	int		i;
+	t_input	*head;
+
+	head = NULL;
+	i = 0;
+	while (input[i])
+	{
+		if (ft_isspace(input[i]))
+		{
+			i++;
+			continue ;
+		}
+		else if (get_redirection_len(input + i))
+		{
+			add_word(&head, input, i, i + get_redirection_len(input + i));
+			i += get_redirection_len(input + i);
+		}
+		else
+			new_parse_args_aux(&head, input, &i);
+	}
+	if (!head)
+		free_input_resources(minishell);
+	return (head);
 }

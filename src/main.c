@@ -6,13 +6,13 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/19 13:48:14 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/19 15:35:55 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	print_list(t_input *input)
+/* void	print_list(t_input *input)
 {
 	t_input	*temp;
 
@@ -36,21 +36,9 @@ void	print_array_of_strings(char ** strings)
 		printf("size:%ld len:%ld\n", sizeof(strings[i]), ft_strlen(strings[i]));
 		i++;
 	}
-}
+} */
 
-void	sig_handler(int signum)
-{
-	if (signum == SIGINT || (signum == SIGQUIT && g_minishell.in_command))
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		if (!g_minishell.in_command)
-			rl_redisplay();
-	}
-}
-
-struct s_global_minishell	g_minishell; //not comply with the norm
+struct s_global_minishell	g_minishell; //may not comply with the norm
 
 int	main(int argc, char **argv, char **env)
 {

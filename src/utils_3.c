@@ -18,35 +18,6 @@ int	show_quotes_error(void)
 	return (0);
 }
 
-int	is_quotes_special_char_valid(char *input)
-{
-	int		flag_quote;
-	char	quote_type;
-	int		i;
-
-	i = -1;
-	flag_quote = 0;
-	while (input[++i])
-	{
-		if ((input[i] == ';' || input[i] == '\\') && !flag_quote)
-			return (show_special_char_error(input[i]));
-		if (input[i] == '\'' || input[i] == '\"')
-		{
-			if (flag_quote == 0)
-			{
-				quote_type = input[i];
-				flag_quote = 1;
-			}
-			else if (flag_quote == 1)
-				if (quote_type == input[i])
-					flag_quote = 0;
-		}
-	}
-	if (flag_quote != 0)
-		return (show_quotes_error());
-	return (1);
-}
-
 int	is_redirection(char *str)
 {
 	if (ft_strcmp(str, ">") == 0)

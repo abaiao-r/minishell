@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+         #
+#    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/17 15:04:09 by pedgonca         ###   ########.fr        #
+#    Updated: 2023/06/19 16:02:52 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,15 +20,33 @@ OBJDIR = ./objs
 
 # Source Files
 
-SRCS = $(SRCDIR)/main.c $(SRCDIR)/utils_1.c $(SRCDIR)/utils_2.c $(SRCDIR)/command_utils.c \
-	   $(SRCDIR)/commands.c $(SRCDIR)/print_prompt.c $(SRCDIR)/env.c \
-	   $(SRCDIR)/env_utils.c $(SRCDIR)/export_utils.c $(SRCDIR)/export.c $(SRCDIR)/ft_getenv.c \
-	   $(SRCDIR)/is_quote_parsed_valid.c $(SRCDIR)/unset.c $(SRCDIR)/pipe.c \
-	   $(SRCDIR)/parse_pipe_or_redirection.c $(SRCDIR)/parse_dollar.c \
-	   $(SRCDIR)/parse_dollar_question.c $(SRCDIR)/utils_3.c $(SRCDIR)/input_parser.c \
-	   $(SRCDIR)/input_parser_utils_1.c $(SRCDIR)/input_parser_utils_2.c $(SRCDIR)/utils_4.c \
-	   $(SRCDIR)/utils_5.c $(SRCDIR)/utils_6.c
-	   
+SRCS = $(SRCDIR)/command_utils.c \
+	   $(SRCDIR)/commands.c \
+	   $(SRCDIR)/env.c \
+	   $(SRCDIR)/env_utils.c \
+	   $(SRCDIR)/export.c \
+	   $(SRCDIR)/export_utils.c \
+	   $(SRCDIR)/free_mem.c \
+	   $(SRCDIR)/ft_getenv.c \
+	   $(SRCDIR)/input_parser.c \
+	   $(SRCDIR)/input_parser_utils_1.c \
+	   $(SRCDIR)/input_parser_utils_2.c \
+	   $(SRCDIR)/is_quote_parsed_valid.c \
+	   $(SRCDIR)/main.c \
+	   $(SRCDIR)/minishell_data.c \
+	   $(SRCDIR)/parse_dollar.c \
+	   $(SRCDIR)/parse_dollar_question.c \
+	   $(SRCDIR)/parse_pipe_or_redirection.c \
+	   $(SRCDIR)/parser_2d.c \
+	   $(SRCDIR)/parser_checks.c \
+	   $(SRCDIR)/pipe.c \
+	   $(SRCDIR)/print_prompt.c \
+	   $(SRCDIR)/signal.c \
+	   $(SRCDIR)/unset.c \
+	   $(SRCDIR)/utils_2.c \
+	   $(SRCDIR)/utils_3.c \
+	   $(SRCDIR)/utils_6.c
+
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
