@@ -40,6 +40,6 @@ Contributions to Minishell are welcome! If you'd like to contribute, please foll
 
 ## License
 
-Minishell is released under the [MIT License](/path/to/license).
+Minishell is released under the [APACHE License](/LICENSE.txt).
 
 
