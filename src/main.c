@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/19 16:41:39 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/19 22:52:02 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/* void	print_list(t_input *input)
+void	print_list(t_input *input)
 {
 	t_input	*temp;
 
@@ -36,9 +36,9 @@ void	print_array_of_strings(char ** strings)
 		printf("size:%ld len:%ld\n", sizeof(strings[i]), ft_strlen(strings[i]));
 		i++;
 	}
-} */
+}
 
-struct s_global_minishell	g_minishell; //may not comply with the norm
+struct s_global_minishell	g_minishell;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -46,7 +46,8 @@ int	main(int argc, char **argv, char **env)
 	int			response;
 	t_minishell	*minishell;
 
-	(void)argc;
+	 if (argc > 1)
+        return 0;
 	(void)argv;
 	minishell = init_minishell(env);
 	g_minishell.minishell = minishell;
@@ -65,7 +66,6 @@ int	main(int argc, char **argv, char **env)
 			free_input_resources(minishell);
 			continue ;
 		}
-		//print_array_of_strings(minishell->tokens);
 		exe_commands(minishell);
 		free_input_resources(minishell);
 		g_minishell.in_command = 0;

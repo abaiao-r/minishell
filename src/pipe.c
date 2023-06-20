@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/18 15:54:56 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/20 22:03:40 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,10 +186,10 @@ void	print_command(char **args, int n_tokens)
 	i = 0;
 	while (args[i] && n_tokens--)
 	{
-		//printf("%s ", args[i]);
+		fprintf(stderr, "%s ", args[i]);
 		i++;
 	}
-	//printf("\n");
+	fprintf(stderr, "\n");
 }
 
 char	*get_next_redirection(char **args)
@@ -330,9 +330,6 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 				exit(1);
 			}
 		}
-		/* for (int j = 0; cmds[j]; j++)
-			printf("cmd: %s\n", cmds[j]);
-		printf("----\n"); */
 		pid_t pid = fork();
 		if (pid < 0) {
 			perror("fork failed");
@@ -434,7 +431,7 @@ int	exe_commands(t_minishell *minishell)
 			status = exe_cmd(tokens, count_tokens_str(tokens),
 					minishell);
 			reset_fds(minishell);
-			free_parsed(tokens);
+			free_parsed(tokens); // free tokens
 			if (status == EXIT)
 			{
 				free_minishell(minishell);

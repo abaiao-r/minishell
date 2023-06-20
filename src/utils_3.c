@@ -65,3 +65,48 @@ int	has_valid_redirections(char **args)
 	}
 	return (1);
 }
+
+int	ft_isnumber(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
+{
+	unsigned char	status;
+
+	if (num_tokens == 1)
+	{
+		status = 0;
+	}
+	else if (num_tokens > 2)
+	{
+		printf("exit: too many arguments\n");
+		status = 1;
+	}
+	else if (ft_isnumber(tokens[1]))
+	{
+		status = ft_atoi(tokens[1]);
+		if ((tokens[1][0] == '-' && ft_strcmp(tokens[1], LLONG_MIN_STR)) > 0 || ft_strcmp(tokens[1], LLONG_MAX_STR) > 0)
+			status = 2;
+	}
+	else
+	{
+		printf("exit: %s: enumeric argument required\n", tokens[1]);
+		status = 2;
+	}
+	free_parsed(tokens);
+	free_minishell(minishell);
+	exit(status);
+}

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
+#    By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/19 16:27:15 by abaiao-r         ###   ########.fr        #
+#    Updated: 2023/06/20 22:08:01 by pedgonca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,10 +20,10 @@ OBJDIR = ./objs
 
 # Source Files
 
-SRCS = $(SRCDIR)/command_utils.c \
-	   $(SRCDIR)/commands.c \
+SRCS = $(SRCDIR)/commands.c \
 	   $(SRCDIR)/env.c \
 	   $(SRCDIR)/env_utils.c \
+	   $(SRCDIR)/exe_shell_cmd.c \
 	   $(SRCDIR)/export.c \
 	   $(SRCDIR)/export_utils.c \
 	   $(SRCDIR)/free_mem.c \
@@ -81,7 +81,7 @@ gdb:	all
 valgrind: 	all
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 valgrind_supp: all
-				valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp ./$(NAME)
+				valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --track-origins=yes --suppressions=readline.supp ./$(NAME)
 val_gdb: 	all
 			valgrind --vgdb=yes --vgdb-error=0 ./$(NAME) 
 remote_gdb:

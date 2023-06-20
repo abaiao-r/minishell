@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/19 16:38:06 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/21 00:03:17 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # define NO_EXIT 1
 # define PROMPT_SIZE 1024
 # define MAX_ARGS 1024
+# define LLONG_MAX_STR "9223372036854775807"
+# define LLONG_MIN_STR "9223372036854775808"
 
 # define VALID 0
 # define INVALID 1
@@ -68,7 +70,7 @@ typedef struct s_minishell
 {
 	t_env							*environment;
 	t_input							*input;
-	int								exit_status;
+	unsigned char					exit_status;
 	char							*input_str;
 	char							**tokens;
 	int								in;
@@ -122,13 +124,12 @@ typedef struct s_por_data
 /* command_utils.c */
 char *find_executable(char *cmd, t_env **environment);
 int exe_cmd(char **tokens, int num_tokens, t_minishell *minishell);
-void exe_command(char **parsed);
 void exe_executable(char **input, t_env **environment);
 int exe_shell_cmd(char **args, int num_tokens, t_env **environment);
 
-/* commands.c */
+/* exe_shell_cmd */
 void echo_aux(char **args, int num_args, int flag);
-int echo(t_minishell **minishell, int num_tokens);
+int	echo(t_minishell **minishell, char **tokens, int num_tokens);
 int pwd(t_minishell **minishell);
 int change_dir(char **input, int num_tokens, t_env **environment);
 
@@ -223,6 +224,7 @@ int exe_commands(t_minishell *minishell);
 int is_redirection(char *str);
 int show_quotes_error(void);
 int has_valid_redirections(char **args);
+int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens);
 
 /* input_parser.c */
 t_input *new_parse_arguments(char *input, t_minishell *minishell);

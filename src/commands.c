@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/18 20:02:14 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/20 21:53:50 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void	echo_aux(char **args, int num_args, int flag)
 		printf("\n");
 }
 
-int	echo(t_minishell **minishell, int num_tokens)
+int	echo(t_minishell **minishell, char **tokens, int num_tokens)
 {
 	if (num_tokens == 1)
 		printf("\n");
-	else if (num_tokens > 1 && ft_strcmp((*minishell)->tokens[1], "-n") != 0)
-		echo_aux((*minishell)->tokens + 1, num_tokens - 1, NO_FLAG);
-	else if (num_tokens > 2 && ft_strcmp((*minishell)->tokens[1], "-n") == 0)
-		echo_aux((*minishell)->tokens + 2, num_tokens - 2, FLAG);
+	else if (num_tokens > 1 && ft_strcmp(tokens[1], "-n") != 0)
+		echo_aux(tokens + 1, num_tokens - 1, NO_FLAG);
+	else if (num_tokens > 2 && ft_strcmp(tokens[1], "-n") == 0)
+		echo_aux(tokens + 2, num_tokens - 2, FLAG);
 	(*minishell)->exit_status = 0;
 	return (NO_EXIT);
 }
@@ -81,4 +81,26 @@ int	change_dir(char **input, int num_tokens, t_env **environment)
 	if (chdir(dir_path) != 0)
 		printf("bash: cd: %s: No such file or directory\n", dir_path);
 	return (NO_EXIT);
+}
+
+int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
+{
+	if (!tokens || !*tokens || num_tokens <= 0)
+		return (-1);
+	if (ft_strcmp(tokens[0], "echo") == 0)
+		return (echo(&(minishell), tokens, num_tokens));
+	else if (ft_strcmp(tokens[0], "cd") == 0)
+		return (change_dir(tokens, num_tokens, &(minishell->environment)));
+	else if (ft_strcmp(tokens[0], "pwd") == 0)
+		return (pwd(&(minishell)));
+	else if (ft_strcmp(tokens[0], "export") == 0)
+		return (export(num_tokens, &(minishell)));
+	else if (ft_strcmp(tokens[0], "unset") == 0)
+		return (ft_unset(num_tokens, &(minishell)));
+	else if ((ft_strcmp(tokens[0], "env") == 0))
+		return (show_env(&(minishell), num_tokens));
+	else if (ft_strcmp(tokens[0], "exit") == 0)
+		return (ft_exit(minishell, tokens, num_tokens));
+	else
+		return (-1);
 }
