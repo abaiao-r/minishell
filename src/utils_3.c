@@ -55,8 +55,8 @@ int	has_valid_redirections(char **args)
 	}
 	while (args[i])
 	{
-		if (is_redirection(args[i]) && (!args[i + 1]
-				|| is_redirection(args[i + 1])))
+		if (is_redirection(args[i]) && (!args[i + 1] || is_redirection(args[i
+					+ 1])))
 		{
 			show_redirection_error(args[i]);
 			return (0);
@@ -87,23 +87,23 @@ int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 	unsigned char	status;
 
 	if (num_tokens == 1)
-	{
 		status = 0;
-	}
-	else if (num_tokens > 2)
-	{
-		printf("exit: too many arguments\n");
+	else if (num_tokens > 2 && printf("exit: too many arguments\n"))
 		status = 1;
-	}
 	else if (ft_isnumber(tokens[1]))
 	{
 		status = ft_atoi(tokens[1]);
-		if ((tokens[1][0] == '-' && ft_strcmp(tokens[1], LLONG_MIN_STR)) > 0 || ft_strcmp(tokens[1], LLONG_MAX_STR) > 0)
+		if ((tokens[1][0] == '-' && ft_strcmp(tokens[1], LLONG_MIN_STR)) > 0
+			|| ft_strcmp(tokens[1], LLONG_MAX_STR) > 0)
+		{
+			printf("minishell: exit: %s: numeric argument required\n",
+				tokens[1]);
 			status = 2;
+		}
 	}
 	else
 	{
-		printf("exit: %s: enumeric argument required\n", tokens[1]);
+		printf("minishell: exit: %s: enumeric argument required\n", tokens[1]);
 		status = 2;
 	}
 	free_parsed(tokens);
