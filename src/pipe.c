@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/20 22:03:40 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/21 14:42:16 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,6 +319,7 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 	int in_fd = 0;   // Input file descriptor for the first command
 	char **cmds;
 	int status;
+	pid_t pid;
 
 	cmds = NULL;
 	(void) minishell;
@@ -330,7 +331,7 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 				exit(1);
 			}
 		}
-		pid_t pid = fork();
+		pid = fork();
 		if (pid < 0) {
 			perror("fork failed");
 			exit(1);
@@ -380,7 +381,8 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 	while (num_commands > 0)
 	{
 		wait(&status);
-		minishell->exit_status = WEXITSTATUS(status);
+		if(pid != -1 && WIFEXITED(status))
+			minishell->exit_status = WEXITSTATUS(status);
 		num_commands--;
 	}
 }
