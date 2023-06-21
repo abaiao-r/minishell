@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/21 14:42:16 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:27:36 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,13 @@ int	write_line(char *delimiter, int temp_fd)
 	line = readline("heredoc> ");
 	if (line == NULL)
 	{
-		return (-1);
+		ft_putstr_fd(
+			"heredoc: warning: here-document delimited by end-of-file ",
+			STDERR_FILENO);
+		ft_putstr_fd("(wanted `", STDERR_FILENO);
+		ft_putstr_fd(delimiter, STDERR_FILENO);
+		ft_putstr_fd("\')\n", STDERR_FILENO);
+		return (1);
 	}
 	if (ft_strcmp(line, delimiter) == 0)
 	{
@@ -59,7 +65,17 @@ void	handle_sigint_heredoc(int signum)
 	kill(0, SIGQUIT);
 }
 
-void	heredoc(char *delimiter)
+	// Disable Ctrl+\ (SIGQUIT) from generating a control character
+void	change_terminal(void)
+{
+	struct termios	term_settings;
+
+	tcgetattr(STDIN_FILENO, &term_settings);
+	term_settings.c_cc[VQUIT] = _POSIX_VDISABLE;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term_settings);
+}
+
+void	heredoc(char *delimiter, t_minishell *minishell)
 {
 	char	*temp_file;
 	int		temp_fd;
@@ -78,24 +94,22 @@ void	heredoc(char *delimiter)
 		}
 		if (pid == 0)
 		{
+			change_terminal();
 			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
+			signal(SIGQUIT, SIG_IGN);
 			temp_fd = open(temp_file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 			if (temp_fd < 0)
 			{
 				perror("open failed");
 				return ;
 			}
-			int status;
-			while (1)
+			while (!write_line(delimiter, temp_fd))
 			{
-				status = write_line(delimiter, temp_fd);
-				if (status == -1 || status == 1)
-					break ;
 			}
 			close(temp_fd);
-			g_minishell.in_command = 0;
-			exit(0);
+			free_parsed(minishell->cmd_without_redirects);
+			free_minishell(minishell);
+			exit(EXIT_SUCCESS);
 		}
 		else
 		{
@@ -279,7 +293,7 @@ char	**get_command_without_redirects(t_input *input)
 	return (command);
 }
 
-void	handle_redirections(t_input *input)
+void	handle_redirections(t_input *input, t_minishell *minishell)
 {
 	char	*file;
 
@@ -288,7 +302,7 @@ void	handle_redirections(t_input *input)
 		if (!ft_strncmp(input->token, "<<", 2) && !input->within_quotes)
 		{
 			file = input->next->token;
-			heredoc(file);
+			heredoc(file, minishell);
 		}
 		else if (!ft_strncmp(input->token, "<", 1) && !input->within_quotes)
 		{
@@ -339,6 +353,7 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 		{
 			// Redirect input from the previous command or file
 			cmds = get_command_without_redirects(input);
+			minishell->cmd_without_redirects = cmds;
 			if (i != 0)
 			{
 				dup2(in_fd, STDIN_FILENO);
@@ -351,7 +366,7 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 				close(pipe_fd[0]);
 				close(pipe_fd[1]);
 			}
-			handle_redirections(input);
+			handle_redirections(input, minishell);
 			int	num_tokens = count_tokens_str(cmds);
 			if (is_builtin(cmds))
 				exe_cmd(cmds, num_tokens, minishell);
@@ -422,14 +437,14 @@ int	exe_commands(t_minishell *minishell)
 		if (!tokens[0])
 		{
 			save_fds(minishell);
-			handle_redirections(minishell->input);
+			handle_redirections(minishell->input, minishell);
 			reset_fds(minishell);
 			free_parsed(tokens);
 		}
 		else if (is_builtin(tokens))
 		{
 			save_fds(minishell);
-			handle_redirections(minishell->input);
+			handle_redirections(minishell->input, minishell);
 			status = exe_cmd(tokens, count_tokens_str(tokens),
 					minishell);
 			reset_fds(minishell);

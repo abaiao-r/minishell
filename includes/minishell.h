@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/21 00:03:17 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:25:41 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include <termios.h>
 
 extern struct s_global_minishell	g_minishell;
 
@@ -75,6 +76,7 @@ typedef struct s_minishell
 	char							**tokens;
 	int								in;
 	int								out;
+	char							**cmd_without_redirects;
 }									t_minishell;
 
 struct								s_global_minishell
@@ -248,6 +250,6 @@ void free_list(t_input *head);
 /* others */
 void redirect_input(char *file);
 void redirect_output(char *file, int append);
-void heredoc(char *delimiter);
+void heredoc(char *delimiter, t_minishell *minishell);
 
 #endif

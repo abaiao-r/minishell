@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_data.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:16:25 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/19 18:22:54 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:02:24 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_minishell	*init_minishell(char **env)
 	minishell->input_str = NULL;
 	minishell->tokens = NULL;
 	minishell->input = NULL;
+	minishell->cmd_without_redirects = NULL;
 	return (minishell);
 }
 

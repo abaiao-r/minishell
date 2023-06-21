@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/19 22:52:02 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:05:33 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	main(int argc, char **argv, char **env)
 	int			response;
 	t_minishell	*minishell;
 
-	 if (argc > 1)
-        return 0;
+	if (argc > 1)
+		return (0);
 	(void)argv;
 	minishell = init_minishell(env);
 	g_minishell.minishell = minishell;
