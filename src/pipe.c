@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/21 19:27:36 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/22 21:43:11 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,148 +17,11 @@
 #include <string.h>
 #include <sys/wait.h>
 
-void	restore_stdin(void)
-{
-	int	terminal_fd;
-
-	terminal_fd = open("/dev/tty", O_RDWR);
-	if (terminal_fd < 0)
-	{
-		perror("open failed");
-	}
-	dup2(terminal_fd, STDIN_FILENO);
-	close(terminal_fd);
-}
-
-int	write_line(char *delimiter, int temp_fd)
-{
-	char	*line;
-
-	line = readline("heredoc> ");
-	if (line == NULL)
-	{
-		ft_putstr_fd(
-			"heredoc: warning: here-document delimited by end-of-file ",
-			STDERR_FILENO);
-		ft_putstr_fd("(wanted `", STDERR_FILENO);
-		ft_putstr_fd(delimiter, STDERR_FILENO);
-		ft_putstr_fd("\')\n", STDERR_FILENO);
-		return (1);
-	}
-	if (ft_strcmp(line, delimiter) == 0)
-	{
-		free(line);
-		return (1);
-	}
-	else
-	{
-		write(temp_fd, line, ft_strlen(line));
-		write(temp_fd, "\n", 1);
-	}
-	free(line);
-	return (0);
-}
-
-void	handle_sigint_heredoc(int signum)
-{
-	(void)signum;
-	kill(0, SIGQUIT);
-}
-
-	// Disable Ctrl+\ (SIGQUIT) from generating a control character
-void	change_terminal(void)
-{
-	struct termios	term_settings;
-
-	tcgetattr(STDIN_FILENO, &term_settings);
-	term_settings.c_cc[VQUIT] = _POSIX_VDISABLE;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term_settings);
-}
-
-void	heredoc(char *delimiter, t_minishell *minishell)
-{
-	char	*temp_file;
-	int		temp_fd;
-	pid_t	pid;
-
-	if (delimiter != NULL)
-	{
-		g_minishell.in_command = 1;
-		restore_stdin();
-		temp_file = "/tmp/tempfileXXXXXX";
-		pid = fork();
-		if (pid < 0)
-		{
-			perror("fork failed");
-			return ;
-		}
-		if (pid == 0)
-		{
-			change_terminal();
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_IGN);
-			temp_fd = open(temp_file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-			if (temp_fd < 0)
-			{
-				perror("open failed");
-				return ;
-			}
-			while (!write_line(delimiter, temp_fd))
-			{
-			}
-			close(temp_fd);
-			free_parsed(minishell->cmd_without_redirects);
-			free_minishell(minishell);
-			exit(EXIT_SUCCESS);
-		}
-		else
-		{
-			waitpid(pid, NULL, 0);
-		}
-		redirect_input(temp_file);
-		unlink(temp_file);
-		g_minishell.in_command = 0;
-	}
-}
-
-void	redirect_input(char *file)
-{
-	int	fd;
-
-	fd = open(file, O_RDONLY);
-	if (fd < 0)
-	{
-		perror("open failed");
-		fprintf(stderr, "file: %s\n", file);
-	}
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-}
-
-void	redirect_output(char *file, int append)
-{
-	int	flags;
-	int	fd;
-
-	flags = O_WRONLY | O_CREAT;
-	if (append)
-		flags |= O_APPEND;
-	else
-		flags |= O_TRUNC;
-	fd = open(file, flags, 0666);
-	if (fd < 0)
-	{
-		perror("open failed");
-	}
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-}
-
 t_input	*get_next_cmd(t_input *input)
 {
 	while (input)
 	{
-		if (!ft_strncmp(input->token, "|", 1) && !input->within_quotes)
+		if (!ft_strncmp(input->token, "|", 1) && !input->in_quotes)
 			return (input->next);
 		input = input->next;
 	}
@@ -178,70 +41,6 @@ int	count_tokens_str(char **args)
 	return (i);
 }
 
-int	count_tokens_lst(t_input *input)
-{
-	int	num_tokens;
-
-	num_tokens = 0;
-	while (input && !ft_strncmp(input->token, "|", 1) && !input->within_quotes)
-	{
-		if (is_redirection(input->token) && !input->within_quotes)
-			return (num_tokens);
-		input = input->next;
-		//print_list(minishell->input);
-	}
-	return (num_tokens);
-}
-
-void	print_command(char **args, int n_tokens)
-{
-	int	i;
-
-	i = 0;
-	while (args[i] && n_tokens--)
-	{
-		fprintf(stderr, "%s ", args[i]);
-		i++;
-	}
-	fprintf(stderr, "\n");
-}
-
-char	*get_next_redirection(char **args)
-{
-	while (*args)
-	{
-		if (is_redirection(*args))
-			return (*args);
-		args++;
-	}
-	return (NULL);
-}
-
-int	cmd_has_pipe(char **args)
-{
-	while (*args)
-	{
-		if (!strncmp(*args, "|", 1))
-			return (1);
-		args++;
-	}
-	return (0);
-}
-
-int	count_commands_lst(t_input *input)
-{
-	int	n_commands;
-
-	n_commands = 0;
-	while (input)
-	{
-		if (!ft_strncmp(input->token, "|", 1) && !input->within_quotes)
-			n_commands++;
-		input = input->next;
-	}
-	return (n_commands + 1);
-}
-
 int	count_arguments(t_input *input)
 {
 	int		num_args;
@@ -249,11 +48,11 @@ int	count_arguments(t_input *input)
 
 	num_args = 0;
 	redirect_flag = 0;
-	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->within_quotes))
+	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->in_quotes))
 	{
 		if (redirect_flag)
 			redirect_flag = 0;
-		else if (is_redirection(input->token) && !input->within_quotes)
+		else if (is_redirection(input->token) && !input->in_quotes)
 			redirect_flag = 1;
 		else
 			num_args++;
@@ -262,72 +61,39 @@ int	count_arguments(t_input *input)
 	return (num_args);
 }
 
-char	**get_command_without_redirects(t_input *input)
+void	redirect_child(t_input *input, int num_commands,
+t_minishell *minishell, t_redirect_info *redirect_info)
 {
-	char	**command;
-	int		num_args;
-	int		redirect_flag;
-	int		i;
+	char	**cmds;
+	int		num_tokens;
 
-	num_args = count_arguments(input);
-	command = malloc(sizeof(char *) * (num_args + 1));
-	if (!command)
-		return (NULL);
-	redirect_flag = 0;
-	i = 0;
-	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->within_quotes))
+	cmds = get_command_without_redirects(input);
+	minishell->cmd_without_redirects = cmds;
+	if (redirect_info->i != 0)
 	{
-		if (redirect_flag)
-			redirect_flag = 0;
-		else if (is_redirection(input->token) && !input->within_quotes)
-			redirect_flag = 1;
-		else
-		{
-			command[i++] = ft_strdup(input->token);
-			if (!command[i - 1])
-				return (NULL);
-		}
-		input = input->next;
+		dup2(redirect_info->in_fd, STDIN_FILENO);
+		close(redirect_info->in_fd);
 	}
-	command[i] = NULL;
-	return (command);
-}
-
-void	handle_redirections(t_input *input, t_minishell *minishell)
-{
-	char	*file;
-
-	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->within_quotes))
+	// Redirect output to the next command or file
+	if (redirect_info->i < num_commands - 1)
 	{
-		if (!ft_strncmp(input->token, "<<", 2) && !input->within_quotes)
-		{
-			file = input->next->token;
-			heredoc(file, minishell);
-		}
-		else if (!ft_strncmp(input->token, "<", 1) && !input->within_quotes)
-		{
-			file = input->next->token;
-			redirect_input(file);
-		}
-		else if (!ft_strncmp(input->token, ">>", 2) && !input->within_quotes)
-		{
-			file = input->next->token;
-			redirect_output(file, 1);
-		}
-		else if (!ft_strncmp(input->token, ">", 1) && !input->within_quotes)
-		{
-			file = input->next->token;
-			redirect_output(file, 0);
-		}
-		input = input->next;
+		dup2(redirect_info->pipe_fd_out, STDOUT_FILENO);
+		close(redirect_info->pipe_fd_in);
+		close(redirect_info->pipe_fd_out);
 	}
+	handle_redirections(input, minishell);
+	num_tokens = count_tokens_str(cmds);
+	if (is_builtin(cmds))
+		exe_cmd(cmds, num_tokens, minishell);
+	else
+		exe_shell_cmd(cmds, num_tokens, &(minishell->environment));
+	free_parsed(cmds);
+	free_minishell(minishell);
+	exit(EXIT_FAILURE);
 }
 
 // TODO set follow-fork-mode child
-
-// echo hello > file.txt | cat file.txt
-// "echo", "hello", NULL
-void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
+void	redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 {
 	int pipe_fd[2];  // Pipe file descriptors
 	int in_fd = 0;   // Input file descriptor for the first command
@@ -400,67 +166,4 @@ void redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 			minishell->exit_status = WEXITSTATUS(status);
 		num_commands--;
 	}
-}
-
-void	save_fds(t_minishell *minishell)
-{
-	minishell->in = dup(STDIN_FILENO);
-	minishell->out = dup(STDOUT_FILENO);
-}
-
-void	reset_fds(t_minishell *minishell)
-{
-	dup2(minishell->in, STDIN_FILENO);
-	dup2(minishell->out, STDOUT_FILENO);
-	close(minishell->in);
-	close(minishell->out);
-}
-
-int	exe_commands(t_minishell *minishell)
-{
-	int		num_commands;
-	int		status;
-	char	**tokens;
-
-	g_minishell.in_command = 1;
-	num_commands = count_commands_lst(minishell->input);
-	if (num_commands > 1)
-		redirect_3(minishell->input, num_commands, minishell);
-	if (num_commands == 1)
-	{
-		tokens = get_command_without_redirects(minishell->input);
-		if (!tokens)
-		{
-			free_minishell(minishell);
-			exit(EXIT_SUCCESS);
-		}
-		if (!tokens[0])
-		{
-			save_fds(minishell);
-			handle_redirections(minishell->input, minishell);
-			reset_fds(minishell);
-			free_parsed(tokens);
-		}
-		else if (is_builtin(tokens))
-		{
-			save_fds(minishell);
-			handle_redirections(minishell->input, minishell);
-			status = exe_cmd(tokens, count_tokens_str(tokens),
-					minishell);
-			reset_fds(minishell);
-			free_parsed(tokens); // free tokens
-			if (status == EXIT)
-			{
-				free_minishell(minishell);
-				printf("exit\n");
-				exit(EXIT_SUCCESS);
-			}
-		}
-		else
-		{
-			free_parsed(tokens);
-			redirect_3(minishell->input, num_commands, minishell);
-		}
-	}
-	return (NO_EXIT);
 }

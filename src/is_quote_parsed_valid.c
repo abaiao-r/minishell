@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_quote_parsed_valid.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:42:39 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/19 15:27:13 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:55:46 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	is_end_input(const t_input *current)
 
 static int	is_quotes(const t_input *current)
 {
-	return (current->within_quotes == 0);
+	return (current->in_quotes == 0);
 }
 
 /* The function is_quote_parsed_valid checks if the given input array
@@ -45,7 +45,7 @@ int	is_pipe_or_redirection_valid(t_input *input)
 	t_input	*current;
 
 	current = input;
-	if (ft_strcmp(current->token, "|") == 0 && current->within_quotes == 0)
+	if (ft_strcmp(current->token, "|") == 0 && current->in_quotes == 0)
 		return (show_str_error(current->token));
 	while (current)
 	{

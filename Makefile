@@ -6,7 +6,7 @@
 #    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/21 19:30:14 by quackson         ###   ########.fr        #
+#    Updated: 2023/06/21 20:26:04 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,15 @@ OBJDIR = ./objs
 # Source Files
 
 SRCS = $(SRCDIR)/commands.c \
-	   $(SRCDIR)/env.c \
 	   $(SRCDIR)/env_utils.c \
+	   $(SRCDIR)/env.c \
+	   $(SRCDIR)/exe_commands.c \
 	   $(SRCDIR)/exe_shell_cmd.c \
 	   $(SRCDIR)/export.c \
 	   $(SRCDIR)/export_utils.c \
 	   $(SRCDIR)/free_mem.c \
 	   $(SRCDIR)/ft_getenv.c \
+	   $(SRCDIR)/heredoc.c \
 	   $(SRCDIR)/input_parser.c \
 	   $(SRCDIR)/input_parser_utils_1.c \
 	   $(SRCDIR)/input_parser_utils_2.c \
@@ -40,6 +42,7 @@ SRCS = $(SRCDIR)/commands.c \
 	   $(SRCDIR)/parser_2d.c \
 	   $(SRCDIR)/parser_checks.c \
 	   $(SRCDIR)/pipe.c \
+	   $(SRCDIR)/redirections.c \
 	   $(SRCDIR)/signal.c \
 	   $(SRCDIR)/unset.c \
 	   $(SRCDIR)/utils_2.c \

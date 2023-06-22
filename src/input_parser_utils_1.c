@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_parser_utils_1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:02:44 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/19 18:29:42 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:55:40 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,6 @@ void	add_word(t_input **head, char *input, int start, int end)
 	if (!word)
 		return ;
 	node = new_node(word);
-	node->within_quotes = quote_flag;
+	node->in_quotes = quote_flag;
 	ft_lstadd_back_parser(head, node);
 }

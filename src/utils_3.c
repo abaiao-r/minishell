@@ -86,6 +86,7 @@ int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 {
 	unsigned char	status;
 
+	status = 2;
 	if (num_tokens == 1)
 		status = 0;
 	else if (num_tokens > 2 && printf("exit: too many arguments\n"))
@@ -102,10 +103,7 @@ int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 		}
 	}
 	else
-	{
 		printf("minishell: exit: %s: enumeric argument required\n", tokens[1]);
-		status = 2;
-	}
 	free_parsed(tokens);
 	free_minishell(minishell);
 	exit(status);

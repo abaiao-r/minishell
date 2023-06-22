@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/21 19:25:41 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/21 21:04:02 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_input
 {
 	char							*token;
 	int								index;
-	int								within_quotes;
+	int								in_quotes;
 	struct s_input					*next;
 }									t_input;
 
@@ -122,6 +122,18 @@ typedef struct s_por_data
 	int								start;
 	int								end;
 }									t_por_data;
+
+typedef struct redirect_info
+{
+	int								pipe_fd_in;
+	int								pipe_fd_out;
+	int								in_fd;
+	int								i;
+	int								status;
+	pid_t							pid;
+}									t_redirect_info;
+
+
 
 /* command_utils.c */
 char *find_executable(char *cmd, t_env **environment);
@@ -252,4 +264,13 @@ void redirect_input(char *file);
 void redirect_output(char *file, int append);
 void heredoc(char *delimiter, t_minishell *minishell);
 
+/* redirections.c */
+char	**get_command_without_redirects(t_input *input);
+void	handle_redirections(t_input *input, t_minishell *minishell);
+void	exe_command_no_pipes(int num_commands, t_minishell *minishell);
+
+int	count_arguments(t_input *input);
+void	redirect_3(t_input *input, int num_commands, t_minishell *minishell);
+int	count_tokens_str(char **args);
+int	count_commands_lst(t_input *input);
 #endif
