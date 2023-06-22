@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_6.c                                          :+:      :+:    :+:   */
+/*   utils_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:18:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/22 23:17:19 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:02:50 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,18 @@ int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 	free_parsed(tokens);
 	free_minishell(minishell);
 	exit(status);
+}
+
+int	count_commands_lst(t_input *input)
+{
+	int	n_commands;
+
+	n_commands = 0;
+	while (input)
+	{
+		if (!ft_strncmp(input->token, "|", 1) && !input->in_quotes)
+			n_commands++;
+		input = input->next;
+	}
+	return (n_commands + 1);
 }

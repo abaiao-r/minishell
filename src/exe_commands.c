@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 20:07:42 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/21 20:34:54 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:02:40 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,17 @@ void	reset_fds(t_minishell *minishell)
 	close(minishell->out);
 }
 
-int	count_commands_lst(t_input *input)
+int	exe_builtin(char **tokens, t_minishell *minishell)
 {
-	int	n_commands;
-
-	n_commands = 0;
-	while (input)
+	save_fds(minishell);
+	if (!handle_redirections(minishell->input, minishell))
 	{
-		if (!ft_strncmp(input->token, "|", 1) && !input->in_quotes)
-			n_commands++;
-		input = input->next;
+		reset_fds(minishell);
+		free_parsed(tokens);
+		return (0);
 	}
-	return (n_commands + 1);
+	exe_cmd(tokens, count_tokens_str(tokens), minishell);
+	return (1);
 }
 
 void	exe_command_no_pipes(int num_commands, t_minishell *minishell)
@@ -51,22 +50,20 @@ void	exe_command_no_pipes(int num_commands, t_minishell *minishell)
 	{
 		save_fds(minishell);
 		handle_redirections(minishell->input, minishell);
-		reset_fds(minishell);
-		free_parsed(tokens);
 	}
 	else if (is_builtin(tokens))
 	{
-		save_fds(minishell);
-		handle_redirections(minishell->input, minishell);
-		exe_cmd(tokens, count_tokens_str(tokens), minishell);
-		reset_fds(minishell);
-		free_parsed(tokens);
+		if (!exe_builtin(tokens, minishell))
+			return ;
 	}
 	else
 	{
 		free_parsed(tokens);
 		redirect_3(minishell->input, num_commands, minishell);
+		return ;
 	}
+	reset_fds(minishell);
+	free_parsed(tokens);
 }
 
 int	exe_commands(t_minishell *minishell)

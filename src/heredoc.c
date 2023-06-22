@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:42:49 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/21 19:45:50 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:49:57 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	heredoc_child(char *delimiter, char *temp_file, t_minishell *minishell)
  * @return The function does not have a return value, so nothing is
  * being returned.
  */
-void	heredoc(char *delimiter, t_minishell *minishell)
+int	heredoc(char *delimiter, t_minishell *minishell)
 {
 	char	*temp_file;
 	pid_t	pid;
@@ -116,7 +116,7 @@ void	heredoc(char *delimiter, t_minishell *minishell)
 		if (pid < 0)
 		{
 			perror("fork failed");
-			return ;
+			return (0);
 		}
 		if (pid == 0)
 			heredoc_child(delimiter, temp_file, minishell);
@@ -125,5 +125,7 @@ void	heredoc(char *delimiter, t_minishell *minishell)
 		redirect_input(temp_file);
 		unlink(temp_file);
 		g_minishell.in_command = 0;
+		return (1);
 	}
+	return (0);
 }

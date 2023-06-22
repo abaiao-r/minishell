@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/22 23:19:49 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:46:50 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,13 +260,13 @@ void add_node(t_input **head, char *str);
 void free_list(t_input *head);
 
 /* others */
-void redirect_input(char *file);
-void redirect_output(char *file, int append);
-void heredoc(char *delimiter, t_minishell *minishell);
+int redirect_input(char *file);
+int redirect_output(char *file, int append);
+int heredoc(char *delimiter, t_minishell *minishell);
 
 /* redirections.c */
 char	**get_command_without_redirects(t_input *input);
-void	handle_redirections(t_input *input, t_minishell *minishell);
+int	handle_redirections(t_input *input, t_minishell *minishell);
 void	exe_command_no_pipes(int num_commands, t_minishell *minishell);
 
 int	count_arguments(t_input *input);

@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/22 23:06:52 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:48:30 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,17 @@ t_redirect_info redirect_info)
 		close(redirect_info.pipe_fd_0);
 		close(redirect_info.pipe_fd_1);
 	}
-	handle_redirections(input, minishell);
-	num_tokens = count_tokens_str(cmds);
-	if (is_builtin(cmds))
-		exe_cmd(cmds, num_tokens, minishell);
-	else
-		exe_shell_cmd(cmds, num_tokens, &(minishell->environment));
+	if (handle_redirections(input, minishell))
+	{
+		num_tokens = count_tokens_str(cmds);
+		if (is_builtin(cmds))
+			exe_cmd(cmds, num_tokens, minishell);
+		else
+			exe_shell_cmd(cmds, num_tokens, &(minishell->environment));
+	}
 	free_parsed(cmds);
 	free_minishell(minishell);
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
 
 void	wait_for_children(int num_commands, t_redirect_info redirect_info,
