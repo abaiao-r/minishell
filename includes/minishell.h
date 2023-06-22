@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/21 21:04:02 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:19:49 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,8 @@ typedef struct s_por_data
 
 typedef struct redirect_info
 {
-	int								pipe_fd_in;
-	int								pipe_fd_out;
+	int								pipe_fd_0;
+	int								pipe_fd_1;
 	int								in_fd;
 	int								i;
 	int								status;
@@ -273,4 +273,5 @@ int	count_arguments(t_input *input);
 void	redirect_3(t_input *input, int num_commands, t_minishell *minishell);
 int	count_tokens_str(char **args);
 int	count_commands_lst(t_input *input);
+t_input	*get_next_cmd(t_input *input);
 #endif

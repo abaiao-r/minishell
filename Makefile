@@ -6,7 +6,7 @@
 #    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/21 20:26:04 by quackson         ###   ########.fr        #
+#    Updated: 2023/06/22 23:25:16 by quackson         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,13 +41,14 @@ SRCS = $(SRCDIR)/commands.c \
 	   $(SRCDIR)/parse_pipe_or_redirection.c \
 	   $(SRCDIR)/parser_2d.c \
 	   $(SRCDIR)/parser_checks.c \
-	   $(SRCDIR)/pipe.c \
+	   $(SRCDIR)/pipe_1.c \
+	   $(SRCDIR)/pipe_2.c \
 	   $(SRCDIR)/redirections.c \
 	   $(SRCDIR)/signal.c \
 	   $(SRCDIR)/unset.c \
+	   $(SRCDIR)/utils_1.c \
 	   $(SRCDIR)/utils_2.c \
-	   $(SRCDIR)/utils_3.c \
-	   $(SRCDIR)/utils_6.c
+	   $(SRCDIR)/utils_3.c
 
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

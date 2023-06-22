@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_shell_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/20 21:10:38 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:07:37 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,4 +122,3 @@ int	exe_shell_cmd(char **args, int num_tokens, t_env **environment)
 	return (exe_bash_args(bash_args, environment, i));
 	exit(127);
 }
-	
