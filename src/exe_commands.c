@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 20:07:42 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/23 00:02:40 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/23 23:33:58 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	exe_builtin(char **tokens, t_minishell *minishell)
 	{
 		reset_fds(minishell);
 		free_parsed(tokens);
+		minishell->exit_status = 1;
 		return (0);
 	}
 	exe_cmd(tokens, count_tokens_str(tokens), minishell);
@@ -49,7 +50,8 @@ void	exe_command_no_pipes(int num_commands, t_minishell *minishell)
 	if (!tokens[0])
 	{
 		save_fds(minishell);
-		handle_redirections(minishell->input, minishell);
+		if (!handle_redirections(minishell->input, minishell))
+			minishell->exit_status = 1;
 	}
 	else if (is_builtin(tokens))
 	{
