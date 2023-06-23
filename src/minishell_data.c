@@ -73,7 +73,7 @@ int	validate_and_load_data(t_minishell *minishell, char *input)
 		return (INVALID);
 	}
 	parse_input(minishell);
-	if (!is_pipe_or_redirection_valid(minishell->input))
+	if (!minishell->input || !is_pipe_or_redirection_valid(minishell->input))
 	{
 		free_input_resources(minishell);
 		return (INVALID);
