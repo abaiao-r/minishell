@@ -19,7 +19,7 @@ static void	process_export_tokens(t_minishell **minishell, int *flag, int *i)
 	int		flag_equal;
 
 	(*i) = 1;
-	while ((*minishell)->tokens[(*i)])
+	while ((*minishell)->tokens[(*i)] && !is_redirection((*minishell)->tokens[(*i)]))
 	{
 		if ((!ft_isalpha((*minishell)->tokens[(*i)][0])
 			&& !((*minishell)->tokens[(*i)][0] == '_')))
