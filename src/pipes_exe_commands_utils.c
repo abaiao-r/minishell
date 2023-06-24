@@ -5,13 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 16:40:17 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/24 21:00:43 by pedgonca         ###   ########.fr       */
+/*   Created: 2023/06/24 21:06:12 by pedgonca          #+#    #+#             */
+/*   Updated: 2023/06/24 21:06:15 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* is_redirection: returns 1 if the string is a redirection; otherwise, it
+returns 0. */
 int	is_redirection(char *str)
 {
 	if (ft_strcmp(str, ">") == 0)
@@ -27,6 +29,7 @@ int	is_redirection(char *str)
 	return (0);
 }
 
+/* is_builtin: returns 1 if the string is a builtin; otherwise, it returns 0. */
 int	is_builtin(char **tokens)
 {
 	if (!tokens || !tokens[0])
@@ -48,6 +51,7 @@ int	is_builtin(char **tokens)
 	return (0);
 }
 
+/* ft_isnumber: returns 1 if the string is a number; otherwise, it returns 0. */
 int	ft_isnumber(char *str)
 {
 	int	i;
@@ -66,6 +70,12 @@ int	ft_isnumber(char *str)
 	return (1);
 }
 
+/* ft_exit: exits the program.
+If the number of tokens is 1, it exits with status 0. If the number of tokens
+is greater than 2, it prints the error message and exits with status 1.
+If the number of tokens is 2, it checks if the token is a number. If the token
+is a number, it exits with the number. If the token is not a number, it prints
+the error message and exits with status 2. */
 int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 {
 	unsigned char	status;
@@ -93,6 +103,10 @@ int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 	exit(status);
 }
 
+/* count_commands_lst: returns the number of commands in the input.
+It iterates through the input until it finds a pipe token. If it finds a pipe
+token, it increments the number of commands; otherwise, it returns the number
+of commands plus 1. */
 int	count_commands_lst(t_input *input)
 {
 	int	n_commands;
