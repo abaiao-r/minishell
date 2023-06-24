@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 20:18:07 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:45:47 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ char	*find_executable(char *cmd, t_env **environment)
 
 	path = ft_getenv("PATH", *environment);
 	if (!path)
+	{
+		errno = 127;
 		return (NULL);
+	}
 	if (ft_strchr(cmd, '/'))
 	{
 		if (!access(cmd, X_OK))
