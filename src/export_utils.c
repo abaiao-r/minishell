@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 18:49:51 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/12 17:19:30 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 03:16:38 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* update_env_name function updates the value of an existing variable in the
+environment linked list. It returns 1 if the variable is found, otherwise 0. */
 int	update_env_name(t_env **env_list, char *find_var, char *new_value,
 		int flag_equal)
 {
@@ -34,6 +36,9 @@ int	update_env_name(t_env **env_list, char *find_var, char *new_value,
 	return (0);
 }
 
+/* parse_input_export function parses the input string to find the variable
+name and the new value. It returns 1 if the input contains an equal sign,
+otherwise 0. */
 int	parse_input_export(char *input, char **find_var, char **new_value)
 {
 	char	*equal_sign;
@@ -56,6 +61,8 @@ int	parse_input_export(char *input, char **find_var, char **new_value)
 	return (flag_equal);
 }
 
+/*  swap_env_nodes function swaps the data of two nodes to sort the linked list
+in alphabetical order. */
 t_env	*sort_alphabet_env_list(t_env **head)
 {
 	t_env	*curr;
@@ -81,6 +88,8 @@ t_env	*sort_alphabet_env_list(t_env **head)
 	return (*head);
 }
 
+/*  print_export function prints the environment variables in alphabetical
+order. */
 void	print_export(t_env **head)
 {
 	t_env	*node;
@@ -98,6 +107,11 @@ void	print_export(t_env **head)
 	}
 }
 
+/* show_export funtion is called when the user types "export" in the terminal.
+It prints the environment variables in alphabetical order.
+It returns NO_EXIT to the main function so that the shell can continue
+running.
+ */
 int	show_export(t_env **environment)
 {
 	print_export(environment);
