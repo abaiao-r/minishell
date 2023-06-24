@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: quackson <quackson@student.42.fr>          +#+  +:+       +#+         #
+#    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/22 23:25:16 by quackson         ###   ########.fr        #
+#    Updated: 2023/06/24 12:44:19 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ OBJDIR = ./objs
 
 # Source Files
 
-SRCS = $(SRCDIR)/commands.c \
+SRCS = $(SRCDIR)/commands_utils.c \
+	   $(SRCDIR)/commands.c \
 	   $(SRCDIR)/env_utils.c \
 	   $(SRCDIR)/env.c \
 	   $(SRCDIR)/exe_commands.c \

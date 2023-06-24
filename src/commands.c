@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/20 21:53:50 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 12:45:33 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int	change_dir(char **input, int num_tokens, t_env **environment)
 
 	if (num_tokens > 2)
 	{
-		printf("bash: cd: too many arguments\n");
+		write(2, "bash: cd: too many arguments\n", 29);
+		g_minishell.minishell->exit_status = 1;
 		return (NO_EXIT);
 	}
 	home_path = ft_getenv("HOME", *environment);
@@ -79,7 +80,7 @@ int	change_dir(char **input, int num_tokens, t_env **environment)
 	else
 		dir_path = input[1];
 	if (chdir(dir_path) != 0)
-		printf("bash: cd: %s: No such file or directory\n", dir_path);
+		print_error_cd(dir_path);
 	return (NO_EXIT);
 }
 

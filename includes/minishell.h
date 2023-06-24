@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/22 23:46:50 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 12:42:37 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,8 @@ typedef struct redirect_info
 	pid_t							pid;
 }									t_redirect_info;
 
-
+/* commands_utils.c */
+void print_error_cd(char *token);
 
 /* command_utils.c */
 char *find_executable(char *cmd, t_env **environment);
