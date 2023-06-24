@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 19:22:22 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:18:07 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ It assigns the first argument to the executable path.
 If the executable path is NULL, it frees the arguments,
 prints the error message and exits the program.
 If the executable path is valid, it executes the command. */
-int	exe_bash_args(char **bash_args, t_env **environment, int i)
+int	exe_bash_args(char **bash_args, t_env **environment,
+t_minishell *minishell, int i)
 {
 	bash_args[i] = NULL;
 	bash_args[0] = find_executable(bash_args[0], environment);
@@ -79,23 +80,31 @@ int	exe_bash_args(char **bash_args, t_env **environment, int i)
 	{
 		free(bash_args);
 		perror("Command not found");
+		free_parsed(minishell->cmd_without_redirects);
+		free_minishell(minishell);
 		exit(127);
 	}
 	if (access(bash_args[0], X_OK) == 0)
 	{
 		execve(bash_args[0], bash_args, NULL);
 		perror("execve failed");
+		free(bash_args);
+		free_parsed(minishell->cmd_without_redirects);
+		free_minishell(minishell);
 		exit(126);
 	}
 	free(bash_args);
 	perror("Command not found");
+	free_parsed(minishell->cmd_without_redirects);
+	free_minishell(minishell);
 	exit(127);
 }
 
 /* exe_shell_cmd: executes the command.
 It allocates memory for the arguments, copies the arguments
 to the allocated memory and calls exe_bash_args. */
-int	exe_shell_cmd(char **args, int num_tokens, t_env **environment)
+int	exe_shell_cmd(char **args, int num_tokens, t_minishell *minishell,
+t_env **environment)
 {
 	char	**bash_args;
 	int		i;
@@ -111,6 +120,7 @@ int	exe_shell_cmd(char **args, int num_tokens, t_env **environment)
 		bash_args[i] = args[i];
 		i++;
 	}
-	return (exe_bash_args(bash_args, environment, i));
+	return (exe_bash_args(bash_args, environment, minishell, i));
+	free(minishell);
 	exit(127);
 }

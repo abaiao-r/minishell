@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/24 19:17:33 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:53:48 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,10 @@ int exe_commands(t_minishell *minishell);
 /* exe_shell_cmd.c */
 char	*get_path(char *cmd, char *path);
 char	*find_executable(char *cmd, t_env **environment);
-int	exe_bash_args(char **bash_args, t_env **environment, int i);
-int exe_shell_cmd(char **args, int num_args, t_env **environment);
+int	exe_bash_args(char **bash_args, t_env **environment,
+t_minishell *minishell, int i);
+int	exe_shell_cmd(char **args, int num_tokens, t_minishell *minishell,
+t_env **environment);
 
 /* export_utils.c */
 int update_env_name(t_env **env_list, char *find_var, char *new_value, int flag_equal);
