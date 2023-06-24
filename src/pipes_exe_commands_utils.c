@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 16:40:17 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/24 20:16:54 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 21:00:43 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 		status = 1;
 	else if (ft_isnumber(tokens[1]))
 	{
-		if ((tokens[1][0] == '-' && strcmp(tokens[1], LLONG_MIN_STR) > 0)
-			|| strcmp(tokens[1], LLONG_MAX_STR) > 0)
+		if ((tokens[1][0] == '-' && ft_strcmp(tokens[1], LLONG_MIN_STR) > 0)
+			|| ft_strcmp(tokens[1], LLONG_MAX_STR) > 0)
 		{
 			print_error_exit(tokens[1]);
 			status = 2;
