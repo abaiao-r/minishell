@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 19:18:22 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 20:17:24 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	redirect_child_aux(char **cmds, t_minishell *minishell)
 	if (is_builtin(cmds))
 		exe_cmd(cmds, num_tokens, minishell);
 	else
-		exe_shell_cmd(cmds, num_tokens, &(minishell->environment));
+		exe_shell_cmd(cmds, num_tokens, minishell,
+			&(minishell->environment));
 }
 
 /* redirect_child: redirects the input and output of the child process.
