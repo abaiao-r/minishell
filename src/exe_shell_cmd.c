@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/22 23:07:37 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 00:14:32 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,34 +52,6 @@ char	*find_executable(char *cmd, t_env **environment)
 		return (NULL);
 	}
 	return (get_path(cmd, path));
-}
-
-/* Isto e uma tentative de pegar num conjunto de strings
- e extrair aquelas que estao antes do proximo simbolo "|" ou ">", etc
- Nao esta funcional
- */
-char	**get_cmd(char **input, char c)
-{
-	int		i;
-	int		n;
-	char	**cmd;
-
-	i = 0;
-	while (input[i] && input[i][0] != c)
-		i++;
-	if (!input[i])
-		return (input);
-	n = i;
-	i = 0;
-	cmd = malloc(n * sizeof(char *));
-	if (!cmd)
-		return (NULL);
-	while (input[i] && input[i][0] != c)
-	{
-		cmd[i] = input[i];
-		i++;
-	}
-	return (cmd);
 }
 
 int	exe_bash_args(char **bash_args, t_env **environment, int i)

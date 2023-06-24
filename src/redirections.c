@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:49:56 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/22 23:54:19 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/23 23:50:38 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,15 @@ int	handle_redirections(t_input *input, t_minishell *minishell)
 	while (input && !(!ft_strncmp(input->token, "|", 1) && !input->in_quotes))
 	{
 		if (!ft_strncmp(input->token, "<<", 2) && !input->in_quotes)
-		{
 			result = heredoc(input->next->token, minishell);
-		}
 		else if (!ft_strncmp(input->token, "<", 1) && !input->in_quotes)
-		{
 			result = redirect_input(input->next->token);
-		}
 		else if (!ft_strncmp(input->token, ">>", 2) && !input->in_quotes)
-		{
 			result = redirect_output(input->next->token, 1);
-		}
 		else if (!ft_strncmp(input->token, ">", 1) && !input->in_quotes)
-		{
 			result = redirect_output(input->next->token, 0);
-		}
+		if (!result)
+			return (0);
 		input = input->next;
 	}
 	return (result);

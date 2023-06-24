@@ -6,7 +6,7 @@
 /*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/22 23:48:30 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/23 23:54:29 by quackson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ t_redirect_info redirect_info)
 			exe_cmd(cmds, num_tokens, minishell);
 		else
 			exe_shell_cmd(cmds, num_tokens, &(minishell->environment));
+	}
+	else
+	{
+		free_parsed(cmds);
+		free_minishell(minishell);
+		exit(EXIT_FAILURE);
 	}
 	free_parsed(cmds);
 	free_minishell(minishell);
