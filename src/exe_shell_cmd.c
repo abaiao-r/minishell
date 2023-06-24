@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_shell_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 18:37:50 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:00:45 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	*get_path(char *cmd, char *path)
 	}
 	return (NULL);
 }
+
 /* find_executable: returns the path of the executable.
 If the command contains a slash, it checks if the command
 is a valid executable file. If it is, it returns the command;

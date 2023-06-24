@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exe_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 20:07:42 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 18:33:19 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:02:23 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	exe_command_no_pipes(int num_commands, t_minishell *minishell)
 	else
 	{
 		free_parsed(tokens);
-		redirect_3(minishell->input, num_commands, minishell);
+		redirect(minishell->input, num_commands, minishell);
 		return ;
 	}
 	reset_fds(minishell);
@@ -91,7 +91,7 @@ int	exe_commands(t_minishell *minishell)
 	g_minishell.in_command = 1;
 	num_commands = count_commands_lst(minishell->input);
 	if (num_commands > 1)
-		redirect_3(minishell->input, num_commands, minishell);
+		redirect(minishell->input, num_commands, minishell);
 	if (num_commands == 1)
 		exe_command_no_pipes(num_commands, minishell);
 	return (NO_EXIT);

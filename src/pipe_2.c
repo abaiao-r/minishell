@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 23:05:56 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/22 23:06:19 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:13:53 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,11 @@ int	count_arguments(t_input *input)
 		input = input->next;
 	}
 	return (num_args);
+}
+
+/*print_error: prints the error message and exits the program. */
+void	print_error(char *str)
+{
+	perror(str);
+	exit(1);
 }

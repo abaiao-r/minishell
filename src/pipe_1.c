@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 18:55:41 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:14:38 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,17 @@
 #include <string.h>
 #include <sys/wait.h>
 
+void	redirect_child_aux(char **cmds, t_minishell *minishell)
+{
+	int		num_tokens;
+
+	num_tokens = count_tokens_str(cmds);
+	if (is_builtin(cmds))
+		exe_cmd(cmds, num_tokens, minishell);
+	else
+		exe_shell_cmd(cmds, num_tokens, &(minishell->environment));
+}
+
 /* redirect_child: redirects the input and output of the child process.
 If the child process is not the first process, it redirects the input
 to the pipe. If the child process is not the last process, it redirects
@@ -26,7 +37,7 @@ void	redirect_child(t_input *input, int num_commands, t_minishell *minishell,
 t_redirect_info redirect_info)
 {
 	char	**cmds;
-	int		num_tokens;
+	int		redirection_success;
 
 	cmds = get_command_without_redirects(input);
 	minishell->cmd_without_redirects = cmds;
@@ -41,23 +52,12 @@ t_redirect_info redirect_info)
 		close(redirect_info.pipe_fd_0);
 		close(redirect_info.pipe_fd_1);
 	}
-	if (handle_redirections(input, minishell))
-	{
-		num_tokens = count_tokens_str(cmds);
-		if (is_builtin(cmds))
-			exe_cmd(cmds, num_tokens, minishell);
-		else
-			exe_shell_cmd(cmds, num_tokens, &(minishell->environment));
-	}
-	else
-	{
-		free_parsed(cmds);
-		free_minishell(minishell);
-		exit(EXIT_FAILURE);
-	}
+	redirection_success = handle_redirections(input, minishell);
+	if (redirection_success)
+		redirect_child_aux(cmds, minishell);
 	free_parsed(cmds);
 	free_minishell(minishell);
-	exit(EXIT_SUCCESS);
+	exit(!redirection_success);
 }
 
 /* wait_for_children: waits for the children to finish.
@@ -94,18 +94,11 @@ static void	redirect_parent(int num_commands, t_redirect_info *redirect_info)
 	}
 }
 
-/*print_error: prints the error message and exits the program. */
-static void	print_error(char *str)
-{
-	perror(str);
-	exit(1);
-}
-
 /* redirect_3: redirects the input and output of the parent process.
 It creates a pipe, forks the process and calls redirect_child in the child
 process. In the parent process, it calls redirect_parent and gets the next
 command. */
-void	redirect_3(t_input *input, int num_commands, t_minishell *minishell)
+void	redirect(t_input *input, int num_commands, t_minishell *minishell)
 {
 	int				pipe_fd[2];
 	int				i;

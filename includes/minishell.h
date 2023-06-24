@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/24 17:55:09 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:14:11 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,12 +241,13 @@ int is_quotes_special_char_valid(char *input);
 /* pipe_1.c */
 void redirect_child(t_input *input, int num_commands, t_minishell *minishell, t_redirect_info redirect_info);
 void wait_for_children(int num_commands, t_redirect_info redirect_info, t_minishell *minishell);
-void redirect_3(t_input *input, int num_commands, t_minishell *minishell);
+void redirect(t_input *input, int num_commands, t_minishell *minishell);
 
 /* pipe_2.c */
 t_input *get_next_cmd(t_input *input);
 int count_tokens_str(char **args);
 int count_arguments(t_input *input);
+void	print_error(char *str);
 
 /* pipes_exe_commands_utils.c */
 int is_redirection(char *str);
