@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 13:18:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/23 00:02:50 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 13:57:18 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 	status = 2;
 	if (num_tokens == 1)
 		status = 0;
-	else if (num_tokens > 2 && printf("exit: too many arguments\n"))
+	else if (num_tokens > 2 && write(2, "exit: too many arguments\n", 24))
 		status = 1;
 	else if (ft_isnumber(tokens[1]))
 	{
@@ -64,13 +64,12 @@ int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens)
 		if ((tokens[1][0] == '-' && ft_strcmp(tokens[1], LLONG_MIN_STR)) > 0
 			|| ft_strcmp(tokens[1], LLONG_MAX_STR) > 0)
 		{
-			printf("minishell: exit: %s: numeric argument required\n",
-				tokens[1]);
+			print_error_exit(tokens[1]);
 			status = 2;
 		}
 	}
 	else
-		printf("minishell: exit: %s: enumeric argument required\n", tokens[1]);
+		print_error_exit(tokens[1]);
 	free_parsed(tokens);
 	free_minishell(minishell);
 	exit(status);

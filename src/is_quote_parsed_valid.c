@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_quote_parsed_valid.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 15:42:39 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/21 19:55:46 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 15:23:09 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,16 @@
 with a specific format based on the input string, and it returns 0. */
 static int	show_str_error(char *str)
 {
-	printf("bash: syntax error near unexpected token \'%s\'\n", str);
+	char	*error_tmp;
+	char	*error;
+
+	error_tmp = ft_strjoin("bash: syntax error near unexpected token \'",
+			str);
+	error = ft_strjoin(error_tmp, "\'\n");
+	free(error_tmp);
+	write(2, error, ft_strlen(error));
+	free(error);
+	g_minishell.minishell->exit_status = 2;
 	return (0);
 }
 
@@ -58,7 +67,7 @@ int	is_pipe_or_redirection_valid(t_input *input)
 		if ((ft_strcmp(current->token, "||") == 0 || ((ft_strcmp(current->token,
 							"|") == 0 && is_quotes(current))
 					&& (ft_strcmp(current->next->token, "|") == 0)
-					&& is_quotes(current))))
+					&& !is_quotes(current))))
 			return (show_str_error(current->token));
 		if (current->next && is_special_char(current->token)
 			&& is_quotes(current) && is_special_char(current->next->token)
