@@ -6,17 +6,17 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 12:55:29 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/06/20 22:28:07 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:40:37 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *nptr)
+int	ft_atoll(const char *nptr)
 {
-	int			i;
-	int			sign;
-	int			result;
+	int					i;
+	int					sign;
+	long long			result;
 
 	i = 0;
 	sign = 1;
