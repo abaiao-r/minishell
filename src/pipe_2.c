@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 23:05:56 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 19:13:53 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:17:28 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	count_arguments(t_input *input)
 }
 
 /*print_error: prints the error message and exits the program. */
-void	print_error(char *str)
+void	print_error_shell(char *str)
 {
 	perror(str);
 	exit(1);

@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/24 19:14:11 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:17:33 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void redirect(t_input *input, int num_commands, t_minishell *minishell);
 t_input *get_next_cmd(t_input *input);
 int count_tokens_str(char **args);
 int count_arguments(t_input *input);
-void	print_error(char *str);
+void	print_error_shell(char *str);
 
 /* pipes_exe_commands_utils.c */
 int is_redirection(char *str);

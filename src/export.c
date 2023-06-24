@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 21:58:38 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/24 03:07:27 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/24 19:18:02 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 generates an error message indicating that the token is 
 not a valid identifier. The error message is written to the 
 standard error stream. */
-static void	print_error(char *token)
+static void	print_error_export(char *token)
 {
 	char	*error_tmp;
 	char	*error;
@@ -39,7 +39,7 @@ static int	check_token(char *token, int *flag)
 		|| ft_isdigit(token[0]) == 1)
 	{
 		*flag = 1;
-		print_error(token);
+		print_error_export(token);
 		return (1);
 	}
 	return (0);
@@ -60,7 +60,7 @@ static int	check_token_characters(char *token, int *flag)
 		if (ft_isalnum(token[j]) == 0 && token[j] != '_')
 		{
 			*flag = 1;
-			print_error(token);
+			print_error_export(token);
 			return (1);
 		}
 		j++;

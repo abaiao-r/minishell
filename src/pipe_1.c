@@ -6,7 +6,7 @@
 /*   By: pedgonca <pedgonca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 19:14:38 by pedgonca         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:18:22 by pedgonca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,13 @@ void	redirect(t_input *input, int num_commands, t_minishell *minishell)
 	while (i < num_commands)
 	{
 		if (i < num_commands - 1 && (pipe(pipe_fd) < 0))
-			print_error("pipe failed");
+			print_error_shell("pipe failed");
 		redirect_info.i = i;
 		redirect_info.pipe_fd_0 = pipe_fd[0];
 		redirect_info.pipe_fd_1 = pipe_fd[1];
 		redirect_info.pid = fork();
 		if (redirect_info.pid < 0)
-			print_error("fork failed");
+			print_error_shell("fork failed");
 		else if (redirect_info.pid == 0)
 			redirect_child(input, num_commands, minishell, redirect_info);
 		else
