@@ -6,12 +6,14 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:49:56 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 16:16:53 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:27:53 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* redirect_input: redirects the input to the file. Returns 1 if the
+redirection was successful; otherwise, it returns 0. */
 int	redirect_input(char *file)
 {
 	int	fd;
@@ -27,6 +29,8 @@ int	redirect_input(char *file)
 	return (1);
 }
 
+/* redirect_output: redirects the output to the file. Returns 1 if the
+redirection was successful; otherwise, it returns 0. */
 int	redirect_output(char *file, int append)
 {
 	int	flags;
@@ -48,6 +52,10 @@ int	redirect_output(char *file, int append)
 	return (1);
 }
 
+/* heredoc: redirects the input to the temporary file. It writes the
+lines to the temporary file until it finds the delimiter. Then, it
+redirects the input to the temporary file. Returns 1 if the redirection
+was successful; otherwise, it returns 0. */
 char	**get_command_without_redirects(t_input *input)
 {
 	char	**command;
@@ -77,6 +85,8 @@ char	**get_command_without_redirects(t_input *input)
 	return (command);
 }
 
+/* handle_redirections: handles the redirections. If the redirections
+are successful, it returns 1; otherwise, it returns 0. */
 int	handle_redirections(t_input *input, t_minishell *minishell)
 {
 	int	result;

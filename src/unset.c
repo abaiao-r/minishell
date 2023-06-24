@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/06 19:29:19 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/18 18:59:41 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/24 19:29:04 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* delete_env_name: deletes the environment variable with the name input.
+It iterates through the environment list and compares the name of the
+environment variable with the name passed as argument. If the names are
+equal, it deletes the environment variable and returns 1; otherwise, it
+returns 0. */
 int	delete_env_name(t_env **env_list, char *input)
 {
 	t_env	*current_node;
@@ -38,6 +43,10 @@ int	delete_env_name(t_env **env_list, char *input)
 	return (0);
 }
 
+/* ft_unset: deletes the environment variables with the names input.
+It iterates through the tokens and deletes the environment variables
+with the names passed as arguments. If the number of tokens is 1, it
+returns NO_EXIT; otherwise, it returns NO_EXIT. */
 int	ft_unset(int num_tokens, t_minishell **minishell)
 {
 	int	i;

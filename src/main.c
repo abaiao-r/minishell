@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 18:44:50 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 19:40:28 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static char	*prompt(void)
 
 	signal(SIGQUIT, SIG_IGN);
 	g_minishell.in_command = 0;
-	input = readline("\033[1;33mminishell$ \033[0m");
+	input = readline("minishell$ ");
 	signal(SIGQUIT, sig_handler);
 	return (input);
 }
