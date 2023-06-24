@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 14:34:43 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/24 13:08:03 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 17:55:09 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@
 # include <termios.h>
 
 extern struct s_global_minishell	g_minishell;
-
 
 typedef struct s_env
 {
@@ -133,21 +132,19 @@ typedef struct redirect_info
 	pid_t							pid;
 }									t_redirect_info;
 
-/* commands_utils.c */
-void print_error_cd(char *token);
-void print_error_exit(char *token);
-
-/* command_utils.c */
-char *find_executable(char *cmd, t_env **environment);
-int exe_cmd(char **tokens, int num_tokens, t_minishell *minishell);
-void exe_executable(char **input, t_env **environment);
-int exe_shell_cmd(char **args, int num_tokens, t_env **environment);
-
-/* exe_shell_cmd */
+/* commands.c */
 void echo_aux(char **args, int num_args, int flag);
-int	echo(t_minishell **minishell, char **tokens, int num_tokens);
+int echo(t_minishell **minishell, char **tokens, int num_tokens);
 int pwd(t_minishell **minishell);
 int change_dir(char **input, int num_tokens, t_env **environment);
+int exe_cmd(char **tokens, int num_tokens, t_minishell *minishell);
+
+/* env_utils.c */
+t_env *ft_lstlast_env(t_env *lst);
+void ft_lstadd_back_env(t_env **lst, t_env *new);
+void print_env(t_env **head);
+void free_env_list(t_env **head);
+void swap_env_nodes(t_env *curr);
 
 /* env.c */
 void add_env_node(char *var_name, char *var_value, int i, t_env **environment);
@@ -156,15 +153,25 @@ t_env *parse_env(char **environ);
 t_env *sort_rank_env_list(t_env **head);
 int show_env(t_minishell **minishell, int num_tokens);
 
-/* env.utils.c */
-void ft_lstadd_back_env(t_env **lst, t_env *new);
-t_env *ft_lstlast_env(t_env *lst);
-void print_env(t_env **head);
-void free_env_list(t_env **head);
-void swap_env_nodes(t_env *curr);
 
-/* export.c */
-int export(int num_tokens, t_minishell **minishell);
+/* error_messages_utils.c */
+void print_error_cd(char *token);
+void print_error_exit(char *token);
+int show_quotes_error(void);
+int show_special_char_error(char c);
+
+/* exe_commands.c */
+void	save_fds(t_minishell *minishell);
+void	reset_fds(t_minishell *minishell);
+int	exe_builtin(char **tokens, t_minishell *minishell);
+void	exe_command_no_pipes(int num_commands, t_minishell *minishell);
+int exe_commands(t_minishell *minishell);
+
+/* exe_shell_cmd.c */
+char	*get_path(char *cmd, char *path);
+char	*find_executable(char *cmd, t_env **environment);
+int	exe_bash_args(char **bash_args, t_env **environment, int i);
+int exe_shell_cmd(char **args, int num_args, t_env **environment);
 
 /* export_utils.c */
 int update_env_name(t_env **env_list, char *find_var, char *new_value, int flag_equal);
@@ -173,8 +180,9 @@ t_env *sort_alphabet_env_list(t_env **head);
 void print_export(t_env **head);
 int show_export(t_env **environment);
 
-/* ft_getenv.c */
-char *ft_getenv(const char *name, t_env *environment);
+/* export.c */
+int export(int num_tokens, t_minishell **minishell);
+
 
 /* free_mem.c */
 void free_parsed(char **parsed);
@@ -182,70 +190,11 @@ void free_token_list(t_input **head);
 void free_input_resources(t_minishell *minishell);
 void free_minishell(t_minishell *minishell);
 
-/* is_pipe_or_redirection_valid */
-int is_pipe_or_redirection_valid(t_input *input);
+/* ft_getenv.c */
+char *ft_getenv(const char *name, t_env *environment);
 
-/* minishell_data.c */
-t_minishell *init_minishell(char **env);
-int validate_and_load_data(t_minishell *minishell, char *input);
-
-
-/* parser_2d.c */
-int ft_token_lstsize(t_input *lst);
-char **create_token_array_2d(t_input *input, t_minishell *minishell);
-
-/* parse_args */
-t_input *parse_arguments(char *string);
-
-/* parse_arg_utils1.c */
-int start_arg(t_arg *arg, char *str);
-int update_arg(t_arg *arg, char *str, int *i);
-bool handle_quotes(t_arg *arg, char c, int *i);
-bool is_operator(const char *input);
-void free_arg(t_input *head);
-
-/* parse_dollar_question */
-char *parse_dollar_question(char *input, int exit_status);
-
-/* parse_pipe_or_redirection */
-char *parse_pipe_or_redirection(char *input);
-
-/* parse_utils.c */
-char *parse_dollar(char *input, t_env **environment);
-
-/* parser_checks.c */
-int is_quotes_special_char_valid(char *input);
-
-/* signal.c */
-void sig_handler(int signum);
-
-/* utils_2.c */
-int count_words(char *str);
-char *ft_strncpy(char *s1, char *s2, int n);
-char **ft_split_default(char *str);
-int show_cmd_error(char *str);
-int show_special_char_error(char c);
-int is_builtin(char **tokens);
-
-/* unset.c */
-int delete_env_name(t_env **env_list, char *input);
-int ft_unset(int num_tokens, t_minishell **minishell);
-
-/* pipe.c */
-void execute_pipe(char **cmd1, int cmd1_num_tokens, char **cmd2, int cmd2_num_tokens);
-int count_tokens(char **args);
-int exe_commands(t_minishell *minishell);
-
-/* utils_3.c */
-int is_redirection(char *str);
-int show_quotes_error(void);
-int has_valid_redirections(char **args);
-int	ft_exit(t_minishell *minishell, char **tokens, int num_tokens);
-
-/* input_parser.c */
-t_input *new_parse_arguments(char *input, t_minishell *minishell);
-void new_parse_args_aux(t_input **head, char *input, int *i);
-int get_word_len(char *input);
+/* heredoc.c */
+int heredoc(char *delimiter, t_minishell *minishell);
 
 /* input_parser_utils_1.c */
 void start_quote(int *single_quote, int *double_quote, int *i, char *input);
@@ -254,26 +203,69 @@ int get_redirection_len(char *str);
 char *get_word(char *input, int start, int end, int *quote_flag);
 void add_word(t_input **head, char *input, int start, int end);
 
-/* input_parser_utils_1.c */
+/* input_parser_utils_2.c */
 t_input *ft_lstlast_parser(t_input *lst);
 void ft_lstadd_back_parser(t_input **lst, t_input *new);
 t_input *new_node(char *str);
 void add_node(t_input **head, char *str);
 void free_list(t_input *head);
 
-/* others */
-int redirect_input(char *file);
-int redirect_output(char *file, int append);
-int heredoc(char *delimiter, t_minishell *minishell);
+/* input_parser.c */
+int get_word_len(char *input);
+void new_parse_args_aux(t_input **head, char *input, int *i);
+t_input *new_parse_arguments(char *input, t_minishell *minishell);
+
+/* is_quote_parsed_valid.c */
+int	is_pipe_or_redirection_valid(t_input *input);
+
+/* minishell_data.c */
+t_minishell *init_minishell(char **env);
+int validate_and_load_data(t_minishell *minishell, char *input);
+
+/* parse_dollar_question.c */
+char *parse_dollar_question(char *input, int exit_status);
+
+/* parse_dollar.c */
+char *parse_dollar(char *input, t_env **environment);
+
+/* parse_pipe_or_redirection.c */
+char *parse_pipe_or_redirection(char *input);
+
+/* parser_2d.c */
+int ft_token_lstsize(t_input *lst);
+char **create_token_array_2d(t_input *input, t_minishell *minishell);
+
+/* parser_checks.c */
+int is_quotes_special_char_valid(char *input);
+
+/* pipe_1.c */
+void redirect_child(t_input *input, int num_commands, t_minishell *minishell, t_redirect_info redirect_info);
+void wait_for_children(int num_commands, t_redirect_info redirect_info, t_minishell *minishell);
+void redirect_3(t_input *input, int num_commands, t_minishell *minishell);
+
+/* pipe_2.c */
+t_input *get_next_cmd(t_input *input);
+int count_tokens_str(char **args);
+int count_arguments(t_input *input);
+
+/* pipes_exe_commands_utils.c */
+int is_redirection(char *str);
+int is_builtin(char **tokens);
+int ft_isnumber(char *str);
+int ft_exit(t_minishell *minishell, char **tokens, int num_tokens);
+int count_commands_lst(t_input *input);
 
 /* redirections.c */
-char	**get_command_without_redirects(t_input *input);
-int	handle_redirections(t_input *input, t_minishell *minishell);
-void	exe_command_no_pipes(int num_commands, t_minishell *minishell);
+int redirect_input(char *file);
+int redirect_output(char *file, int append);
+char **get_command_without_redirects(t_input *input);
+int handle_redirections(t_input *input, t_minishell *minishell);
 
-int	count_arguments(t_input *input);
-void	redirect_3(t_input *input, int num_commands, t_minishell *minishell);
-int	count_tokens_str(char **args);
-int	count_commands_lst(t_input *input);
-t_input	*get_next_cmd(t_input *input);
+/* signal.c */
+void sig_handler(int signum);
+
+/* unset.c */
+int delete_env_name(t_env **env_list, char *input);
+int ft_unset(int num_tokens, t_minishell **minishell);
+
 #endif

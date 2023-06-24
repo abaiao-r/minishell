@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 22:55:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/22 23:16:51 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:44:50 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,13 @@ void	print_array_of_strings(char ** strings)
 	}
 } */
 
+/* s_global_minishell	g_minishell: global variable to store the minishell
+structure.*/
 struct s_global_minishell	g_minishell;
 
-char	*prompt(void)
+/* *prompt: prints the prompt and reads the input.
+It ignores the SIGQUIT signal, reads the input and returns it. */
+static char	*prompt(void)
 {
 	char	*input;
 
@@ -51,6 +55,9 @@ char	*prompt(void)
 	return (input);
 }
 
+/* main: initializes the minishell structure, reads the input, validates it,
+loads the data, creates the token array, executes the commands and frees the
+input resources. */
 int	main(int argc, char **argv, char **env)
 {
 	char		*input;

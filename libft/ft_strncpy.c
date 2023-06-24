@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/26 14:53:34 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/06/24 17:00:20 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/06/24 16:25:43 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/06/24 16:26:44 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *str)
+char	*ft_strncpy(char *s1, char *s2, int n)
 {
-	size_t	i;
+	int	i;
 
-	i = 0;
-	while (str && str[i])
-	{
-		i++;
-	}
-	return (i);
+	i = -1;
+	while (++i < n && s2[i])
+		s1[i] = s2[i];
+	s1[i] = '\0';
+	return (s1);
 }
-/* int	main(void)
+
+/* main to test ft_strncpy */
+/* int main(void)
 {
-    char str[] = "Francisco";
-    printf("Lenght of the string: %ld", ft_strlen(str));
+    char src[] = "Geeksfor";
+    char dest[] = "Geeks";
+
+    printf("Before strncpy dest = %s, src = %s\n", dest, src);
+    ft_strncpy(dest, src, 5);
+    printf("After strncpy dest = %s, src = %s\n", dest, src);
+    return 0;  
 } */

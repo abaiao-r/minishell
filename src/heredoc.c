@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:42:49 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/23 23:49:27 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:41:21 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	restore_stdin(void)
+/* restore_stdin: restores the standard input.
+It opens the terminal file, duplicates the file descriptor
+and closes the terminal file. */
+static void	restore_stdin(void)
 {
 	int	terminal_fd;
 
@@ -25,7 +28,10 @@ void	restore_stdin(void)
 	close(terminal_fd);
 }
 
-int	write_line(char *delimiter, int temp_fd)
+/* write_line: writes the line to the temporary file.
+If the line is equal to the delimiter, it frees the line and returns 1.
+Otherwise, it writes the line to the temporary file and returns 0. */
+static int	write_line(char *delimiter, int temp_fd)
 {
 	char	*line;
 
@@ -54,10 +60,10 @@ int	write_line(char *delimiter, int temp_fd)
 	return (0);
 }
 
-/**
- * The function changes the terminal settings to disable the VQUIT character.
- */
-void	change_terminal(void)
+/* change_terminal: changes the terminal settings.
+It gets the terminal settings, disables the quit character
+and sets the terminal settings. */
+static void	change_terminal(void)
 {
 	struct termios	term_settings;
 
@@ -66,9 +72,14 @@ void	change_terminal(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term_settings);
 }
 
-void	heredoc_child(char *delimiter, char *temp_file, t_minishell *minishell)
+/* heredoc_child: changes the terminal settings, redirects the input to the
+temporary file, writes the lines to the temporary file until the delimiter
+is reached, closes the temporary file, frees the tokens, frees the minishell
+and exits the child process. */
+static void	heredoc_child(char *delimiter, char *temp_file,
+		t_minishell *minishell)
 {
-	int		temp_fd;
+	int	temp_fd;
 
 	change_terminal();
 	signal(SIGINT, SIG_DFL);
@@ -88,20 +99,14 @@ void	heredoc_child(char *delimiter, char *temp_file, t_minishell *minishell)
 	exit(EXIT_SUCCESS);
 }
 
-/**
- * This function creates a temporary file and redirects input to it
- * until a specified delimiter is reached.
- * 
- * @param delimiter The delimiter is a string that marks the end of
- * the input for the heredoc command. The user will input lines of
- * text until they enter the delimiter string, at which point the input
- * will be saved to a temporary file.
- * @param minishell The parameter `minishell` is a pointer to a
- * `t_minishell` struct, which likely contains information about the
- * current state of the minishell program.
- * @return The function does not have a return value, so nothing is
- * being returned.
- */
+/* heredoc: creates a temporary file and redirects input to it
+until a specified delimiter is reached.
+It forks the process. In the child process, it changes the terminal
+settings, redirects the input to the temporary file, writes the lines
+to the temporary file until the delimiter is reached, closes the
+temporary file, frees the tokens, frees the minishell and exits the
+child process. In the parent process, it waits for the child process
+to finish. */
 int	heredoc(char *delimiter, t_minishell *minishell)
 {
 	char	*temp_file;

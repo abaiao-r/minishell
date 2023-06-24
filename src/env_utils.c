@@ -6,12 +6,14 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:36:35 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/05/06 19:15:49 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:13:35 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* *ft_lstlast_env: returns the last element of the list. If
+the list is empty, the function returns NULL. */
 t_env	*ft_lstlast_env(t_env *lst)
 {
 	if (!lst)
@@ -29,6 +31,8 @@ t_env	*ft_lstlast_env(t_env *lst)
 	return (lst);
 }
 
+/* ft_lstadd_back_env: adds the element ’new’ at the end of the list. If ’lst’
+is NULL, the function creates a new list with ’new’. */
 void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {
 	t_env	*last;
@@ -48,6 +52,8 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 	return ;
 }
 
+/*  print_env: prints the environment variables. If the variable has no value,
+it is not printed. */
 void	print_env(t_env **head)
 {
 	t_env	*node;
@@ -61,6 +67,7 @@ void	print_env(t_env **head)
 	}
 }
 
+/* free_env_list: frees the environment variables list. */
 void	free_env_list(t_env **head)
 {
 	t_env	**node;
@@ -78,6 +85,12 @@ void	free_env_list(t_env **head)
 	*head = NULL;
 }
 
+/* swap_env_nodes: swaps the values of two nodes.
+The nodes are swapped by reference, not by value.
+The rank is not swapped.
+The rank is used to sort the list.
+The rank is not swapped because the rank of the nodes
+does not change when the nodes are swapped. */
 void	swap_env_nodes(t_env *curr)
 {
 	char	*temp;

@@ -3,15 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   exe_shell_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 15:24:17 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 00:14:32 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:37:50 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* get_path: returns the path of the executable.
+Tries to find the executable file for the command in 
+the paths. It iterates through each path, constructs
+the full path by concatenating the path and the command name,
+and checks if the constructed path is a valid executable file.
+If a valid executable is found, it returns the dynamically
+allocated executable path; otherwise, it returns NULL. */
 char	*get_path(char *cmd, char *path)
 {
 	char	*path_end;
@@ -37,7 +44,11 @@ char	*get_path(char *cmd, char *path)
 	}
 	return (NULL);
 }
-
+/* find_executable: returns the path of the executable.
+If the command contains a slash, it checks if the command
+is a valid executable file. If it is, it returns the command;
+otherwise, it returns NULL.
+If the command does not contain a slash, it calls get_path. */
 char	*find_executable(char *cmd, t_env **environment)
 {
 	char	*path;
@@ -54,6 +65,11 @@ char	*find_executable(char *cmd, t_env **environment)
 	return (get_path(cmd, path));
 }
 
+/* exe_bash_args: executes the command.
+It assigns the first argument to the executable path.
+If the executable path is NULL, it frees the arguments,
+prints the error message and exits the program.
+If the executable path is valid, it executes the command. */
 int	exe_bash_args(char **bash_args, t_env **environment, int i)
 {
 	bash_args[i] = NULL;
@@ -75,6 +91,9 @@ int	exe_bash_args(char **bash_args, t_env **environment, int i)
 	exit(127);
 }
 
+/* exe_shell_cmd: executes the command.
+It allocates memory for the arguments, copies the arguments
+to the allocated memory and calls exe_bash_args. */
 int	exe_shell_cmd(char **args, int num_tokens, t_env **environment)
 {
 	char	**bash_args;

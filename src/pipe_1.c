@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 15:49:34 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/23 23:54:29 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:55:41 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@
 #include <string.h>
 #include <sys/wait.h>
 
+/* redirect_child: redirects the input and output of the child process.
+If the child process is not the first process, it redirects the input
+to the pipe. If the child process is not the last process, it redirects
+the output to the pipe. If the redirections are successful, it executes
+the command. Otherwise, it frees the tokens and exits the program. */
 void	redirect_child(t_input *input, int num_commands, t_minishell *minishell,
 t_redirect_info redirect_info)
 {
@@ -55,6 +60,10 @@ t_redirect_info redirect_info)
 	exit(EXIT_SUCCESS);
 }
 
+/* wait_for_children: waits for the children to finish.
+It waits for the number of commands times. If the child process
+is the last process, it waits for the last process to finish
+and sets the exit status to the exit status of the last process. */
 void	wait_for_children(int num_commands, t_redirect_info redirect_info,
 t_minishell *minishell)
 {
@@ -69,7 +78,12 @@ t_minishell *minishell)
 	}
 }
 
-void	redirect_parent(int num_commands, t_redirect_info *redirect_info)
+/*  redirect_parent: redirects the input and output of the parent process.
+If the child process is not the first process, it closes the input file
+descriptor. If the child process is not the last process, it closes the
+output file descriptor and sets the input file descriptor to the output
+file descriptor of the pipe. */
+static void	redirect_parent(int num_commands, t_redirect_info *redirect_info)
 {
 	if (redirect_info->i > 0)
 		close(redirect_info->in_fd);
@@ -80,13 +94,17 @@ void	redirect_parent(int num_commands, t_redirect_info *redirect_info)
 	}
 }
 
-void	print_error(char *str)
+/*print_error: prints the error message and exits the program. */
+static void	print_error(char *str)
 {
 	perror(str);
 	exit(1);
 }
 
-// TODO set follow-fork-mode child
+/* redirect_3: redirects the input and output of the parent process.
+It creates a pipe, forks the process and calls redirect_child in the child
+process. In the parent process, it calls redirect_parent and gets the next
+command. */
 void	redirect_3(t_input *input, int num_commands, t_minishell *minishell)
 {
 	int				pipe_fd[2];

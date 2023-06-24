@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_getenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 16:11:44 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/06/18 15:15:39 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/06/24 18:38:35 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* ft_getenv: returns the value of the environment variable.
+It iterates through the environment list and compares the name of the
+environment variable with the name passed as argument. If the names are
+equal, it returns the value of the environment variable; otherwise, it
+returns NULL. */
 char	*ft_getenv(const char *name, t_env *environment)
 {
 	t_env	*temp;

@@ -6,7 +6,7 @@
 #    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/21 16:08:07 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/06/24 12:44:19 by abaiao-r         ###   ########.fr        #
+#    Updated: 2023/06/24 16:48:41 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,36 +20,34 @@ OBJDIR = ./objs
 
 # Source Files
 
-SRCS = $(SRCDIR)/commands_utils.c \
-	   $(SRCDIR)/commands.c \
-	   $(SRCDIR)/env_utils.c \
-	   $(SRCDIR)/env.c \
-	   $(SRCDIR)/exe_commands.c \
-	   $(SRCDIR)/exe_shell_cmd.c \
-	   $(SRCDIR)/export.c \
-	   $(SRCDIR)/export_utils.c \
-	   $(SRCDIR)/free_mem.c \
-	   $(SRCDIR)/ft_getenv.c \
-	   $(SRCDIR)/heredoc.c \
-	   $(SRCDIR)/input_parser.c \
-	   $(SRCDIR)/input_parser_utils_1.c \
-	   $(SRCDIR)/input_parser_utils_2.c \
-	   $(SRCDIR)/is_quote_parsed_valid.c \
-	   $(SRCDIR)/main.c \
-	   $(SRCDIR)/minishell_data.c \
-	   $(SRCDIR)/parse_dollar.c \
-	   $(SRCDIR)/parse_dollar_question.c \
-	   $(SRCDIR)/parse_pipe_or_redirection.c \
-	   $(SRCDIR)/parser_2d.c \
-	   $(SRCDIR)/parser_checks.c \
-	   $(SRCDIR)/pipe_1.c \
-	   $(SRCDIR)/pipe_2.c \
-	   $(SRCDIR)/redirections.c \
-	   $(SRCDIR)/signal.c \
-	   $(SRCDIR)/unset.c \
-	   $(SRCDIR)/utils_1.c \
-	   $(SRCDIR)/utils_2.c \
-	   $(SRCDIR)/utils_3.c
+SRCS = $(SRCDIR)/commands.c \
+       $(SRCDIR)/env.c \
+       $(SRCDIR)/env_utils.c \
+       $(SRCDIR)/error_messages_utils.c \
+       $(SRCDIR)/exe_commands.c \
+       $(SRCDIR)/exe_shell_cmd.c \
+       $(SRCDIR)/export.c \
+       $(SRCDIR)/export_utils.c \
+       $(SRCDIR)/free_mem.c \
+       $(SRCDIR)/ft_getenv.c \
+       $(SRCDIR)/heredoc.c \
+       $(SRCDIR)/input_parser.c \
+       $(SRCDIR)/input_parser_utils_1.c \
+       $(SRCDIR)/input_parser_utils_2.c \
+       $(SRCDIR)/is_quote_parsed_valid.c \
+       $(SRCDIR)/main.c \
+       $(SRCDIR)/minishell_data.c \
+       $(SRCDIR)/parse_dollar.c \
+       $(SRCDIR)/parse_dollar_question.c \
+       $(SRCDIR)/parse_pipe_or_redirection.c \
+       $(SRCDIR)/parser_2d.c \
+       $(SRCDIR)/parser_checks.c \
+       $(SRCDIR)/pipe_1.c \
+       $(SRCDIR)/pipe_2.c \
+       $(SRCDIR)/pipes_exe_commands_utils.c \
+       $(SRCDIR)/redirections.c \
+       $(SRCDIR)/signal.c \
+       $(SRCDIR)/unset.c
 
 
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)

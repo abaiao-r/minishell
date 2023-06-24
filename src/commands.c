@@ -6,12 +6,14 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 12:12:33 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 12:45:33 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:06:03 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* echo_aux: prints the arguments of echo. If flag is 0, it prints a new line
+at the end. If flag is 1, it does not print a new line at the end. */
 void	echo_aux(char **args, int num_args, int flag)
 {
 	int	i;
@@ -28,6 +30,8 @@ void	echo_aux(char **args, int num_args, int flag)
 		printf("\n");
 }
 
+/* echo: prints the arguments of echo. If flag is 0, it prints a new line
+at the end. If flag is 1, it does not print a new line at the end. */
 int	echo(t_minishell **minishell, char **tokens, int num_tokens)
 {
 	if (num_tokens == 1)
@@ -40,6 +44,7 @@ int	echo(t_minishell **minishell, char **tokens, int num_tokens)
 	return (NO_EXIT);
 }
 
+/* pwd: prints the current working directory. */
 int	pwd(t_minishell **minishell)
 {
 	char	cwd[PWD_SIZE];
@@ -57,6 +62,9 @@ int	pwd(t_minishell **minishell)
 	return (NO_EXIT);
 }
 
+/* change_dir: changes the current working directory to the given path. If
+the given path is NULL, it changes the current working directory to the
+home directory. */
 int	change_dir(char **input, int num_tokens, t_env **environment)
 {
 	char	*dir_path;
@@ -84,6 +92,9 @@ int	change_dir(char **input, int num_tokens, t_env **environment)
 	return (NO_EXIT);
 }
 
+/* exe_cmd: executes the given command. If the command is a built-in command,
+it executes it and returns 0. If the command is not a built-in command, it
+returns -1. */
 int	exe_cmd(char **tokens, int num_tokens, t_minishell *minishell)
 {
 	if (!tokens || !*tokens || num_tokens <= 0)

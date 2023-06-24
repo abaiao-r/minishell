@@ -1,16 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_3.c                                          :+:      :+:    :+:   */
+/*   pipes_exe_commands_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/14 13:18:59 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/24 13:57:18 by abaiao-r         ###   ########.fr       */
+/*   Created: 2023/06/24 16:40:17 by abaiao-r          #+#    #+#             */
+/*   Updated: 2023/06/24 17:48:52 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	is_redirection(char *str)
+{
+	if (ft_strcmp(str, ">") == 0)
+		return (1);
+	if (ft_strcmp(str, ">>") == 0)
+		return (1);
+	if (ft_strcmp(str, "<") == 0)
+		return (1);
+	if (ft_strcmp(str, "<<") == 0)
+		return (1);
+	if (ft_strcmp(str, "|") == 0)
+		return (1);
+	return (0);
+}
 
 int	is_builtin(char **tokens)
 {

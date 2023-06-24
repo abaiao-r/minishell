@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   exe_commands.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: quackson <quackson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 20:07:42 by quackson          #+#    #+#             */
-/*   Updated: 2023/06/23 23:33:58 by quackson         ###   ########.fr       */
+/*   Updated: 2023/06/24 18:33:19 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* save_fds: saves the file descriptors. */
 void	save_fds(t_minishell *minishell)
 {
 	minishell->in = dup(STDIN_FILENO);
 	minishell->out = dup(STDOUT_FILENO);
 }
 
+/* reset_fds: assigns the file descriptors to the standard input and output. */
 void	reset_fds(t_minishell *minishell)
 {
 	dup2(minishell->in, STDIN_FILENO);
@@ -26,6 +28,10 @@ void	reset_fds(t_minishell *minishell)
 	close(minishell->out);
 }
 
+/* exe_builtin: saves the file descriptors, handles the redirections. 
+If does not handle redirections successfully, it resets the file descriptors,
+frees the tokens and returns 0. If the command is a builtin, it
+executes it. */
 int	exe_builtin(char **tokens, t_minishell *minishell)
 {
 	save_fds(minishell);
@@ -40,6 +46,14 @@ int	exe_builtin(char **tokens, t_minishell *minishell)
 	return (1);
 }
 
+/* exe_command_no_pipes: initializes the tokens by calling
+get_command_without_redirects. 
+If the tokens are NULL, it exits the program. If the first token is NULL,
+it saves the file descriptors, handles the redirections. If does not handle
+redirections successfully, it resets the file descriptors, frees the tokens
+and returns 0.
+If the command is a builtin, it executes it. If the command is not a builtin,
+it frees the tokens, calls redirect_3 and returns. */
 void	exe_command_no_pipes(int num_commands, t_minishell *minishell)
 {
 	char	**tokens;
@@ -68,9 +82,11 @@ void	exe_command_no_pipes(int num_commands, t_minishell *minishell)
 	free_parsed(tokens);
 }
 
+/* exe_commands: if there is more than one command, it calls redirect_3.
+If there is only one command, it calls exe_command_no_pipes. */
 int	exe_commands(t_minishell *minishell)
 {
-	int		num_commands;
+	int	num_commands;
 
 	g_minishell.in_command = 1;
 	num_commands = count_commands_lst(minishell->input);
