@@ -1,4 +1,4 @@
-# Minishell
+# Minishell (101% PASSED)
 
 ![image](https://github.com/abaiao-r/minishell/assets/118570346/43f7b006-2c03-40f4-8b7c-83756b38c6aa)
 
