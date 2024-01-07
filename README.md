@@ -1,6 +1,10 @@
 # Minishell (101% PASSED)
-A Custom Shell Implementation
-![image](https://github.com/abaiao-r/minishell/assets/118570346/43f7b006-2c03-40f4-8b7c-83756b38c6aa)
+
+<br>
+
+<img src="https://github.com/abaiao-r/minishell/assets/118570346/43f7b006-2c03-40f4-8b7c-83756b38c6aa" alt="Minishell Logo" width="100" height="100">
+
+<br>
 
 A Custom Shell Implementation
 
